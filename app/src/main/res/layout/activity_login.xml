@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/_hora"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:shadowColor="#4996a7"
+        android:text="Academic Glider"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#9e9e3a"
+        android:textSize="60sp"
+        android:textStyle="bold|italic" />
+        
+     <!-- <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="50dp"
+        android:shadowColor="#4996a7"
+        android:text="@string/easy_moto"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#ffffff"
+        android:textSize="35sp"
+        android:textStyle="bold|italic" />-->
+
+    <TableRow
+        android:id="@+id/tableRow0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp">
+        
+	    <ImageView
+	        android:id="@+id/img_user"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:layout_marginRight="-10dp"
+	        android:scaleType="center"
+	        android:src="@drawable/ic_user" />
+
+	    <EditText
+	        android:id="@+id/celular"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:ems="10"
+	        android:hint="Celular"
+	        android:inputType="textEmailAddress|number"
+	        android:textColor="#ffffff">
+	
+	        <requestFocus />
+	    </EditText>
+	    
+	</TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp">
+        
+	    <ImageView
+	        android:id="@+id/img_passw"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:layout_marginRight="-10dp"
+	        android:scaleType="center"
+	        android:src="@drawable/ic_passw" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        android:textColor="#ffffff"
+        android:typeface="normal" />
+
+	</TableRow>
+    <Button
+        android:id="@+id/entrar"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:background="#333"
+        android:text="Entrar"
+        android:textColor="#9e9e3a"
+        android:textColorHint="#ffffff"
+        android:textColorLink="#ffffff" />
+
+    <TextView
+        android:id="@+id/olvide_clave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="25dp"
+        android:text="¿Olvido su contraseña?"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#9e9e3a" />
+
+    <TextView
+        android:id="@+id/TextView0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
+        android:text="------------ O -------------"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#9e9e3a" />
+
+    <TextView
+        android:id="@+id/registrarme_formulario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:text="Registrarme"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#9e9e3a" />
+
+</LinearLayout>

@@ -1,0 +1,209 @@
+package com.jhordyabonia.ag;
+
+import java.util.HashMap;
+
+
+import models.DB;
+
+import util.DownLoadImage;
+import webservice.Asynchtask;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class Cuenta implements Asynchtask,OnItemSelectedListener
+{
+	HomeActivity home;
+	Spinner list;
+	EditText otra_u;
+	boolean logged=false;
+	String url="registrar";
+	private View img_u;
+	public Cuenta(final HomeActivity home)
+	{
+		HomeActivity.ON_DISPLAY=HomeActivity.CUENTA;
+		
+		this.home=home;	
+		home.getActionBar().hide();
+		home.show_menu=false;
+		home.setContentView(R.layout.activity_registrarme);
+		
+		((Button) home.findViewById(R.id.registrarme))
+			.setOnClickListener(new OnClickListener()
+				{
+					@Override
+					public void onClick(View v) 
+					{registrarme();		}
+				}
+			);	
+		otra_u=(EditText) home.findViewById(R.id.universidad_otra);
+		img_u=(View) home.findViewById(R.id.img_universidad2);
+		
+		ArrayAdapter<String> base =
+				new ArrayAdapter<String>(home,R.layout.base);			
+		base.add("Universidad");
+
+		list = ((Spinner) home.findViewById(R.id.universidad));
+		list.setAdapter(base);
+		list.setPrompt("Seleccionar Universidad");	
+		list.setOnItemSelectedListener(this);
+		Server.send("universidad", null, this);
+	}
+	public void fill()
+	{
+		url="editar";
+		home.show_menu=true;
+		logged=true;
+		
+		Toast.makeText(home,"Debes ingresas 2 veces, la contraseña," +
+				" para actualizarla o cambiar cualquier dato", 
+				Toast.LENGTH_LONG).show();
+		
+		((Button) home.findViewById(R.id.registrarme))
+			.setText("Actualizar");
+		
+        DownLoadImage loader = new DownLoadImage(home,R.id.imagen_usuario);
+    	loader.execute(DB.User.get("foto"));
+    	
+    	((TextView)home.findViewById(R.id.textView1)).setVisibility(View.GONE);
+		((EditText)home.findViewById(R.id.celular)).setText(DB.User.get("celular"));
+		((EditText)home.findViewById(R.id.nombre)).setText(DB.User.get("nombre"));
+		((EditText)home.findViewById(R.id.email)).setText(DB.User.get("correo"));
+		home.getActionBar().removeAllTabs();
+		home.getActionBar().hide();		
+	}	
+	@Override
+	public void processFinish(String result) 
+	{	
+		if(result.equals("Actualizacion Exitosa!"))
+		{
+			Toast.makeText(home, result,Toast.LENGTH_SHORT ).show();
+		}else if(result.equals("Registro Exitoso!"))
+		{			
+			Toast.makeText(home, result,Toast.LENGTH_SHORT ).show();		
+			Login.login(home);
+			return;
+		}else if(result.startsWith("Universidad"))
+		{
+			ArrayAdapter<String> base =
+					new ArrayAdapter<String>(home,R.layout.base);
+			if(logged)
+			{
+				result=result.replace(DB.User.get("universidad")+",", "");
+				result=DB.User.get("universidad")+","+result;				
+			}
+			
+			base.addAll(result.split(","));
+			list.setAdapter(base);
+			list.setPrompt("Seleccionar Universidad");
+		}else 
+		{
+			Toast.makeText(home, "Problemas con la red, Verifica tu conexion" +
+					" o intenta mas tarde", Toast.LENGTH_SHORT).show();				
+		}
+	}
+	private String getUniversidad()
+	{
+		String out=(String)list.getSelectedItem();
+
+		otra_u.setVisibility(View.GONE);
+		img_u.setVisibility(View.GONE);
+		if(out.isEmpty()||out.equals("Universidad")
+				||out.equals("Otra"))
+			 out=otra_u.getText().toString();
+		
+		return out;
+	}
+	private void setError(int id,String msj)
+	{
+		((EditText)home.findViewById(id))
+			.setError(msj);
+	}
+	private boolean datos()
+	{
+		String celular=((EditText) home.findViewById(R.id.celular)).getText().toString();
+		String password=((EditText)home.findViewById(R.id.password)).getText().toString();
+		String password2=((EditText) home.findViewById(R.id.password2)).getText().toString();
+		String nombre=((EditText)home.findViewById(R.id.nombre)).getText().toString();
+		String email=((EditText)home.findViewById(R.id.email)).getText().toString();
+		String universidad=getUniversidad();
+
+		if(nombre.length()<8||!nombre.contains(" "))
+		{
+			setError(R.id.nombre,"Ingresa tu nombre completo");
+			return false;
+		}
+		if(universidad.isEmpty())
+		{
+			otra_u.setVisibility(View.VISIBLE);
+			img_u.setVisibility(View.VISIBLE);
+			setError(R.id.universidad_otra,
+					"Seleccione el nombre de Universidad o Ingrese uno ");
+			return false;
+		}	
+		if(celular.length()<10)
+		{
+			setError(R.id.celular,"Celular debe tener 10 digitos");
+			return false;
+		}
+		if(!email.contains("@")&&email.lastIndexOf(".")!=-1
+				&&email.length()-email.lastIndexOf(".")<=4)
+		{
+			setError(R.id.email,"Formato del correo no valido, Ej: user@domin.ext");
+			return false;
+		}	
+		if(password.length()<6)
+		{
+			setError(R.id.password,"Contraseñas debe tener minimo 6 caracteres");
+			return false;
+		}
+		if(!password.equals(password2))
+		{
+			setError(R.id.password2,"Contraseñas no cohinciden");
+			return false;
+		}
+
+		HashMap<String, String> datos=new HashMap<String, String>();
+		if(url.equals("editar"))
+			datos.put("id", DB.User.get("id"));
+		datos.put("nombre", nombre);
+		datos.put("celular", celular);
+		datos.put("correo",email);
+		datos.put("password",password);
+		datos.put("universidad",universidad);
+		
+		Server.setDataToSend(datos);
+		return true;
+	}
+	private void registrarme()
+	{
+		if(!datos())
+		{
+			Toast.makeText(home,"Error de validacion, " +
+					"Verifica lo datos ingresados", Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		Server.send(url, home, this);
+	}
+	@Override
+	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+			long arg3) {
+		otra_u.setVisibility(View.GONE);
+		img_u.setVisibility(View.GONE);
+		if(arg2==arg0.getCount()-1)
+		{
+			otra_u.setVisibility(View.VISIBLE);	
+			img_u.setVisibility(View.VISIBLE);		
+		}
+	}
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {}
+}

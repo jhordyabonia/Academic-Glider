@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/cuenta" android:title="Cuenta"></item>
+    <item android:id="@+id/comunidad" android:title="Comunidad Glider"></item>
+    <item android:id="@+id/contactos" android:title="Compañeros"></item>
+    <item android:id="@+id/actions_horarios" android:icon="@android:drawable/ic_menu_agenda" android:title="Horarios" android:visible="false" android:showAsAction="always" android:menuCategory="container"></item><item android:id="@+id/chat" android:title="Chat" android:showAsAction="always|withText" android:icon="@android:drawable/stat_notify_chat"></item><item android:id="@+id/informacion" android:title="Informacion"></item><item android:id="@+id/salir" android:title="Salir"></item>
+    
+    
+   
+</menu>

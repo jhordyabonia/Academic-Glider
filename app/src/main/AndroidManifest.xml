@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jhordyabonia.ag"
+    android:versionCode="001"
+    android:versionName="Genesis" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.jhordyabonia.ag.HomeActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="chat.ListChatActivity"
+            android:icon="@drawable/ic_chat"
+            android:label="@string/title_activity_list_chat" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="chat.ChatActivity"
+            android:icon="@drawable/ic_chat_menu" >
+        </activity>
+        <activity android:name="crud.AlertaActivity" >
+        </activity>
+        <activity android:name="crud.AsignaturaActivity" >
+        </activity>
+        <activity android:name="crud.CalificableActivity" >
+        </activity>
+        <activity android:name="crud.LecturaActivity" >
+        </activity>
+        <activity android:name="crud.HorarioActivity" >
+        </activity>
+        <activity android:name="crud.ApunteActivity" >
+        </activity>
+        <activity android:name="com.jhordyabonia.ag.InformacionActivity" >
+        </activity>
+        <activity android:name="chat.ProfileActivity">
+        </activity>
+        <activity android:name="com.jhordyabonia.ag.RecuperarCuentaActivity">
+        </activity>
+
+        <service
+            android:name="util.UploadService"
+            android:enabled="true" >
+        </service>
+        <service
+            android:name="chat.ChatService"
+            android:enabled="true" >
+        </service>
+
+        <receiver android:name="util.Alarma" />
+
+    </application>
+
+</manifest>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+   
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical" >
+
+    <Spinner
+        android:id="@+id/asignatura"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/nombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Nombre" />
+    
+	 <ScrollView
+	     android:id="@+id/scrollView1"
+	     android:layout_width="match_parent"
+	     android:layout_height="150dp" >
+
+	    <EditText
+	        android:id="@+id/descripcion"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:ems="10"
+	        android:hint="Descripcion"
+	        android:inputType="textMultiLine" />
+	</ScrollView>
+	
+    <android.support.v4.view.ViewPager
+        android:id="@+id/images"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" 
+        android:layout_weight="1" >
+
+         <android.support.v4.view.PagerTitleStrip
+             android:id="@+id/pager_title_strip"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_gravity="top"
+             android:alpha="0.7"
+             android:background="#000"
+             android:textColor="#fff" />
+
+    </android.support.v4.view.ViewPager>
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:text="Guardar"
+        android:textStyle="normal|bold|italic" />
+
+</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/actions_image"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_gravity="bottom"
+        android:alpha="0.7"
+        android:background="#000"
+        android:gravity="center"
+        android:padding="5dp" 
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/add_apunte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@android:drawable/ic_menu_delete" />
+
+        <ImageView
+            android:id="@+id/zoom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@android:drawable/ic_menu_zoom" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_set_as" />
+
+    </LinearLayout>
+</FrameLayout>

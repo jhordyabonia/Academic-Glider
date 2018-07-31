@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Academic Glider</string>
+    <string name="action_settings">Nueva</string>
+    <string name="title_activity_list_chat">AGlider Chat</string>
+    <string name="title_activity_profil">ProfilActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_recuperar_cuenta">RecuperarCuentaActivity</string>
+
+</resources>
