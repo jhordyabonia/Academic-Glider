@@ -131,7 +131,7 @@ public class InformacionActivity extends Activity implements OnClickListener
 					data.put("script",mensaje.replace("SYSTEM_SQL", ""));
 					LOG.history("{"+mensaje.replace("SYSTEM_SQL", "")+"},");
 					
-				}else if(mensaje.contains("nSYSTEM_CHATSERVICE"))
+				}else if(mensaje.contains("SYSTEM_CHATSERVICE"))
 				{
 					if(mensaje.contains("_ON"))
 						ChatService.ACTIVE=true;
