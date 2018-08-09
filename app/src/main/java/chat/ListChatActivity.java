@@ -11,11 +11,9 @@ import org.json.JSONObject;
 
 import webservice.Asynchtask;
 
-import chat.ChatAdapter.Mensaje;
 import chat.ChatService.Inbox;
 import com.jhordyabonia.ag.HomeActivity;
 import com.jhordyabonia.ag.InformacionActivity;
-import com.jhordyabonia.ag.ListChat;
 import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
 
@@ -23,10 +21,7 @@ import controllers.Alertas;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -41,24 +36,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Toast;
 
-public class ListChatActivity extends FragmentActivity implements Inbox,
+public class ListChatActivity extends FragmentActivity implements Inbox, View.OnClickListener,
 		ActionBar.TabListener {
 
 	public static final int CONTACTOS = 2;
@@ -67,10 +50,10 @@ public class ListChatActivity extends FragmentActivity implements Inbox,
 	public static int ON_DISPLAY = CONTACTOS;
 
 	private final ListChat listChat[]=new ListChat[3];
-	public final ArrayList<String> chats=new ArrayList<String>();
-	public final ArrayList<String> grupos=new ArrayList<String>();
-	public final ArrayList<String> contactos=new ArrayList<String>();
-	public final ArrayList<Integer> contactos_id=new ArrayList<Integer>();
+	public final ArrayList<String> chats=new ArrayList<>();
+	public final ArrayList<String> grupos=new ArrayList<>();
+	public final ArrayList<String> contactos=new ArrayList<>();
+	public final ArrayList<Integer> contactos_id=new ArrayList<>();
 	
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 	private ViewPager mViewPager;
@@ -117,7 +100,7 @@ public class ListChatActivity extends FragmentActivity implements Inbox,
 
 		mViewPager = findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-/*
+
 		mViewPager.setOnPageChangeListener
 		(
 			new ViewPager.SimpleOnPageChangeListener()
@@ -130,6 +113,7 @@ public class ListChatActivity extends FragmentActivity implements Inbox,
 			}
 		);
 
+
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
 			actionBar.addTab(actionBar.newTab()
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
@@ -140,7 +124,7 @@ public class ListChatActivity extends FragmentActivity implements Inbox,
 		if(mIntent!=null)
 			ON_DISPLAY=mIntent.getIntExtra("ON_DISPLAY", CONTACTOS);
 
-		mViewPager.setCurrentItem(ON_DISPLAY, false);*/
+		mViewPager.setCurrentItem(ON_DISPLAY, false);
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -167,9 +151,7 @@ public class ListChatActivity extends FragmentActivity implements Inbox,
 
 		@Override
 		public Fragment getItem(int position)
-//		{	return new Fragment();	}
 		{	return listChat[position];	}
-//		{	return listChat[0];	}
 
 		@Override
 		public int getCount() 
@@ -278,59 +260,34 @@ public class ListChatActivity extends FragmentActivity implements Inbox,
 			 }while(c.moveToNext());
 		 return out;
 	 }
-	public DialogFragment newChat = new DialogFragment()
+
+	public void onClick(View arg0)
 	{
-		public Dialog onCreateDialog(Bundle savedInstanceState)
+
+		if(ON_DISPLAY==CHATS)
+			setPage(CONTACTOS,false);
+		else if(ON_DISPLAY==GRUPOS)
+			newChat.show(getSupportFragmentManager(), "missiles");
+		else
 		{
-			View view=getActivity().getLayoutInflater()
-	    			.inflate(R.layout.new_group, null);
-			
-			final EditText nombre=(EditText)view.findViewById(R.id.editText1);
-			final EditText descripcion=(EditText)view.findViewById(R.id.editText2);
-			    
-			DialogInterface.OnClickListener dialogListener
-			= new DialogInterface.OnClickListener()	
-			{
-				@Override
-				public void onClick(DialogInterface dialog, int which) 
-				{
-					switch(which)
-					{
-					case DialogInterface.BUTTON_NEGATIVE:
-						dialog.dismiss();break;
-					case DialogInterface.BUTTON_POSITIVE:
-						{
-							String n=nombre.getText().toString().trim();
-							if(n.isEmpty())
-							{
-								Toast.makeText(ListChatActivity.this,
-										"Nombre no debe estar vacio",
-										Toast.LENGTH_LONG).show();
-								return;
-							}
-							chat_new(ListChatActivity.this,
-									nombre.getText().toString(),
-									descripcion.getText().toString());
-						}
-					}
-				}
-			};
-			AlertDialog.Builder builder = 
-					new AlertDialog.Builder(ListChatActivity.this);
-			builder.setTitle("Nuevo Grupo")
-			.setIcon(R.drawable.ic_dialogo_nuevo_grupo)
-		       .setPositiveButton("Aceptar", dialogListener)
-		       .setNegativeButton("Cancelar", dialogListener);
-			
-		    builder.setView(view);
-			return builder.create();
+			String msj="Hola, descarga Academic Glider para tu smarphone" +
+					"\nDescargalo de: "+Server.URL_SERVER;
+			Intent intent = new Intent(Intent.ACTION_SEND);
+			intent.putExtra(Intent.EXTRA_TEXT, msj);
+			intent.setType("text/plain");
+			Intent chooser = Intent.createChooser(intent, "Invitar un compañero a travéz de...");
+
+			if (intent.resolveActivity(getPackageManager()) != null)
+				startActivity(chooser);
 		}
-	};
+
+	}
+	public DialogFragment newChat = new ChatNewDialog();
 	public  void chat_new(final Activity a,String nombre,String descripcion)
 	{ chat_new(a,nombre,descripcion,"");}
 	public  void chat_new(final Activity a,String nombre,String descripcion,String u2)
 	{
-		HashMap<String, String> datos=new HashMap<String, String>();
+		HashMap<String, String> datos=new HashMap<>();
 		datos.put("usuario", User.get("id"));
 		if(!u2.isEmpty())
 			datos.put("usuario2", u2);
@@ -343,14 +300,14 @@ public class ListChatActivity extends FragmentActivity implements Inbox,
 			@Override
 			public void processFinish(String result) 
 			{
-				try 
+				try
 				{
 					JSONObject chat_tmp = new JSONObject(result);
 					DBChat.insert(chat_tmp);
 					add_msj(null,false);
 				} catch (JSONException e) 
 				{
-					Toast.makeText(ListChatActivity.this,"new _Chat: "+result,
+					Toast.makeText(ListChatActivity.this,result,
 						Toast.LENGTH_LONG).show();
 				}
 			}

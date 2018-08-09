@@ -1,4 +1,4 @@
-package com.jhordyabonia.ag;
+package chat;
 
 
 import android.content.Intent;
@@ -13,7 +13,11 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.jhordyabonia.ag.R;
+import com.jhordyabonia.ag.Server;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,10 +26,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import chat.ChatAdapter;
-import chat.DBChat;
-import chat.ListChatActivity;
-import chat.ProfileActivity;
 import models.DB;
 
 import static chat.ListChatActivity.CONTACTOS;
@@ -33,7 +33,7 @@ import static chat.ListChatActivity.CHATS;
 import static chat.ListChatActivity.GRUPOS;
 import static chat.ListChatActivity.ON_DISPLAY;
 
-public class  ListChat extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener
+public class  ListChat extends Fragment implements AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener
 {
     private int VIEW;
     private ListView base;
@@ -43,7 +43,7 @@ public class  ListChat extends Fragment implements View.OnClickListener, Adapter
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        final View root = inflater.inflate(R.layout.lienzo_chat,
+            final View root = inflater.inflate(R.layout.lienzo_chat,
                 container, false);
             main =(ListChatActivity)getActivity();
 			base_data = new ChatAdapter(root.getContext(),new ArrayList<ChatAdapter.Mensaje>(),true);
@@ -54,7 +54,7 @@ public class  ListChat extends Fragment implements View.OnClickListener, Adapter
 
 			ImageView imageView =  root.findViewById(R.id.add);
 			imageView.setVisibility(View.VISIBLE);
-			imageView.setOnClickListener(this);
+			imageView.setOnClickListener(main);
 
 			Bundle args = getArguments();
 			VIEW=args.getInt("ON_DISPLAY");
@@ -94,18 +94,22 @@ public class  ListChat extends Fragment implements View.OnClickListener, Adapter
             main.chats.clear();
 
         base_data.clear();
+        String LOG=VIEW==GRUPOS?"Chat grupos:\n":"Chats";
         for(int i = 0; i< DBChat.get().length(); i++)
         {
+            LOG+="\n>>"+i+"\n";
             JSONObject tmp = DBChat.get(i);
             if(VIEW==tmp.getInt("tipo"))
             {
                 String nombre=tmp.getString("nombre");
                 JSONArray msjs=null;
+                LOG+="Nombre: "+nombre+"\n";
                 try{msjs=tmp.getJSONArray("mensajes");}
-                catch(JSONException e){}
-                String dato="";
-                if(CHATS==tmp.getInt("tipo"))
+                catch(JSONException e){msjs=new JSONArray();}
+                String dato;
+                if(CHATS==VIEW)
                 {
+                    LOG+="View: Chats\n";
                     String id= tmp.getString("nombre")
                             .replace("_"+ DB.User.get("celular")+"_","")
                             .replace("_","");
@@ -113,8 +117,9 @@ public class  ListChat extends Fragment implements View.OnClickListener, Adapter
                     if(nombre.isEmpty())
                         nombre=id;
                 }
-                if(msjs!=null)
+                if(msjs.length()>=1)
                 {
+                    LOG+="msjs.length()"+msjs.length()+"\n";
                     JSONObject msj_tmp=msjs.optJSONObject(msjs.length()-1);
                     int last_msj=msj_tmp.getInt("id");
                     DBChat.LAST_MSJ=DBChat.LAST_MSJ<last_msj?last_msj:DBChat.LAST_MSJ;
@@ -134,27 +139,7 @@ public class  ListChat extends Fragment implements View.OnClickListener, Adapter
                     main.chats.add(tmp.getString("id"));
             }//if(VIEW==tmp.getInt("tipo"))
         }//for
-    }
-    public void onClick(View arg0)
-    {
-
-        if(VIEW==CHATS)
-            main.setPage(CONTACTOS,false);
-        else if(VIEW==GRUPOS)
-            main.newChat.show(main.getSupportFragmentManager(), "missiles");
-        else
-        {
-            String msj="Hola, descarga Academic Glider para tu smarphone" +
-                    "\nDescargalo de: "+Server.URL_SERVER;
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_TEXT, msj);
-            intent.setType("text/plain");
-            Intent chooser = Intent.createChooser(intent, "Invitar un compañero a travéz de...");
-
-            if (intent.resolveActivity(getContext().getPackageManager()) != null)
-                startActivity(chooser);
-        }
-
+        DB.save(main,LOG,"test1.log");
     }
     @Override
     public boolean onItemLongClick(AdapterView<?> arg0, View v,
@@ -254,7 +239,7 @@ public class  ListChat extends Fragment implements View.OnClickListener, Adapter
             { c=b;b=a;a=c;}
             main.chat_new(main,"_"+a+"_"+b+"_",
                     "",""+main.contactos_id.get(arg2));
-           main.setPage(CHATS,true);
+            main.setPage(CHATS,true);
             return;
         }
         Intent intent =

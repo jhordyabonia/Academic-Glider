@@ -84,7 +84,8 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 
 		getActionBar().setLogo(R.drawable.ic_chat_menu);
 		getActionBar().setHomeButtonEnabled(false);
-		base = (ListView) findViewById(R.id.listView1);
+
+		base =  findViewById(R.id.listView1);
 		base.setDividerHeight(0);
 		base.setDrawSelectorOnTop(true);
 		base.setVerticalScrollBarEnabled(false);
@@ -94,9 +95,9 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 		base.setOnItemLongClickListener(this);
 
 		base.setAdapter(base_data);
-		msj=(EditText) findViewById(R.id.editText1);
+		msj= findViewById(R.id.editText1);
 		
-		((ImageView) findViewById(R.id.imageView2))
+		findViewById(R.id.imageView2)
 		.setOnClickListener
 			(
 				new OnClickListener() 
@@ -123,7 +124,7 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 				}
 			);
 	
-		((ImageView) findViewById(R.id.imageView1))
+		 findViewById(R.id.imageView1)
 			.setOnClickListener
 				(
 					new OnClickListener() 
@@ -133,8 +134,8 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 						{ send();}				
 					}
 				);
-		load();
-		updater();
+		/*load();
+		updater();*/
 		}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) 
@@ -273,6 +274,8 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 						Toast.makeText(ChatActivity.this,
 							"Mensaje...\n"+dato+"\nno registrado",
 							Toast.LENGTH_LONG).show();
+
+						DB.save(ChatActivity.this, result, "test0.log");
 					}
 				}
 			}
