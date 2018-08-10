@@ -9,6 +9,7 @@ import models.DB.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import util.CompartirAsignatura;
 import util.UploadService;
 import webservice.Asynchtask;
 import android.app.Activity;
@@ -316,23 +317,9 @@ public class Asignaturas implements OnItemClickListener
 		Base.itemSeleted = index_item;
 		home.abrirAsignatura(); 
 	}
-	public static DialogFragment asignaturas_list(final FragmentActivity activity,final String titulo,final String[] items,
+	public static DialogFragment asignaturas_list(FragmentActivity activity, String titulo, String[] items,
 			final DialogInterface.OnClickListener actions)
-	{
-		return new DialogFragment() 
-		{
-			@Override
-			public Dialog onCreateDialog(Bundle savedInstanceState)
-			{
-				AlertDialog.Builder builder = 
-						new AlertDialog.Builder(activity);
-				builder.setTitle(titulo)
-				.setIcon(android.R.drawable.ic_menu_share)
-				.setItems(items,actions);
-				return builder.create();
-			}
-		};
-	}
+	{return new CompartirAsignatura.List(activity,titulo,items,actions); }
 	public static DialogFragment existe(final boolean alt,final FragmentActivity activity,JSONObject asignatura) throws JSONException
 	{
 		if(alt)			
@@ -342,7 +329,6 @@ public class Asignaturas implements OnItemClickListener
 		}
 		String codigo=asignatura.getString("codigo");
 		String nombre=asignatura.getString("nombre");
-		final String descargar=asignatura.getString("id");
 		ArrayList<JSONObject> asignaturas_tmp = DB.Asignaturas.find("codigo", codigo);
 		if(asignaturas_tmp.isEmpty())
 			asignaturas_tmp = DB.Asignaturas.find("nombre", nombre);
@@ -351,45 +337,12 @@ public class Asignaturas implements OnItemClickListener
 			DB.current();
 			DB.Asignaturas.set_list();
 		}
-		final ArrayList<JSONObject> list_asignaturas_tmp=asignaturas_tmp;
 		if(!asignaturas_tmp.isEmpty())
-		{
-			return  new DialogFragment()
-			{
-				public Dialog onCreateDialog(Bundle savedInstanceState)
-				{
-					DialogInterface.OnClickListener dialogListener
-					= new DialogInterface.OnClickListener()	
-					{
-						@Override
-						public void onClick(DialogInterface dialog, int which) 
-						{
-							switch(which)
-							{
-							case DialogInterface.BUTTON_NEUTRAL:
-								actualizar(alt,activity,list_asignaturas_tmp,descargar);break;
-							case DialogInterface.BUTTON_NEGATIVE:
-								dialog.dismiss();break;
-							case DialogInterface.BUTTON_POSITIVE:
-								agregar(activity,descargar);									
-							}
-						}
-					};
-					AlertDialog.Builder builder = 
-							new AlertDialog.Builder(activity);
-					builder.setTitle("La signatura ya existe")
-					.setIcon(android.R.drawable.ic_dialog_alert)
-					.setMessage("En tu tabulado hay una asignatura, con el mismo nombre o codigo")
-				       .setPositiveButton("Nueva", dialogListener)
-				       .setNegativeButton("Cancelar", dialogListener)
-				       .setNeutralButton("Actualizar", dialogListener);
-					return builder.create();
-				}
-			};
-		}
+			return  new CompartirAsignatura.AsignaturaExist(asignaturas_tmp,alt,asignatura.getString("id"));
+
 		return null;			
 	}
-	private static void actualizar(final boolean alt,final FragmentActivity activity,final ArrayList<JSONObject> list_in,final String descargar)
+	public static void actualizar(final boolean alt,final FragmentActivity activity,final ArrayList<JSONObject> list_in,final String descargar)
 	{
 		if(alt)			
 		{
@@ -464,7 +417,7 @@ public class Asignaturas implements OnItemClickListener
 		};
 		Server.send("actualizar", activity, recep);		
 	}
-	private static void agregar(FragmentActivity activity,String descarga)
+	public static void agregar(FragmentActivity activity,String descarga)
 	{
 		Intent intent=new Intent(activity, AsignaturaActivity.class);
 		intent.putExtra("RESULT", HomeActivity.ASIGNATURAS);
@@ -490,100 +443,12 @@ public class Asignaturas implements OnItemClickListener
 		};
 		Server.send("descargar", activity, recep);		
 	}
-	private static void compartirApuntes(Activity activity,String id)
-	{
-		DB.model("apuntes");
-		ArrayList<JSONObject> apuntes = DB.find("asignatura", id);
-		String list="";
-		for(JSONObject ap:apuntes)
-			try {list+=","+ap.getString("apunte");}
-			catch (JSONException e) {continue;}
-		if(list.startsWith(","))
-			list=list.substring(1);
-		Intent intent = new Intent(activity, UploadService.class);
-		intent.putExtra(UploadService.LIST_TO_UPLOAD, list);
-		activity.startService(intent);
-	}
+
 	String compartir_com = "";
-	ArrayList<String> items_a_compartir = new ArrayList<String>(); 
-	public static DialogFragment 
-	compartir(final Activity activity,final String compartir_com,final int index_asignatura)
-	{
-		return new DialogFragment() 	
-		{
-			@Override
-			public Dialog onCreateDialog(Bundle savedInstanceState) 
-			{
-				final String[]list={"Todo","Horarios","Apuntes","Lecturas","Calificables","Alertas"};
-				final ArrayList<String> items_a_compartir= new ArrayList<String> ();
-			    
-				AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-				android.content.DialogInterface.OnClickListener dialogListener 
-					= dialogListener(activity,items_a_compartir,compartir_com,index_asignatura);
-				// Set the dialog title
-				 builder.setTitle("Compartir")
-			    .setIcon(android.R.drawable.ic_menu_share)
-			    .setMultiChoiceItems(list, null,
-		                  new DialogInterface.OnMultiChoiceClickListener() 
-					       {
-					           @Override
-					           public void onClick(DialogInterface dialog, int which,
-					                   boolean isChecked) 
-					           {
-					        	   if(which==0&&isChecked)
-					        	   {
-					        		   items_a_compartir.clear();
-					        		   for(String item:list)
-					        			   items_a_compartir.add(item);
-					        		   
-					        	   }else if (isChecked) 
-					               {items_a_compartir.add(list[which]);} 
-					               else if (items_a_compartir.contains(list[which])) 
-					               { items_a_compartir.remove(list[which]);}
-					           }
-					       })
-		       .setPositiveButton("Compartir", dialogListener)
-		       .setNegativeButton("Cancelar", dialogListener);	       
-		
-			   return builder.create();
-			}
-		};
-	}
-	private static DialogInterface.OnClickListener 
-		dialogListener(final Activity activity,final ArrayList<String> items_a_compartir,final String compartir_com,final int index_asignatura)
-		{
-			return new DialogInterface.OnClickListener()	
-			{
-				@Override
-				public void onClick(DialogInterface dialog, int which) 
-				{
-					switch(which)
-					{
-					case DialogInterface.BUTTON_NEGATIVE:
-						dialog.dismiss();break;
-					case DialogInterface.BUTTON_POSITIVE:
-						{
-							HashMap<String, String> data= new HashMap<String, String>();
-							for(String c:items_a_compartir)
-								data.put(c,"true");
-							data.put("compartir_con",compartir_com);
-							String compartir = DB.Asignaturas.LIST_ID_ASIGNATURAS[index_asignatura];
-							compartirApuntes(activity,compartir);
-							data.put("compartir", compartir);
-							Server.setDataToSend(data);
-							Asynchtask recep = new Asynchtask()
-							{
-								@Override
-								public void processFinish(String result) 
-								{				
-									Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
-								}
-							};
-							Server.send("compartir", activity, recep);
-						}
-					}
-				}
-			};
-		}
+	ArrayList<String> items_a_compartir = new ArrayList<String>();
+
+	public static DialogFragment compartir(Activity activity,String compartir_com,int index_asignatura)
+	{return new CompartirAsignatura(activity,compartir_com,index_asignatura);}
+
 }
 

@@ -48,12 +48,12 @@ public class ProfileActivity extends FragmentActivity
 	private String wonner="";
 	private ChatAdapter datos_integrantes;
 	private ChatAdapter datos_asignaturas;
-	private String descripcion="";
-	private String nombre="";
 	private ActionBar actionBar=null;
 	private TextView descripcion_view=null;
 	private JSONArray asignaturas=null;
-	
+	public String descripcion="";
+	public String nombre="";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -251,56 +251,8 @@ public class ProfileActivity extends FragmentActivity
 		Server.setDataToSend(datos);
 		Server.send("integrantes", this, this);
 	}
-	private DialogFragment editChat = new DialogFragment()
-	{
-		public Dialog onCreateDialog(Bundle savedInstanceState)
-		{
-			View view=getActivity().getLayoutInflater()
-	    			.inflate(R.layout.new_group, null);
-			
-			final EditText nombre_=(EditText)view.findViewById(R.id.editText1);
-			final EditText descripcion_=(EditText)view.findViewById(R.id.editText2);
-
-			nombre_.setText(nombre);
-			descripcion_.setText(descripcion);
-			DialogInterface.OnClickListener dialogListener
-			= new DialogInterface.OnClickListener()	
-			{
-				@Override
-				public void onClick(DialogInterface dialog, int which) 
-				{
-					switch(which)
-					{
-					case DialogInterface.BUTTON_NEGATIVE:
-						dialog.dismiss();break;
-					case DialogInterface.BUTTON_POSITIVE:
-						{
-							String n=nombre_.getText().toString().trim();
-							if(n.isEmpty())
-							{
-								Toast.makeText(ProfileActivity.this,
-										"Nombre no debe estar vacio",
-										Toast.LENGTH_LONG).show();
-								return;
-							}
-							chat_edit(nombre_.getText().toString(),
-									descripcion_.getText().toString());
-						}
-					}
-				}
-			};
-			AlertDialog.Builder builder = 
-					new AlertDialog.Builder(ProfileActivity.this);
-			builder.setTitle("Editar Grupo")
-			.setIcon(android.R.drawable.ic_menu_edit)
-		       .setPositiveButton("Aceptar", dialogListener)
-		       .setNegativeButton("Cancelar", dialogListener);
-			
-		    builder.setView(view);
-			return builder.create();
-		}
-	};
-	private void chat_edit(final String nombre,final String descripcion)
+	private DialogFragment editChat =  new EditChat(this);
+	public void chat_edit(final String nombre,final String descripcion)
 	{
 		HashMap<String, String> datos=new HashMap<String, String>();
 		datos.put("usuario", User.get("id"));

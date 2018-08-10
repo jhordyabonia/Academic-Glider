@@ -202,7 +202,8 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 	private void load()
 	{
 		Intent mIntent=getIntent();
-		CHAT=Integer.valueOf(mIntent.getStringExtra("CHAT"));		
+		CHAT=Integer.valueOf(mIntent.getStringExtra("CHAT"));
+		add = new ChatNewDialog.ContactList(contactos,CHAT);
 		try 
 		{
 			chat = new JSONObject(DBChat.find("id",""+CHAT));
@@ -275,7 +276,6 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 							"Mensaje...\n"+dato+"\nno registrado",
 							Toast.LENGTH_LONG).show();
 
-						DB.save(ChatActivity.this, result, "test0.log");
 					}
 				}
 			}
@@ -358,93 +358,8 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 	    		getSystemService(Context.NOTIFICATION_SERVICE))
 	    		.cancel(CHAT);
 	}
-	private DialogFragment add = new DialogFragment()
-	{
-		public Dialog onCreateDialog(Bundle savedInstanceState)
-		{
-			DialogInterface.OnClickListener dialogListener
-			= new DialogInterface.OnClickListener()	
-			{
-				@Override
-				public void onClick(DialogInterface dialog, int which) 
-				{
-					switch(which)
-					{
-					case DialogInterface.BUTTON_NEGATIVE:
-						dialog.dismiss();break;
-					case DialogInterface.BUTTON_POSITIVE:
-						{
-							String usuarios="";
-							for(String id:contactos)
-								usuarios+=id+",";
-							HashMap<String, String> datos=new HashMap<String, String>();		
-							datos.put("chat",""+CHAT);
-							datos.put("usuario",User.get("id"));
-							datos.put("usuarios",usuarios);
-							Server.setDataToSend(datos);
-							Server.send("mensaje/add_group", null, null);
-						}
-					}
-				}
-			};
-			AlertDialog.Builder builder = 
-					new AlertDialog.Builder(ChatActivity.this);
-			builder.setTitle("Agregar Compañeros")
-			.setIcon(R.drawable.ic_dialogo_add_togroup)
-		       .setPositiveButton("Aceptar", dialogListener)
-		       .setNegativeButton("Cancelar", dialogListener);
-			View root=getActivity().getLayoutInflater()
-	    			.inflate(R.layout.list_select, null);
-			
-			base_data = new ChatAdapter(root.getContext(),new ArrayList<Mensaje>(),true);
-			base = (ListView) root.findViewById(R.id.list);			
-			base.setAdapter(base_data);
-			base.setOnItemClickListener(listener);
-			base.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);   
-			base.setItemsCanFocus(false);
-			try 
-			{	
-				JSONArray data= new JSONArray(DB.load(DBChat.FILE_CONTACTS));
-				for(int i=0;i<data.length();i++)
-				{
-					JSONObject tmp= data.getJSONObject(i);
-					base_data.add(
-							new Mensaje(
-								tmp.getString("id"),
-								tmp.getString("nombre"),"Glider",
-								tmp.getString("cel")
-								));
-				}
-			} catch (JSONException e) {}
-			contactos.clear();			
-		    builder.setView(root);
-			return builder.create();
-		}
-	};
-	private OnItemClickListener listener =new OnItemClickListener()
-	{
-		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-				long arg3) {
-			String h="nada";
-			
-			TextView t= (TextView)arg1.findViewById(R.id.textView4);
-			if(t!=null)
-				h=t.getText().toString();
-			View l=arg1.findViewById(R.id.selected);
-			if(l!=null)
-			{				
-				if(contactos.contains(h))
-				{
-					l.setVisibility(View.GONE);
-					contactos.remove(h);
-					return;
-				}
-				l.setVisibility(View.VISIBLE);
-				contactos.add(h);
-			}
-		}
-	};
+	private DialogFragment add;
+
 	protected String getHora()
 	{
 		TimePicker _hora = new TimePicker(this);

@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import util.Buscador;
 import webservice.Asynchtask;
 
 import chat.ChatService.Inbox;
@@ -54,6 +55,8 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 	public final ArrayList<String> grupos=new ArrayList<>();
 	public final ArrayList<String> contactos=new ArrayList<>();
 	public final ArrayList<Integer> contactos_id=new ArrayList<>();
+
+	private DialogFragment newChat;
 	
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 	private ViewPager mViewPager;
@@ -125,6 +128,7 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 			ON_DISPLAY=mIntent.getIntExtra("ON_DISPLAY", CONTACTOS);
 
 		mViewPager.setCurrentItem(ON_DISPLAY, false);
+		newChat = new ChatNewDialog(this);
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -282,7 +286,6 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 		}
 
 	}
-	public DialogFragment newChat = new ChatNewDialog();
 	public  void chat_new(final Activity a,String nombre,String descripcion)
 	{ chat_new(a,nombre,descripcion,"");}
 	public  void chat_new(final Activity a,String nombre,String descripcion,String u2)

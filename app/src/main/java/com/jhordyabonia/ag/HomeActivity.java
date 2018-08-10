@@ -7,6 +7,8 @@ import controllers.Alertas;
 import controllers.Asignaturas;
 import controllers.Horarios;
 import crud.Base;
+import util.ListDias;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.AlertDialog;
@@ -82,35 +84,18 @@ public final class HomeActivity extends FragmentActivity
 		tabAsignaturas = actionBar.newTab().setText("Asignaturas")
 				.setTabListener(tabListener);		
 
-		list_dias = new DialogFragment() 
-		{
-			@Override
-			public Dialog onCreateDialog(Bundle savedInstanceState)
-			{
-				AlertDialog.Builder builder = 
-						new AlertDialog.Builder(HomeActivity.this);
-				builder.setTitle("Horario")
-				.setIcon(android.R.drawable.ic_menu_agenda)
-				.setItems(DB.semana(), 
-						new DialogInterface.OnClickListener()
-						{
-							@Override
-							public void onClick(DialogInterface dialog, int which) 
-							{	
-								Horarios.setDia(which);
-								tabHorario.setText(onDisplay(HORARIOS) + "\n> "
-										+ DB.DAYS[which]);
-								horario.show();
-							}
-						} );
-				return builder.create();
-			}
-		};
+		list_dias = new ListDias(this);
 		list_comunidad= new Buscador(this);
 		String result= DB.load(DB.FILE_DB);
 		if(result.isEmpty())
 			new Login(this);
 		else	make(result,true);
+	}
+	public void show_dias(int which)
+	{
+		Horarios.setDia(which);
+		tabHorario.setText(onDisplay(HORARIOS) + "\n> "+ DB.DAYS[which]);
+		horario.show();
 	}
 	@Override
 	public void onResume()
