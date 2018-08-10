@@ -161,8 +161,17 @@ public class DBChat
 	}
 	private static long fechaInMillis(String in)
 	{
-		String tmp_fecha[]=in.substring(0,
+		String tmp_fecha[]=new String[3];
+		if(in.contains(" "))
+			tmp_fecha=in.substring(0,in.indexOf(" ")).split("-");
+		else tmp_fecha=(in+" 00:00:00").substring(0,
 				in.indexOf(" ")).split("-");
+
+		if(tmp_fecha.length<2)
+			tmp_fecha[2]="1";
+		if(tmp_fecha.length<1)
+			tmp_fecha[1]="1";
+
 		int anno=Integer.valueOf(tmp_fecha[0]);
 		int mes=Integer.valueOf(tmp_fecha[1]);
 		int dia=Integer.valueOf(tmp_fecha[2]);
@@ -181,14 +190,13 @@ public class DBChat
 	public static String fechaSynchronized(String in)
 	{
 		Calendar tmp=Calendar.getInstance(Locale.ENGLISH);
-		tmp.setTimeInMillis(fechaInMillis(in)+LOCAL_HOUR);
+		//tmp.setTimeInMillis(fechaInMillis(in)+LOCAL_HOUR);
 		
 		String mes=""+tmp.get(Calendar.MONTH);
 		mes=mes.length()<2?"0"+mes:mes;
 		String dia=""+tmp.get(Calendar.DAY_OF_MONTH);
 		mes=mes.length()<2?"0"+mes:mes;
 		mes=""+(Integer.valueOf(mes)+1);
-		
 		String anno=(""+tmp.get(Calendar.YEAR))
 				.substring(2);
 		mes=mes.length()<2?"0"+mes:mes;

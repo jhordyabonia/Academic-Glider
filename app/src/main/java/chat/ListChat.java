@@ -94,22 +94,18 @@ public class  ListChat extends Fragment implements AdapterView.OnItemClickListen
             main.chats.clear();
 
         base_data.clear();
-        String LOG=VIEW==GRUPOS?"Chat grupos:\n":"Chats";
         for(int i = 0; i< DBChat.get().length(); i++)
         {
-            LOG+="\n>>"+i+"\n";
             JSONObject tmp = DBChat.get(i);
             if(VIEW==tmp.getInt("tipo"))
             {
                 String nombre=tmp.getString("nombre");
-                JSONArray msjs=null;
-                LOG+="Nombre: "+nombre+"\n";
+                JSONArray msjs=new JSONArray();;
                 try{msjs=tmp.getJSONArray("mensajes");}
-                catch(JSONException e){msjs=new JSONArray();}
-                String dato;
+                catch(JSONException e){}
+                String dato="";
                 if(CHATS==VIEW)
                 {
-                    LOG+="View: Chats\n";
                     String id= tmp.getString("nombre")
                             .replace("_"+ DB.User.get("celular")+"_","")
                             .replace("_","");
@@ -119,7 +115,6 @@ public class  ListChat extends Fragment implements AdapterView.OnItemClickListen
                 }
                 if(msjs.length()>=1)
                 {
-                    LOG+="msjs.length()"+msjs.length()+"\n";
                     JSONObject msj_tmp=msjs.optJSONObject(msjs.length()-1);
                     int last_msj=msj_tmp.getInt("id");
                     DBChat.LAST_MSJ=DBChat.LAST_MSJ<last_msj?last_msj:DBChat.LAST_MSJ;
@@ -133,13 +128,12 @@ public class  ListChat extends Fragment implements AdapterView.OnItemClickListen
                         DB.titulo(DBChat.fecha(tmp.getString("fecha")),"",5,false),
                         DB.titulo(dato,"",20),icon
                 ));
-                if(VIEW==GRUPOS)
+               if(VIEW==GRUPOS)
                     main.grupos.add(tmp.getString("id"));
                 else if(VIEW==CHATS)
                     main.chats.add(tmp.getString("id"));
             }//if(VIEW==tmp.getInt("tipo"))
         }//for
-        DB.save(main,LOG,"test1.log");
     }
     @Override
     public boolean onItemLongClick(AdapterView<?> arg0, View v,

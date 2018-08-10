@@ -8,6 +8,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Client extends AsyncTask<String, Long, String> {
 	// Variable con los datos para pasar al web service
 	private Map<String, String> datos;
@@ -109,7 +112,8 @@ public class Client extends AsyncTask<String, Long, String> {
 		if (callback != null)
 			{
 				if(LOG.ACTIVE)
-					LOG.save("{\"url\":\""+this.url+"\",\"result\":\""+response+"\"},");
+					LOG.save("{\"url\":\"" + this.url + "\",\"data\":\"" + this.datos.toString() + "\",\"result\":\"" + response + "\"},");
+
 				callback.processFinish(this.json);
 			}
 	}

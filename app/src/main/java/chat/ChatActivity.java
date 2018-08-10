@@ -134,8 +134,8 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 						{ send();}				
 					}
 				);
-		/*load();
-		updater();*/
+		load();
+		updater();
 		}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) 

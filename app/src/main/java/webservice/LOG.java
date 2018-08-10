@@ -8,7 +8,7 @@ import android.os.Environment;
 
 public class LOG 
 {
-	public static boolean ACTIVE=false;
+	public static boolean ACTIVE=true;
 	public static String DIRECTORY = "Glider";
 	public static String rest="";
 	public static String history="";
