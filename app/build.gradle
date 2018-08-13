@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.jhordyabonia.ag"
         minSdkVersion 14
-        targetSdkVersion 17
+        targetSdkVersion 26
     }
 
     buildTypes {
@@ -15,6 +15,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
+    }
+    lintOptions {
+
+        checkReleaseBuilds false
+
     }
 }
 
