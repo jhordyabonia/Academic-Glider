@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import models.DB;
 
-import util.DownLoadImage;
+import util.Image;
 import webservice.Asynchtask;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,6 +14,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,11 +69,12 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 		
 		((Button) home.findViewById(R.id.registrarme))
 			.setText("Actualizar");
-		
-        DownLoadImage loader = new DownLoadImage(home,R.id.imagen_usuario);
+
+		Image.Loader loader= new Image.Loader((ImageView)home.findViewById(R.id.imagen_usuario));
+        //DownLoadImage loader = new DownLoadImage(home,R.id.imagen_usuario);
     	loader.execute(DB.User.get("foto"));
     	
-    	((TextView)home.findViewById(R.id.textView1)).setVisibility(View.GONE);
+    	home.findViewById(R.id.textView1).setVisibility(View.GONE);
 		((EditText)home.findViewById(R.id.celular)).setText(DB.User.get("celular"));
 		((EditText)home.findViewById(R.id.nombre)).setText(DB.User.get("nombre"));
 		((EditText)home.findViewById(R.id.email)).setText(DB.User.get("correo"));

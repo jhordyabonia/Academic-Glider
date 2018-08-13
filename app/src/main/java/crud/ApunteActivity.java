@@ -8,34 +8,27 @@ import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import util.DownLoadImage;
+import util.Gallery;
 import webservice.Asynchtask;
 
 import models.DB;
-import android.R.color;
+
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -65,11 +58,11 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.apunte);
-		
+
 		ID_ASIGNATURA=HomeActivity.idAsignaturaActual();
 		if (externa) 
 		{
-			Spinner list = ((Spinner) findViewById(R.id.asignatura));
+			Spinner list =  findViewById(R.id.asignatura);
 			ArrayAdapter<String> base =
 					new ArrayAdapter<String>(this,R.layout.base);
 			base.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -81,9 +74,11 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 			list.setSelection(DB.Asignaturas
 					.getIndex(set("asignatura", 0)) - 1);
 		}
-		galery = ((ViewPager) findViewById(R.id.images));
-		collection = new Gallery(getSupportFragmentManager());
+		galery =  findViewById(R.id.images);
+		collection = new Gallery(getSupportFragmentManager(),this,galery);
+
 		galery.setAdapter(collection);
+
 		galery.setOnPageChangeListener
 		(
 			new OnPageChangeListener()
@@ -104,14 +99,15 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 				
 			}
 		);
-		((Button) findViewById(R.id.save))
+		 findViewById(R.id.save)
 			.setOnClickListener(listener);
-		((ImageView) findViewById(R.id.add_apunte))
-		.setOnClickListener(listener);
-		((ImageView) findViewById(R.id.imageView2))
-		.setOnClickListener(listener);
+		 findViewById(R.id.add_apunte)
+			.setOnClickListener(listener);
+		 findViewById(R.id.imageView2)
+			.setOnClickListener(listener);
 
 		fill();
+
 	}
 	private OnClickListener listener=new OnClickListener() 
 	{
@@ -150,136 +146,33 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 			}
 		}
 	};
-	public class Gallery extends FragmentPagerAdapter 
-	{
-		private ArrayList<Bitmap> data = new ArrayList<Bitmap>();
-
-		public Gallery(FragmentManager fm) 
-		{	super(fm);	data.add(null);}
-
-		public void addItem(Bitmap img) 
-		{
-			data.add(img);
-			notifyDataSetChanged();
-			Toast.makeText(ApunteActivity.this, "Apunte "+(data.size()-1)
-					+" agregado!",Toast.LENGTH_SHORT).show();	
-			galery.setCurrentItem(data.size()-1);	
-		}
-		public void loadItem(String img) 
-		{
-			DownLoadImage loader = new DownLoadImage(ApunteActivity.this,R.id.image);
-			loader.setCallBack(this);
-	    	loader.execute(img);
-		}
-		@Override
-		public Fragment getItem(int i) 
-		{
-			Bitmap tmp = data.get(i);
-			Bundle args = new Bundle();			
-			args.putParcelable("image", tmp);
-			Fragment fragment = new Image(tmp==null);
-			fragment.setArguments(args);
-			return fragment;
-		}
-		@Override
-		public int getCount() {return data.size();}
-		@Override
-		public CharSequence getPageTitle(int position) 
-		{
-			if(position==0)return "Agregar apunte";
-			return "apunte " + position;
-		}
-	}
 	public void fullScream()
 	{
 		if(!zoom)
 		{
 			if(fullScream)
 			{
-				((View) findViewById(R.id.scrollView1)).setVisibility(View.GONE);
-				((View) findViewById(R.id.nombre)).setVisibility(View.GONE);
-				((View) findViewById(R.id.save)).setVisibility(View.GONE);
-				getActionBar().hide();
-				((View) findViewById(R.id.actions_image)).setVisibility(View.VISIBLE);
-				getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				 findViewById(R.id.scrollView1).setVisibility(View.GONE);
+				 findViewById(R.id.nombre).setVisibility(View.GONE);
+				 findViewById(R.id.save).setVisibility(View.GONE);
+				 getActionBar().hide();
+				 findViewById(R.id.actions_image).setVisibility(View.VISIBLE);
+				 getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 						WindowManager.LayoutParams.FLAG_FULLSCREEN);
 			}else
 			{	
-				((View) findViewById(R.id.actions_image)).setVisibility(View.GONE);
-				((View) findViewById(R.id.scrollView1)).setVisibility(View.VISIBLE);
-				((View) findViewById(R.id.nombre)).setVisibility(View.VISIBLE);
+				 findViewById(R.id.actions_image).setVisibility(View.GONE);
+				 findViewById(R.id.scrollView1).setVisibility(View.VISIBLE);
+				 findViewById(R.id.nombre).setVisibility(View.VISIBLE);
 				if(!DB.COMUNIDAD)
-					((View) findViewById(R.id.save)).setVisibility(View.VISIBLE);
+					 findViewById(R.id.save).setVisibility(View.VISIBLE);
 				getActionBar().show();
 				getWindow().setFlags(0,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 			}
 			fullScream=!fullScream;
 		}
 	}
-	private class Image extends Fragment 
-	{
-		private boolean camera;
-		public Image(boolean camera)
-		{	zoom=false;this.camera=camera;		}
 
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) 
-		{
-			final View root = inflater.inflate(R.layout.image, container, false);	
-			
-			Bundle args = getArguments();
-			Bitmap tmp = (Bitmap) args.get("image");
-			ImageView image = ((ImageView) root.findViewById(R.id.image));
-			ImageView imageFull = ((ImageView) root.findViewById(R.id.imageFull));
-			
-			if (camera && !DB.COMUNIDAD) 
-			{
-				root.setBackgroundColor(color.darker_gray);
-				image.setImageResource(R.drawable.ic_menu_name);
-				image.setOnClickListener(new OnClickListener()
-				{
-					@Override
-					public void onClick(View arg0) 
-					{	addImage(); }
-				});
-			}else if (tmp != null && image != null )
-			{	 
-				OnClickListener list=new OnClickListener()
-				{
-					@Override
-					public void onClick(View arg0) 
-					{	 fullScream2(root);	}
-					
-				};
-				image.setImageBitmap(tmp);
-				imageFull.setImageBitmap(tmp);
-				image.setOnClickListener(list);
-				imageFull.setOnClickListener(list);
-			}
-			return root;
-		}
-		public void fullScream2(View root)
-		{	
-			if(zoom)
-			{
-				root.findViewById(R.id.image)
-				.setVisibility(View.GONE);
-				root.findViewById(R.id.viewImageFull)
-				.setVisibility(View.VISIBLE);
-				fullScream();
-			}else
-			{ 
-				root.findViewById(R.id.image)
-				.setVisibility(View.VISIBLE);
-				root.findViewById(R.id.viewImageFull)
-				.setVisibility(View.GONE);
-				fullScream();
-			}
-			if(!fullScream)
-				zoom=!zoom;
-		}
-	}
 	//TODO launch camera
 	private File createImageFile() throws IOException 
 	{
@@ -297,7 +190,7 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 				
 		return new File(ruta,name);
 	}
-	private void addImage() 
+	public  void addImage()
 	{		
 		if(DB.COMUNIDAD)return;
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -409,7 +302,7 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 		} catch (JSONException e) {}
 		if (id == 0)
 			return data;
-		EditText v = (EditText) findViewById(id);
+		EditText v = findViewById(id);
 		if (v != null)
 			v.setText(data);
 		return data;
@@ -425,7 +318,7 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 		case Edit:
 			show(false);
 			getActionBar().setTitle("Ver " + HomeActivity.onDisplay());
-			Button button = (Button) findViewById(R.id.save);
+			Button button = findViewById(R.id.save);
 			if(DB.COMUNIDAD)
 				button.setVisibility(View.GONE);
 			else button.setText("Editar");
@@ -453,7 +346,7 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 			finish(); 
 		else if (Base.action == Actions.Edit)
 		{
-			Button button = (Button) findViewById(R.id.save);
+			Button button =  findViewById(R.id.save);
 			if (button != null)
 				button.setText("Editar");
 			show(false);
