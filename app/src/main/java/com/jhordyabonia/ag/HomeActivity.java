@@ -23,8 +23,11 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 public final class HomeActivity extends FragmentActivity 
 {
+	private FirebaseAnalytics mFirebaseAnalytics;
 	public static final int LOGIN= 7;
 	public static final int CUENTA = 6;
 	public static final int ASIGNATURAS = 5;
@@ -90,6 +93,13 @@ public final class HomeActivity extends FragmentActivity
 		if(result.isEmpty())
 			new Login(this);
 		else	make(result,true);
+
+		mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+		Bundle bundle = new Bundle();
+		bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "0.1");
+		bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "HomeActivity");
+		bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
+		mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 	}
 	public void show_dias(int which)
 	{
