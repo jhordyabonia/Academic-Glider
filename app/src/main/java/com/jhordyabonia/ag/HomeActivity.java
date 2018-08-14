@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crash.FirebaseCrash;
 
 public final class HomeActivity extends FragmentActivity 
 {
@@ -94,6 +95,7 @@ public final class HomeActivity extends FragmentActivity
 			new Login(this);
 		else	make(result,true);
 
+		FirebaseCrash.log("HomeActivity created");
 		mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 		Bundle bundle = new Bundle();
 		bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "0.1");
