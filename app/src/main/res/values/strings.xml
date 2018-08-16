@@ -2,10 +2,82 @@
 <resources>
 
     <string name="app_name">Academic Glider</string>
+    <string name="myglider">Mi Glider</string>
+    <string name="asignaturas">Subjects</string>
+    <string name="apuntes">Notes</string>
+    <string name="calificables">schedules</string>
+    <string name="lecturas">Readings</string>
+    <string name="horarios">Academic Glider</string>
+    <string name="alertas">Alerts</string>
+    <string name="community">Academic Community</string>
+    <string name="university">University</string>
+    <string name="select_university">Select University</string>
+    <string name="insert_2_password">You must enter 2 times, the password, to update or change any data</string>
+
+    <string name="insert_complet_name">Enter your full name</string>
+    <string name="select_name">Select the name of University or Enter one</string>
+    <string name="cel_may">Cell phone must have 10 digits</string>
+    <string name="email_format">Mail format not valid, eg: user@domin.ext</string>
+    <string name="pass_err">Passwords must have a minimum of 6 characters</string>
+    <string name="pass_err2">Passwords do not match</string>
+
+    <string name="fail_register">Validation error, Check the data entered</string>
+    <string name="network_err">Problems with the network, Check your connection
+      or try later</string>
+
+    <string name="update">Update</string>
+    <string name="two_fields">You must, enter both fields</string>
+    <string name="empty">There is still nothing here</string>
+    <string name="see_all">See all</string>
+    <string name="see">See</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+    <string name="add">Add</string>
+    <string name="share">Share</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_subject">Select Subject</string>
+    <string name="see_subjects">See subjects</string>
+    <string name="deleting_err">Error deleting note</string>
+    <string name="camera_err">Error, Camera not available</string>
+    <string name="select_day">Select Day</string>
+    <string name="search_subject">Search Subjects</string>
+    <string name="all">All</string>
+    <string name="subject_already">the subject already exists</string>
+    <string name="subject_already_long">In your tabulated there is a subject, with the same name or code</string>
+    <string name="fail_load_caht">Error while loading the chat</string>
+    <string name="keep_press_to_copy">Press and hold, to copy</string>
+    <string name="keep_press_to_download">Press and hold, to copy</string>
+    <string name="text_copy">Copy text</string>
+    <string name="no_sent">Message... not sent</string>
+    <string name="no_singup">Message... not registered</string>
+    <string name="no_empty">Name must not be empty</string>
+    <string name="new_group">Group new</string>
+    <string name="ok">Ok</string>
+    <string name="add_contact">Add colleagues</string>
+    <string name="edit_group">Edit Group</string>
+    <string name="groups">Groups</string>
+    <string name="chats">Chats</string>
+    <string name="contacts">Colleagues</string>
+    <string name="msj_share1">Hi, download Academic Glider for your smartphone</string>
+    <string name="msj_share2">Download it from </string>
+    <string name="invite">Invite a colleagues through...</string>
+    <string name="no_description">Without description</string>
+    <string name="profil_no_load">Error during profile loading</string>
+
+    <string-array name="items_subject">
+        <item >All</item >
+        <item >Schedule</item >
+        <item >Notes</item >
+        <item >Readings</item >
+        <item >Qualifiable</item >
+        <item >Alerts</item >
+    </string-array>
+
     <string name="action_settings">Nueva</string>
     <string name="title_activity_list_chat">AGlider Chat</string>
+    <string name="title_activity_list_chat_beta">AGlider Chat (Beta)</string>
     <string name="title_activity_profil">ProfilActivity</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_recuperar_cuenta">RecuperarCuentaActivity</string>
+    <string name="title_activity_recuperar_cuenta">Recuperar Cuenta</string>
 
 </resources>

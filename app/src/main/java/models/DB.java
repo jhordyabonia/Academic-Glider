@@ -19,6 +19,7 @@ import com.jhordyabonia.ag.HomeActivity;
 import com.jhordyabonia.ag.Server;
 
 import controllers.Alertas;
+import webservice.LOG;
 
 import android.app.Activity;
 import android.os.Environment;
@@ -33,6 +34,7 @@ public abstract class DB
 	public static String TOKEN = "0000000000";
 	public static String DIRECTORY = "Glider";
 	public static String FILE_DB = "db.json";
+	public static File root = Environment.getExternalStorageDirectory();
 	public static int HOY = Calendar.getInstance()
             .get(Calendar.DAY_OF_WEEK)-1;
 	public static String DAYS[] = 
@@ -127,7 +129,7 @@ public abstract class DB
 	private static JSONObject db;
 	private static String name_model = "";
 
-	public static boolean memory() 
+	public static boolean memory()
 	{
 		String estado = Environment.getExternalStorageState();
 		return estado.equals(Environment.MEDIA_MOUNTED);// &&estado.equals(Environment.MEDIA_MOUNTED_READ_ONLY);
@@ -137,13 +139,13 @@ public abstract class DB
 	{
 		if (!memory())
 			return "";
+
 		boolean delete=true;
 		String out = "";
 		try 
 		{
-			File ruta_sd = Environment.getExternalStorageDirectory();
-			File ruta = new File(ruta_sd.getAbsolutePath(), DIRECTORY);
-			File f = new File(ruta.getAbsolutePath(), file);
+			File ruta = new File(root, DIRECTORY);
+			File f = new File(ruta, file);
 			if (!f.exists())throw new Exception();
 			BufferedReader fin = new BufferedReader
 					(new InputStreamReader(new FileInputStream(f)));
@@ -159,17 +161,12 @@ public abstract class DB
 	{
 		if (!memory())
 			return;
+
 		try 
 		{
-			File ruta_sd = Environment.getExternalStorageDirectory();
-			File ruta = new File(ruta_sd.getAbsolutePath(), DIRECTORY);
-			if (!ruta.exists())
-			{
-				ruta.mkdir();
-				(new File(ruta, ".nomedia")).mkdir();
-			}
+			File ruta = new File(root, DIRECTORY);
 
-			File f = new File(ruta.getAbsolutePath(), file);
+			File f = new File(ruta, file);
 			OutputStreamWriter fout = new OutputStreamWriter
 					(new FileOutputStream(f));
 			fout.write(data);
@@ -183,14 +180,13 @@ public abstract class DB
 	}
 	public static void delete(String file)
 	{
+
 		if (!memory())
 			return;
 		try 
 		{
-			File ruta_sd = Environment.getExternalStorageDirectory();
-			File ruta = new File(ruta_sd.getAbsolutePath(), DIRECTORY);
-
-			File f = new File(ruta.getAbsolutePath(), file);
+			File ruta = new File(root, DIRECTORY);
+			File f = new File(ruta, file);
 			f.delete();			
 		}catch (Exception ex) {}
 	}

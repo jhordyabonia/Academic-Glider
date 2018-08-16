@@ -201,7 +201,7 @@ public class Alertas extends Controller
 	@Override
 	public void show() 
 	{		
-		DB.model(HomeActivity.onDisplay(HomeActivity.ALERTAS));
+		DB.model(HomeActivity.onDisplay(HomeActivity.ALERTAS,getContext()));
 		LOCAL_DB = DB.find("asignatura", HomeActivity.idAsignaturaActual());
 
 		base_data = new Adapter(rootView.getContext(),ITEM_TYPE.alerta, Adapter.alertas);

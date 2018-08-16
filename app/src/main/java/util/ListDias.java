@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
 import com.jhordyabonia.ag.HomeActivity;
+import com.jhordyabonia.ag.R;
 
 import models.DB;
 
@@ -19,7 +20,7 @@ public class ListDias extends DialogFragment
     {
         AlertDialog.Builder builder =
         new AlertDialog.Builder(home);
-        builder.setTitle("Horario")
+        builder.setTitle(getString(R.string.horarios))
         .setIcon(android.R.drawable.ic_menu_agenda)
         .setItems(DB.semana(),
                 new DialogInterface.OnClickListener()

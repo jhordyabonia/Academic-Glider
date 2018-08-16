@@ -34,7 +34,7 @@ public class Adapter extends ArrayAdapter{
 		type=t;
 		locale=l;
 		locale.clear();
-		add(new Item("  ","Aun no hay nada aqui",false));
+		add(new Item("  ",c.getString(R.string.empty),false));
 	}
  
 	public void add(Item a)

@@ -40,7 +40,7 @@ public class EditChat extends  DialogFragment
                             String n=nombre_.getText().toString().trim();
                             if(n.isEmpty())
                             {
-                                Toast.makeText(profil,"Nombre no debe estar vacio",Toast.LENGTH_LONG).show();
+                                Toast.makeText(profil,getString(R.string.no_empty),Toast.LENGTH_LONG).show();
                                  return;
                             }
                         profil.chat_edit(nombre_.getText().toString(),
@@ -52,10 +52,10 @@ public class EditChat extends  DialogFragment
         AlertDialog.Builder builder =
             new AlertDialog.Builder(profil);
 
-        builder.setTitle("Editar Grupo").setView(view)
+        builder.setTitle(getString(R.string.edit_group)).setView(view)
             .setIcon(android.R.drawable.ic_menu_edit)
-            .setPositiveButton("Aceptar", dialogListener)
-            .setNegativeButton("Cancelar", dialogListener);
+            .setPositiveButton(getString(R.string.ok), dialogListener)
+            .setNegativeButton(getString(R.string.cancel), dialogListener);
 
         return builder.create();
     }

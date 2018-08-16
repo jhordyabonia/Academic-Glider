@@ -49,11 +49,11 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 		
 		ArrayAdapter<String> base =
 				new ArrayAdapter<String>(home,R.layout.base);			
-		base.add("Universidad");
+		base.add(home.getString(R.string.university));
 
-		list = ((Spinner) home.findViewById(R.id.universidad));
+		list =  home.findViewById(R.id.universidad);
 		list.setAdapter(base);
-		list.setPrompt("Seleccionar Universidad");	
+		list.setPrompt(home.getString(R.string.select_university));
 		list.setOnItemSelectedListener(this);
 		Server.send("universidad", null, this);
 	}
@@ -63,12 +63,11 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 		home.show_menu=true;
 		logged=true;
 		
-		Toast.makeText(home,"Debes ingresas 2 veces, la contraseña," +
-				" para actualizarla o cambiar cualquier dato", 
+		Toast.makeText(home,home.getString(R.string.insert_2_password),
 				Toast.LENGTH_LONG).show();
 		
 		((Button) home.findViewById(R.id.registrarme))
-			.setText("Actualizar");
+			.setText(home.getString(R.string.update));
 
 		Image.Loader loader= new Image.Loader((ImageView)home.findViewById(R.id.imagen_usuario));
         //DownLoadImage loader = new DownLoadImage(home,R.id.imagen_usuario);
@@ -104,11 +103,10 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 			
 			base.addAll(result.split(","));
 			list.setAdapter(base);
-			list.setPrompt("Seleccionar Universidad");
+			list.setPrompt(home.getString(R.string.select_university));
 		}else 
 		{
-			Toast.makeText(home, "Problemas con la red, Verifica tu conexion" +
-					" o intenta mas tarde", Toast.LENGTH_SHORT).show();				
+			Toast.makeText(home, home.getString(R.string.network_err), Toast.LENGTH_SHORT).show();
 		}
 	}
 	private String getUniversidad()
@@ -139,36 +137,35 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 
 		if(nombre.length()<8||!nombre.contains(" "))
 		{
-			setError(R.id.nombre,"Ingresa tu nombre completo");
+			setError(R.id.nombre,home.getString(R.string.insert_complet_name));
 			return false;
 		}
 		if(universidad.isEmpty())
 		{
 			otra_u.setVisibility(View.VISIBLE);
 			img_u.setVisibility(View.VISIBLE);
-			setError(R.id.universidad_otra,
-					"Seleccione el nombre de Universidad o Ingrese uno ");
+			setError(R.id.universidad_otra,home.getString(R.string.select_name));
 			return false;
 		}	
 		if(celular.length()<10)
 		{
-			setError(R.id.celular,"Celular debe tener 10 digitos");
+			setError(R.id.celular,home.getString(R.string.cel_may));
 			return false;
 		}
 		if(!email.contains("@")&&email.lastIndexOf(".")!=-1
 				&&email.length()-email.lastIndexOf(".")<=4)
 		{
-			setError(R.id.email,"Formato del correo no valido, Ej: user@domin.ext");
+			setError(R.id.email,home.getString(R.string.email_format));
 			return false;
 		}	
 		if(password.length()<6)
 		{
-			setError(R.id.password,"Contraseñas debe tener minimo 6 caracteres");
+			setError(R.id.password,home.getString(R.string.pass_err));
 			return false;
 		}
 		if(!password.equals(password2))
 		{
-			setError(R.id.password2,"Contraseñas no cohinciden");
+			setError(R.id.password2,home.getString(R.string.pass_err2));
 			return false;
 		}
 
@@ -188,8 +185,7 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 	{
 		if(!datos())
 		{
-			Toast.makeText(home,"Error de validacion, " +
-					"Verifica lo datos ingresados", Toast.LENGTH_LONG).show();
+			Toast.makeText(home,home.getString(R.string.fail_register), Toast.LENGTH_LONG).show();
 			return;
 		}
 		

@@ -78,7 +78,7 @@ public class Horarios implements OnItemClickListener
 				return false;
 			}
 		});
-		DB.model(HomeActivity.onDisplay(HomeActivity.HORARIOS));
+		DB.model(HomeActivity.onDisplay(HomeActivity.HORARIOS,home));
 		if(ASIGNATURA!=null)
 			LOCAL_DB = DB.find("asignatura", ASIGNATURA);
 		else LOCAL_DB = DB.find("dia", DIA);
@@ -137,7 +137,7 @@ public class Horarios implements OnItemClickListener
 				DB.update(home);
 			}
 		};
-		String url_tmp = HomeActivity.onDisplay() + "/delete";
+		String url_tmp = HomeActivity.onDisplay(home) + "/delete";
 		Server.send(url_tmp, home, recep);
 	}
 
@@ -151,7 +151,7 @@ public class Horarios implements OnItemClickListener
 		}
 		TextView tv = (TextView)v.findViewById(R.id.textView4);
 		if(tv!=null)
-			if(tv.getText().toString().equals("Aun no hay nada aqui"))
+			if(tv.getText().toString().equals(v.getContext().getString(R.string.empty)))
 				return;
 		Base.itemSeleted = index_item;
 		Base.crud(home, Base.Actions.Edit);

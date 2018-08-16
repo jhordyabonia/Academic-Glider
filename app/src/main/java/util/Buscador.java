@@ -30,18 +30,18 @@ public class Buscador extends DialogFragment implements Asynchtask,OnClickListen
 	{
 		AlertDialog.Builder builder = 
 				new AlertDialog.Builder(home);
-		builder.setTitle("Buscar Asignaturas")
+		builder.setTitle(getString(R.string.search_subject))
 		.setIcon(android.R.drawable.ic_menu_search);
 	    view=getActivity().getLayoutInflater()
     			.inflate(R.layout.buscar, null);
 
 		ArrayAdapter<String> base =
 				new ArrayAdapter<String>(home,R.layout.base);
-		base.add("Todas");
+		base.add(getString(R.string.search_subject));
 		((Spinner) view.findViewById(R.id.universidad))
 			.setAdapter(base);
 
-	    ((ImageView)view.findViewById(R.id.buscar)).setOnClickListener(this);
+	    view.findViewById(R.id.buscar).setOnClickListener(this);
 	    builder.setView(view);
 		Server.send("universidad", null, this);
 		return builder.create();

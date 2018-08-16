@@ -15,7 +15,7 @@ public class Lecturas extends Controller {
 	@Override
 	public void show() {
 
-		DB.model(HomeActivity.onDisplay(HomeActivity.LECTURAS));
+		DB.model(HomeActivity.onDisplay(HomeActivity.LECTURAS,getContext()));
 		LOCAL_DB = DB.find("asignatura", HomeActivity.idAsignaturaActual());
 		base_data = new Adapter(rootView.getContext(),ITEM_TYPE.lectura,Adapter.lecturas);
 		base.setAdapter(base_data);

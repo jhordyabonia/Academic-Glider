@@ -91,17 +91,13 @@ public class Image extends Fragment {
 
     public static String save(InputStream data, String file)
     {
+
         if (!DB.memory())
             return "";
         try
         {
-            File ruta_sd = Environment.getExternalStorageDirectory();
-            File ruta = new File(ruta_sd.getAbsolutePath(), DB.DIRECTORY);
-            if (!ruta.exists())
-            {
-                ruta.mkdir();
-                (new File(ruta, ".nomedia")).mkdir();
-            }
+            File ruta = new File(DB.root, DB.DIRECTORY);
+
             File f =  new File(ruta,file);
             Bitmap imagen = BitmapFactory.decodeStream(data);
             try

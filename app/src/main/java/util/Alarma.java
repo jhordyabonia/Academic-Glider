@@ -18,7 +18,7 @@ public class Alarma extends android.content.BroadcastReceiver {
 	@Override  
     public void onReceive(android.content.Context context, android.content.Intent intent) 
     {  
-         String titulo="Alerta Glider",msj="";
+         String titulo=context.getString(R.string.alertas)+" Glider",msj="";
          int mId=1865365764;
          Bundle args = intent.getExtras();
          if(args!=null)

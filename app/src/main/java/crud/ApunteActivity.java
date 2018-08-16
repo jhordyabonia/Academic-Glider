@@ -67,9 +67,9 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 					new ArrayAdapter<String>(this,R.layout.base);
 			base.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			base.addAll(DB.Asignaturas.LIST_ASIGNATURAS);
-			base.remove("Ver Tabulado");
+			base.remove(getString(R.string.see_subjects));
 			list.setAdapter(base);
-			list.setPrompt("Seleccionar Asignatura");
+			list.setPrompt(getString(R.string.select_subject));
 			list.setVisibility(View.VISIBLE);
 			list.setSelection(DB.Asignaturas
 					.getIndex(set("asignatura", 0)) - 1);
@@ -120,7 +120,7 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 					send(v);
 					break;
 				case R.id.add_apunte:
-					Toast.makeText(ApunteActivity.this, "Error eliminando apunte",
+					Toast.makeText(ApunteActivity.this, getString(R.string.deleting_err),
 							Toast.LENGTH_LONG).show();			
 					break;
 				case R.id.imageView2:
@@ -174,7 +174,7 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 	}
 
 	//TODO launch camera
-	private File createImageFile() throws IOException 
+	private File createImageFile()
 	{
 		// Create an image file name
 		File ruta_sd = Environment.getExternalStorageDirectory(); File
@@ -194,14 +194,11 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 	{		
 		if(DB.COMUNIDAD)return;
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		try 
-		{
-			intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(createImageFile()));
-		} catch (IOException e) {}
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(createImageFile()));
 		if (intent.resolveActivity(getPackageManager()) != null)
 			startActivityForResult(intent, CAPTURE_APUNTE);
 		else 
-			Toast.makeText(this, "Error, Camara no disponible",
+			Toast.makeText(this, getString(R.string.camera_err),
 						Toast.LENGTH_LONG).show();	
 	}
 	@Override
@@ -275,15 +272,15 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 	private void send(View v) 
 	{
 		Button button = ((Button) v);
-		if (button.getText().toString().contains("Editar"))
+		if (button.getText().toString().contains(getString(R.string.edit)))
 		{
-			button.setText("Actualizar");
+			button.setText(getString(R.string.update));
 			show(true);
 			return;
 		}
 		HashMap<String, String> data_tmp = getData();
-		String url_tmp = HomeActivity.onDisplay();
-		if (button.getText().toString().contains("Actualizar"))
+		String url_tmp = HomeActivity.onDisplay(this);
+		if (button.getText().toString().contains(getString(R.string.update)))
 		{
 			data_tmp.put("id", getIdItemSeleted());
 			url_tmp += "/edit";
@@ -313,18 +310,18 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 		{
 		case Add:
 			show(true);
-			getActionBar().setTitle("Agregar " + HomeActivity.onDisplay());
+			getActionBar().setTitle(getString(R.string.add) + HomeActivity.onDisplay(this));
 			break;
 		case Edit:
 			show(false);
-			getActionBar().setTitle("Ver " + HomeActivity.onDisplay());
+			getActionBar().setTitle(getString(R.string.see) + HomeActivity.onDisplay(this));
 			Button button = findViewById(R.id.save);
 			if(DB.COMUNIDAD)
 				button.setVisibility(View.GONE);
-			else button.setText("Editar");
+			else button.setText(getString(R.string.edit));
 			break;
 		}
-		DB.model(HomeActivity.onDisplay(HomeActivity.APUNTES));
+		DB.model(HomeActivity.onDisplay(HomeActivity.APUNTES,this));
 		LOCAL_DB = DB.find("asignatura", HomeActivity.idAsignaturaActual());
 		set("nombre", R.id.nombre);
 		set("descripcion", R.id.descripcion);
@@ -348,7 +345,7 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 		{
 			Button button =  findViewById(R.id.save);
 			if (button != null)
-				button.setText("Editar");
+				button.setText(getString(R.string.edit));
 			show(false);
 		}
 		HomeActivity.UPDATE=true;

@@ -78,6 +78,7 @@ public class  ListChat extends Fragment implements AdapterView.OnItemClickListen
 					}
 					main.getContactCheker().execute();
 					base.setOnItemLongClickListener(null);
+                    imageView.setImageResource(R.drawable.ic_add_contact);
 					root.findViewById(R.id.textView1).setVisibility(View.GONE);
 				}else load();
 			}catch (JSONException e) {main.getContactCheker().execute();}
@@ -120,7 +121,7 @@ public class  ListChat extends Fragment implements AdapterView.OnItemClickListen
                     DBChat.LAST_MSJ=DBChat.LAST_MSJ<last_msj?last_msj:DBChat.LAST_MSJ;
                     dato=msj_tmp.getString("dato");
                     if(msj_tmp.getString("tipo").equals("asignatura"))
-                        dato="Asignatura...";
+                        dato=getString(R.string.asignaturas)+"...";
                 }else continue;
                 int icon=VIEW==GRUPOS?R.drawable.ic_dialogo_nuevo_grupo:R.drawable.ic_dialogo_add_togroup;
                 base_data.add(new ChatAdapter.Mensaje("",
@@ -169,7 +170,7 @@ public class  ListChat extends Fragment implements AdapterView.OnItemClickListen
                             startActivity(intent_tmp);
                         }catch (JSONException e)
                         {
-                            Toast.makeText(main, "Error durante la carga del chat",
+                            Toast.makeText(main, getString(R.string.fail_load_caht),
                                     Toast.LENGTH_LONG).show();
                         }return true;
                     case R.id.borrar_chat:

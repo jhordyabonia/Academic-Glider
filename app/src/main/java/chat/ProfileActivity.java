@@ -70,7 +70,7 @@ public class ProfileActivity extends FragmentActivity
 			actionBar=getActionBar();
 			actionBar.setTitle(nombre);
 			descripcion_view=(TextView)findViewById(R.id.profile_descripcion);
-			descripcion_view.setText(DB.titulo(descripcion,"Sin descripcion",140));
+			descripcion_view.setText(DB.titulo(descripcion,getString(R.string.no_description),140));
 		}
 				
 		ListView  list=(ListView)findViewById(R.id.profile_members);
@@ -210,7 +210,7 @@ public class ProfileActivity extends FragmentActivity
 			}
 		}catch (JSONException e) 
 		{
-			Toast.makeText(this, "Error durante la carga del perfil",
+			Toast.makeText(this, getString(R.string.profil_no_load),
 					Toast.LENGTH_LONG).show();
 			finish();
 		}		
@@ -271,7 +271,7 @@ public class ProfileActivity extends FragmentActivity
 				{
 					actionBar.setTitle(nombre);
 					descripcion_view
-					.setText(DB.titulo(descripcion,"Sin descripcion",140));
+					.setText(DB.titulo(descripcion,getString(R.string.profil_no_load),140));
 				}
 			}
 		};

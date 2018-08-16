@@ -42,7 +42,7 @@ public class RecuperarCuentaActivity extends Activity implements OnClickListener
 		cel=cel_.getText().toString();
 		if(email.isEmpty()||cel.isEmpty())
 		{
-			Toast.makeText(this, "Debes, ingresar ambos campos", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, getString(R.string.two_fields), Toast.LENGTH_LONG).show();
 			return;
 		}
 		Server.send("recuperar", this, this);

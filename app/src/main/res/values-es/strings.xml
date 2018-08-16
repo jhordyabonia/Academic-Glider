@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="myglider">My Glider</string>
+    <string name="asignaturas">asignaturas</string>
+    <string name="apuntes">apuntes</string>
+    <string name="calificables">calificables</string>
+    <string name="lecturas">lecturas</string>
+    <string name="horarios">horarios</string>
+    <string name="alertas">alertas</string>
+    <string name="community">Comunidad academica</string>
+    <string name="university">Universidad</string>
+    <string name="select_university">Seleccionar Universidad</string>
+    <string name="insert_2_password">
+     Debes ingresas 2 veces, la contraseña,
+     para actualizarla o cambiar cualquier dato
+    </string>
+
+    <string name="insert_complet_name">Ingresa tu nombre completo</string>
+    <string name="select_name">Seleccione el nombre de Universidad o Ingrese uno</string>
+    <string name="cel_may">Celular debe tener 10 digitos</string>
+    <string name="email_format">Formato del correo no valido, Ej: user@domin.ext</string>
+    <string name="pass_err">Contraseñas debe tener minimo 6 caracteres</string>
+    <string name="pass_err2">Contraseñas no cohinciden</string>
+
+    <string name="fail_register">Error de validacion,
+    Verifica los datos ingresados</string>
+    <string name="network_err">Problemas con la red, Verifica tu conexion
+     o intenta mas tarde</string>
+    <string name="update"> Actualizar</string>
+    <string name="two_fields">Debes, ingresar ambos campos</string>
+    <string name="empty">Aun no hay nada aqui</string>
+    <string name="see_all">Ver todas</string>
+    <string name="see">Ver</string>
+    <string name="edit">Editar</string>
+    <string name="save">Guardar</string>
+    <string name="add">Agregar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="share">Compartir</string>
+    <string name="select_subject">Seleccionar Asignatura</string>
+    <string name="see_subjects">Ver tabulado</string>
+    <string name="deleting_err">Error eliminando apunte</string>
+    <string name="camera_err">Error, Camara no disponible</string>
+    <string name="select_day">Seleccionar Día</string>
+    <string name="search_subject">Buscar Asignaturas</string>
+    <string name="all">Todas</string>
+    <string name="subject_already">La signatura ya existe</string>
+    <string name="subject_already_long">En tu tabulado hay una asignatura, con el mismo nombre o codigo</string>
+    <string name="fail_load_caht">Error durante la carga del chat</string>
+    <string name="keep_press_to_copy">Mantén presionado, para copiar</string>
+    <string name="keep_press_to_download">Mantén presionado, para copiar</string>
+    <string name="text_copy">Texto copiado</string>
+    <string name="no_sent">Mensaje... no enviado</string>
+    <string name="no_singup">Mensaje... no registrado</string>
+    <string name="no_empty">Nombre no debe estar vacío</string>
+    <string name="new_group">Nuevo Grupo"</string>
+    <string name="ok">Aceptar</string>
+    <string name="add_contact">Agregar Compañeros</string>
+    <string name="edit_group">Editar Grupo</string>
+    <string name="groups">Grupos</string>
+    <string name="chats">Chats</string>
+    <string name="contacts">Compañeros</string>
+    <string name="msj_share1">Hola, descarga Academic Glider para tu Smartphone</string>
+    <string name="msj_share2">Descargalo de </string>
+    <string name="invite">Invitar un compañero a través de...</string>
+    <string name="no_description">Sin descripcion</string>
+    <string name="profil_no_load">Error durante la carga del perfil</string>
+
+    <string-array name="items_subject">
+        <item >Todo</item >
+        <item >Horarios</item >
+        <item >Apuntes</item >
+        <item >Readings</item >
+        <item >Calificables</item >
+        <item >Alertas</item >
+    </string-array>
+
+    <string name="title_activity_list_chat">AGlider Chat</string>
+    <string name="title_activity_list_chat_beta">AGlider Chat (Beta)</string>
+    <string name="title_activity_profil">ProfilActivity</string>
+    <string name="title_activity_recuperar_cuenta">Recuperar Cuenta</string>
+</resources>

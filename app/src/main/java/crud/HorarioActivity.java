@@ -17,22 +17,22 @@ public class HorarioActivity extends Base {
 	{
 		super.onCreate(savedInstanceState);
 
-		Spinner list = ((Spinner) findViewById(R.id.asignatura));
+		Spinner list =  findViewById(R.id.asignatura);
 		ArrayAdapter<String> base = new ArrayAdapter<String>(this,
 				R.layout.base);
 		base.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		base.addAll(DB.Asignaturas.LIST_ASIGNATURAS);
-		base.remove("Ver Tabulado");
+		base.remove(getString(R.string.see_subjects));
 		list.setAdapter(base);
-		list.setPrompt("Seleccionar Asignatura");
+		list.setPrompt(getString(R.string.select_subject));
 
-		Spinner list2 = ((Spinner) findViewById(R.id.dia));
+		Spinner list2 =  findViewById(R.id.dia);
 		ArrayAdapter<String> base2 = new ArrayAdapter<String>(this,
 				R.layout.base);
 		base2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		base2.addAll(DB.DAYS);
 		list2.setAdapter(base2);
-		list2.setPrompt("Seleccionar Dia");
+		list2.setPrompt(getString(R.string.select_day));
 
 		setVisible(R.id.asignatura);
 		setVisible(R.id.dia);

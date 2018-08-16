@@ -48,7 +48,7 @@ public abstract class Controller extends Fragment implements OnItemClickListener
 	{
 		rootView = inflater.inflate(R.layout.lienzo, container, false);
 
-		ImageView imageView = (ImageView) rootView.findViewById(R.id.add);
+		ImageView imageView =  rootView.findViewById(R.id.add);
 		if(DB.COMUNIDAD)
 			imageView.setVisibility(View.GONE);
 
@@ -60,7 +60,7 @@ public abstract class Controller extends Fragment implements OnItemClickListener
 			}
 		);
 		
-		base = (ListView) rootView.findViewById(R.id.list);
+		base =  rootView.findViewById(R.id.list);
 		base.setDividerHeight(0);
 		base.setOnItemClickListener(this);
 		base.setOnItemLongClickListener(new OnItemLongClickListener() 
@@ -88,9 +88,9 @@ public abstract class Controller extends Fragment implements OnItemClickListener
 			CLICK_BLOQUEADO=false;
 			return;
 		}
-		TextView tv = ((TextView)v.findViewById(R.id.textView4));
+		TextView tv = v.findViewById(R.id.textView4);
 		if(tv!=null)
-			if(tv.getText().toString().equals("Aun no hay nada aqui"))
+			if(tv.getText().toString().equals(v.getContext().getString(R.string.empty)))
 				return;
 		Base.itemSeleted = index_item;
 		Base.crud(getActivity(), Base.Actions.Edit);
@@ -134,7 +134,7 @@ public abstract class Controller extends Fragment implements OnItemClickListener
 				DB.update();
 			}
 		};
-		String url_tmp = HomeActivity.onDisplay() + "/delete";
+		String url_tmp = HomeActivity.onDisplay(getContext()) + "/delete";
 		Server.send(url_tmp, getActivity(), recep);
 	}
 	public abstract void show();

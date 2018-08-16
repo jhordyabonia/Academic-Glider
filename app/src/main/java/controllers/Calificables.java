@@ -29,7 +29,7 @@ public class Calificables extends Controller {
 	@Override
 	public void show() 
 	{
-		DB.model(HomeActivity.onDisplay(HomeActivity.CALIFICABLES));
+		DB.model(HomeActivity.onDisplay(HomeActivity.CALIFICABLES,getContext()));
 		LOCAL_DB = DB.find("asignatura", HomeActivity.idAsignaturaActual());
 		base_data = new Adapter(rootView.getContext(),ITEM_TYPE.calificable,Adapter.calificables);
 		base.setAdapter(base_data);

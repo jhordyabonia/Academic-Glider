@@ -167,11 +167,11 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 			switch (position) 
 			{
 				case CONTACTOS:
-					return "COMPAÑEROS";
+					return getString(R.string.contacts);
 				case CHATS:
-					return "CHATS";
+					return getString(R.string.chats);
 				case GRUPOS:
-					return "GRUPOS";
+					return getString(R.string.groups);
 			}
 			return "";
 		}
@@ -274,12 +274,12 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 			newChat.show(getSupportFragmentManager(), "missiles");
 		else
 		{
-			String msj="Hola, descarga Academic Glider para tu smarphone" +
-					"\nDescargalo de: "+Server.URL_SERVER;
+			String msj=getString(R.string.msj_share1) +"\n"+
+					getString(R.string.msj_share2) +Server.URL_SERVER;
 			Intent intent = new Intent(Intent.ACTION_SEND);
 			intent.putExtra(Intent.EXTRA_TEXT, msj);
 			intent.setType("text/plain");
-			Intent chooser = Intent.createChooser(intent, "Invitar un compañero a travéz de...");
+			Intent chooser = Intent.createChooser(intent, getString(R.string.invite));
 
 			if (intent.resolveActivity(getPackageManager()) != null)
 				startActivity(chooser);

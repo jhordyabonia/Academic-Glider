@@ -69,8 +69,7 @@ public class Login
 			public void processFinish(String result) 
 			{	
 				if(result.isEmpty())
-					Toast.makeText(home, "Error en el servidor, " +
-							"intenta mas tarde", Toast.LENGTH_SHORT).show();
+					Toast.makeText(home, home.getString(R.string.network_err), Toast.LENGTH_SHORT).show();
 				else if(result.contains(DB.TOKEN))
 				{
 					HomeActivity.ON_DISPLAY=HomeActivity.ASIGNATURAS;				
@@ -79,8 +78,7 @@ public class Login
 				else if(result.equals("Datos incorrectos!"))
 					Toast.makeText(home, result, Toast.LENGTH_SHORT).show();
 				else 
-					Toast.makeText(home, "Problemas con la red, Verifica tu conexion" +
-							" o intenta mas tarde", Toast.LENGTH_SHORT).show();
+					Toast.makeText(home,  home.getString(R.string.network_err), Toast.LENGTH_SHORT).show();
 			}
 		};
 		

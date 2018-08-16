@@ -1,11 +1,14 @@
 package util;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
+
+import com.jhordyabonia.ag.R;
 
 import java.util.ArrayList;
 
@@ -45,7 +48,8 @@ public class Gallery extends FragmentPagerAdapter
     @Override
     public CharSequence getPageTitle(int position)
     {
-        if(position==0)return "Agregar apunte";
-        return "apunte " + position;
+
+        if(position==0)return base.getString(R.string.add)+base.getString(R.string.apuntes);
+        return base.getString(R.string.apuntes) + position;
     }
 }

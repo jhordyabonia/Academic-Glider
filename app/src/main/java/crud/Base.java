@@ -47,7 +47,7 @@ public abstract class Base extends Activity implements Asynchtask {
 					}
 				});
 
-		DB.model(HomeActivity.onDisplay());
+		DB.model(HomeActivity.onDisplay(this));
 		if (HomeActivity.ON_DISPLAY == HomeActivity.HORARIOS)
 		{	
 			if(Horarios.ASIGNATURA!=null)
@@ -59,7 +59,7 @@ public abstract class Base extends Activity implements Asynchtask {
 		else
 			LOCAL_DB = DB.find("", "");
 
-		DatePicker _fecha= (DatePicker)findViewById(R.id.fecha);
+		DatePicker _fecha= findViewById(R.id.fecha);
 		_fecha.setCalendarViewShown(false);
 		
 		fill();
@@ -114,7 +114,7 @@ public abstract class Base extends Activity implements Asynchtask {
 		} catch (JSONException e) {}
 		if (id == 0)
 			return data;
-		EditText v = (EditText) findViewById(id);
+		EditText v =  findViewById(id);
 		if (v != null)
 			v.setText(titulo+data);
 		return data;
@@ -132,7 +132,7 @@ public abstract class Base extends Activity implements Asynchtask {
 
 	protected String getHora()
 	{
-		TimePicker _hora = (TimePicker)findViewById(R.id.hora);
+		TimePicker _hora = findViewById(R.id.hora);
 		String hora=_hora.getCurrentHour()+":"+
 						_hora.getCurrentMinute();
 		return hora;
@@ -164,7 +164,7 @@ public abstract class Base extends Activity implements Asynchtask {
 		
 		String fecha_[]=fecha.split("-");
 
-		DatePicker _fehca = (DatePicker)findViewById(R.id.fecha);
+		DatePicker _fehca = findViewById(R.id.fecha);
 		int dayOfMonth=Integer.valueOf(fecha_[0]);
 		int monthOfYear=Integer.valueOf(fecha_[1])-1;
 		int year=Integer.valueOf(fecha_[2]);
@@ -178,15 +178,15 @@ public abstract class Base extends Activity implements Asynchtask {
 	protected void send(View v) 
 	{
 		Button button = ((Button) v);
-		if (button.getText().toString().contains("Editar"))
+		if (button.getText().toString().contains(getString(R.string.edit)))
 		{
 			button.setText("Actualizar");
 			show(true);
 			return;
 		}
 		HashMap<String, String> data_tmp = getData();
-		String url_tmp = HomeActivity.onDisplay();
-		if (button.getText().toString().contains("Actualizar"))
+		String url_tmp = HomeActivity.onDisplay(this);
+		if (button.getText().toString().contains(getString(R.string.update)))
 		{
 			data_tmp.put("id", getIdItemSeleted());
 			url_tmp += "/edit";
@@ -226,11 +226,11 @@ public abstract class Base extends Activity implements Asynchtask {
 		{
 		case Add:
 			show(true);
-			getActionBar().setTitle("Agregar " + HomeActivity.onDisplay());
+			getActionBar().setTitle(getString(R.string.add) + HomeActivity.onDisplay(this));
 			break;
 		case Edit:
 			show(false);
-			getActionBar().setTitle("Ver " + HomeActivity.onDisplay());
+			getActionBar().setTitle(getString(R.string.see) + HomeActivity.onDisplay(this));
 			button.setText("Editar");
 			break;
 		}

@@ -13,7 +13,7 @@ import controllers.Adapter.Item;
 public class Apuntes extends Controller {
 	@Override
 	public void show() {
-		DB.model(HomeActivity.onDisplay(HomeActivity.APUNTES));
+		DB.model(HomeActivity.onDisplay(HomeActivity.APUNTES,getContext()));
 		LOCAL_DB = DB.find("asignatura", HomeActivity.idAsignaturaActual());
 
 		base_data = new Adapter(rootView.getContext(),ITEM_TYPE.apunte,Adapter.apuntes);

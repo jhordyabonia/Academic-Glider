@@ -106,7 +106,7 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 					public void onClick(View arg0) 
 					{
 						Asignaturas.asignaturas_list(ChatActivity.this,
-							"Compartir",
+							getString(R.string.share),
 							DB.Asignaturas.LIST_ASIGNATURAS,
 							new DialogInterface.OnClickListener()
 							{
@@ -185,7 +185,7 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
         		startActivity(intent_tmp);
     		}catch (JSONException e) 
     		{
-    			Toast.makeText(this, "Error durante la carga del chat",
+    			Toast.makeText(this, getString(R.string.fail_load_caht),
     					Toast.LENGTH_LONG).show();
     		}return true;
         case R.id.salir:
@@ -231,7 +231,7 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 			
 		} catch (JSONException e) 
 		{
-			Toast.makeText(this, "Error durante la carga del chat",
+			Toast.makeText(this, getString(R.string.fail_load_caht),
 					Toast.LENGTH_LONG).show();
 		}
 	  }
@@ -256,7 +256,7 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 			{
 				if(result.isEmpty()||result.startsWith("Sin"))
 					Toast.makeText(ChatActivity.this,
-							"Mensaje...\n"+dato+"\n no enviado",
+							getString(R.string.no_sent),
 							Toast.LENGTH_LONG).show();
 				else
 				{
@@ -273,7 +273,7 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 					} catch (JSONException e) 
 					{
 						Toast.makeText(ChatActivity.this,
-							"Mensaje...\n"+dato+"\nno registrado",
+								getString(R.string.no_singup),
 							Toast.LENGTH_LONG).show();
 
 					}
@@ -371,17 +371,17 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
 			int arg2, long arg3) {
 		//(dw)Icono, que indica posibilidad de descarga
-		ImageView dw=(ImageView)arg1.findViewById(R.id.imageView2);
+		ImageView dw=arg1.findViewById(R.id.imageView2);
 		if(dw==null)
 		{
-			TextView d=(TextView)arg1.findViewById(R.id.textView1);
+			TextView d=arg1.findViewById(R.id.textView1);
 			if(d==null)
-				d=(TextView)arg1.findViewById(R.id.textView4);
+				d=arg1.findViewById(R.id.textView4);
 			if(d==null)return true;
 			ClipData clip = ClipData.newPlainText("text", d.getText());
 			ClipboardManager clipboard = (ClipboardManager)this.getSystemService(CLIPBOARD_SERVICE);
 			clipboard.setPrimaryClip(clip);
-			Toast.makeText(ChatActivity.this, "Texto copiado", Toast.LENGTH_LONG).show();
+			Toast.makeText(ChatActivity.this, getString(R.string.text_copy), Toast.LENGTH_LONG).show();
 		}else
 		{			
 			try 
@@ -410,9 +410,9 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 			long arg3) {
 		ImageView dw=(ImageView)arg1.findViewById(R.id.imageView2);
 		if(dw!=null)
-			Toast.makeText(this, "Mantén presionado, para descargar", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, getString(R.string.keep_press_to_download), Toast.LENGTH_LONG).show();
 		else 
-			Toast.makeText(this, "Mantén presionado, para copiar", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, getString(R.string.keep_press_to_copy), Toast.LENGTH_LONG).show();
 	}	
 	private void updater()    
     {

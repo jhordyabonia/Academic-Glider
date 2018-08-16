@@ -62,7 +62,7 @@ public class Asignaturas implements OnItemClickListener
 		CollectionPagerAdapter mCollectionPagerAdapter =
 				new CollectionPagerAdapter
 				(home.getSupportFragmentManager());
-		ViewPager mViewPager = (ViewPager) home.findViewById(R.id.pager);
+		ViewPager mViewPager =  home.findViewById(R.id.pager);
 		mViewPager.setAdapter(mCollectionPagerAdapter);
 		mViewPager.setOnPageChangeListener
 				(new ViewPager.SimpleOnPageChangeListener() 
@@ -137,9 +137,9 @@ public class Asignaturas implements OnItemClickListener
 		Base.itemSeleted = 0;
 		HomeActivity.ON_DISPLAY=HomeActivity.ASIGNATURAS;
 		home.setContentView(R.layout.lienzo);
-		ImageView imageView = (ImageView) home.findViewById(R.id.add);
+		ImageView imageView =  home.findViewById(R.id.add);
 
-		base = (ListView) home.findViewById(R.id.list);
+		base =  home.findViewById(R.id.list);
 		if(DB.COMUNIDAD)
 		{	
 			imageView.setVisibility(View.VISIBLE);
@@ -181,7 +181,7 @@ public class Asignaturas implements OnItemClickListener
 		});
 		base.setAdapter(base_data);
 
-		DB.model(HomeActivity.onDisplay());
+		DB.model(HomeActivity.onDisplay(home));
 		ArrayList<JSONObject> tmp = DB.find("", "");
 		if(!tmp.isEmpty())
 		try 
@@ -263,7 +263,7 @@ public class Asignaturas implements OnItemClickListener
 				DB.update(home);
 			}
 		};
-		String url_tmp = HomeActivity.onDisplay() + "/delete";
+		String url_tmp = HomeActivity.onDisplay(home) + "/delete";
 		Server.send(url_tmp, home, recep);
 	}
 
@@ -277,7 +277,7 @@ public class Asignaturas implements OnItemClickListener
 		{
 			Fragment fragment = null;
 
-			DB.model(HomeActivity.onDisplay());
+			DB.model(HomeActivity.onDisplay(home));
 			switch (i) 
 			{
 				case HomeActivity.ALERTAS:
@@ -300,7 +300,7 @@ public class Asignaturas implements OnItemClickListener
 		public int getCount() {return 4;}
 		@Override
 		public CharSequence getPageTitle(int position) 
-		{return HomeActivity.onDisplay(position);}
+		{return HomeActivity.onDisplay(home);}
 	}
 	@Override
 	public void onItemClick(AdapterView<?> av, View v, int index_item, long arg3) 
@@ -310,9 +310,9 @@ public class Asignaturas implements OnItemClickListener
 			Controller.CLICK_BLOQUEADO=false;
 			return;
 		}
-		TextView tv = ((TextView)v.findViewById(R.id.textView1));
+		TextView tv = v.findViewById(R.id.textView1);
 		if(tv!=null)
-			if(tv.getText().toString().equals("Aun no hay nada aqui"))
+			if(tv.getText().toString().equals(v.getContext().getString(R.string.empty)))
 				return;
 		Base.itemSeleted = index_item;
 		home.abrirAsignatura(); 
@@ -361,7 +361,7 @@ public class Asignaturas implements OnItemClickListener
 		if(!(!alt&&DB.COMUNIDAD))
 		{	
 			if(LIST_ASIGNATURAS.length!=list_in.size())
-				list_tmp[count++]="Ver Todas";
+				list_tmp[count++]=activity.getString(R.string.see_all);
 			else list_tmp = new String [list_in.size()];
 		}else list_tmp = new String [list_in.size()];
 		final String list[]=list_tmp;

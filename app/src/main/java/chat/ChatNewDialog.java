@@ -54,7 +54,7 @@ public class ChatNewDialog extends DialogFragment
                             if(n.isEmpty())
                                 {
                                 Toast.makeText(main,
-                                "Nombre no debe estar vacio",
+                                getString(R.string.no_empty),
                                 Toast.LENGTH_LONG).show();
                                 return;
                                 }
@@ -68,10 +68,10 @@ public class ChatNewDialog extends DialogFragment
             AlertDialog.Builder builder =
                 new AlertDialog.Builder(main);
 
-             builder.setTitle("Nuevo Grupo").setView(view)
+             builder.setTitle(getString(R.string.new_group)).setView(view)
                 .setIcon(R.drawable.ic_dialogo_nuevo_grupo)
-                .setPositiveButton("Aceptar", dialogListener)
-                .setNegativeButton("Cancelar", dialogListener);
+                .setPositiveButton(getString(R.string.ok), dialogListener)
+                .setNegativeButton(getString(R.string.cancel), dialogListener);
 
             return builder.create();
         }
@@ -93,7 +93,7 @@ public class ChatNewDialog extends DialogFragment
                                     long arg3) {
                 String h="nada";
 
-                TextView t= (TextView)arg1.findViewById(R.id.textView4);
+                TextView t= arg1.findViewById(R.id.textView4);
                 if(t!=null)
                     h=t.getText().toString();
                 View l=arg1.findViewById(R.id.selected);
@@ -133,18 +133,16 @@ public class ChatNewDialog extends DialogFragment
                             datos.put("usuarios",usuarios);
                             Server.setDataToSend(datos);
                             Server.send("mensaje/add_group", null, null);
-
-                            DB.save(getActivity(),datos.toString(),"add_group.txt");
                         }
                     }
                 }
             };
             AlertDialog.Builder builder =
                     new AlertDialog.Builder(getActivity());
-            builder.setTitle("Agregar Compañeros")
+            builder.setTitle(getString(R.string.add_contact))
                     .setIcon(R.drawable.ic_dialogo_add_togroup)
-                    .setPositiveButton("Aceptar", dialogListener)
-                    .setNegativeButton("Cancelar", dialogListener);
+                    .setPositiveButton(getString(R.string.ok), dialogListener)
+                    .setNegativeButton(getString(R.string.cancel), dialogListener);
             View root=getActivity().getLayoutInflater()
                     .inflate(R.layout.list_select, null);
 

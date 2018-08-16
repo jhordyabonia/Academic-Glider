@@ -10,7 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
-import com.jhordyabonia.ag.HomeActivity;
+import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
 
 import org.json.JSONException;
@@ -29,7 +29,7 @@ public class CompartirAsignatura extends DialogFragment {
     private String compartir_com;
     private  int index_asignatura;
 
-    final String[]list={"Todo","Horarios","Apuntes","Lecturas","Calificables","Alertas"};
+    String[]list;
     final ArrayList<String> items_a_compartir= new ArrayList();
 
     public CompartirAsignatura(Activity a, String c, int i) {
@@ -39,12 +39,13 @@ public class CompartirAsignatura extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
      {
+         list=getResources().getStringArray(R.array.items_subject);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         android.content.DialogInterface.OnClickListener dialogListener
                     = dialogListener(activity,items_a_compartir,compartir_com,index_asignatura);
         // Set the dialog title
-        builder.setTitle("Compartir")
+        builder.setTitle(getString(R.string.share))
             .setIcon(android.R.drawable.ic_menu_share)
             .setMultiChoiceItems(list, null,
                 new DialogInterface.OnMultiChoiceClickListener()
@@ -64,8 +65,8 @@ public class CompartirAsignatura extends DialogFragment {
                         }
                     }
           )
-        .setPositiveButton("Compartir", dialogListener)
-        .setNegativeButton("Cancelar", dialogListener);
+        .setPositiveButton(getString(R.string.share), dialogListener)
+        .setNegativeButton(getString(R.string.cancel), dialogListener);
 
         return builder.create();
         }
@@ -166,12 +167,12 @@ public class CompartirAsignatura extends DialogFragment {
             AlertDialog.Builder builder =
                     new AlertDialog.Builder(getActivity());
 
-            builder.setTitle("La signatura ya existe")
+            builder.setTitle(getString(R.string.subject_already))
                     .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setMessage("En tu tabulado hay una asignatura, con el mismo nombre o codigo")
-                    .setPositiveButton("Nueva", dialogListener)
-                    .setNegativeButton("Cancelar", dialogListener)
-                    .setNeutralButton("Actualizar", dialogListener);
+                    .setMessage(getString(R.string.subject_already_long))
+                    .setPositiveButton(getString(R.string.action_settings), dialogListener)
+                    .setNegativeButton(getString(R.string.cancel), dialogListener)
+                    .setNeutralButton(getString(R.string.update), dialogListener);
             return builder.create();
         }
     }

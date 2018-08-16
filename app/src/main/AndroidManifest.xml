@@ -34,7 +34,7 @@
         <activity
             android:name="chat.ListChatActivity"
             android:icon="@drawable/ic_chat"
-            android:label="@string/title_activity_list_chat" >
+            android:label="@string/title_activity_list_chat_beta" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

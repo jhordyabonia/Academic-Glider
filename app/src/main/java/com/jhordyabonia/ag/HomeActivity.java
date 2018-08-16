@@ -14,6 +14,7 @@ import android.app.ActionBar.Tab;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +26,10 @@ import android.view.MenuItem;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
+
+import java.util.Locale;
+
+import javax.xml.transform.Source;
 
 public final class HomeActivity extends FragmentActivity 
 {
@@ -59,19 +64,20 @@ public final class HomeActivity extends FragmentActivity
 			ASIGNATURA_ACTUAL=0;
 		return DB.Asignaturas.LIST_ID_ASIGNATURAS[ASIGNATURA_ACTUAL];
 	}
-	public static final String onDisplay() 
-	{	return onDisplay(ON_DISPLAY);}
-	public static final String onDisplay(int i) 
+	public static final String onDisplay(Context c)
+	{	return onDisplay(ON_DISPLAY,c);}
+	public static final String onDisplay(int i,Context c)
 	{
 		String out = "";
 		switch (i) 
 		{
-			case APUNTES:out = "apuntes";break;
-			case ALERTAS:out = "alertas";break;
-			case LECTURAS:out = "lecturas";break;
-			case CALIFICABLES:out = "calificables";break;
-			case HORARIOS:out = "horarios";break;
-			case ASIGNATURAS:out = "asignaturas";break;
+
+			case APUNTES:out = c.getString(R.string.apuntes);break;
+			case ALERTAS:out = c.getString(R.string.alertas);break;
+			case LECTURAS:out = c.getString(R.string.lecturas);break;
+			case CALIFICABLES:out = c.getString(R.string.calificables);break;
+			case HORARIOS:out = c.getString(R.string.horarios);break;
+			case ASIGNATURAS:out = c.getString(R.string.asignaturas);break;
 		}
 		return out;
 	}
@@ -83,9 +89,9 @@ public final class HomeActivity extends FragmentActivity
 		actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		tabHorario = actionBar.newTab().setText("Horario")
+		tabHorario = actionBar.newTab().setText(onDisplay(HORARIOS,this))
 				.setTabListener(tabListener);
-		tabAsignaturas = actionBar.newTab().setText("Asignaturas")
+		tabAsignaturas = actionBar.newTab().setText(onDisplay(ASIGNATURAS,this))
 				.setTabListener(tabListener);		
 
 		list_dias = new ListDias(this);
@@ -106,7 +112,7 @@ public final class HomeActivity extends FragmentActivity
 	public void show_dias(int which)
 	{
 		Horarios.setDia(which);
-		tabHorario.setText(onDisplay(HORARIOS) + "\n> "+ DB.DAYS[which]);
+		tabHorario.setText(onDisplay(HORARIOS,this) + "\n> "+ DB.DAYS[which]);
 		horario.show();
 	}
 	@Override
@@ -133,9 +139,9 @@ public final class HomeActivity extends FragmentActivity
     public boolean onPrepareOptionsMenu(Menu menu)
     {		
     	if(DB.COMUNIDAD)
-      		menu.findItem(R.id.comunidad).setTitle("Mi Glider");
+      		menu.findItem(R.id.comunidad).setTitle(getString(R.string.myglider));
     	else
-    		menu.findItem(R.id.comunidad).setTitle("Comunidad Glider");
+    		menu.findItem(R.id.comunidad).setTitle(getString(R.string.community));
     	if(ON_DISPLAY==HORARIOS)
     		menu.findItem(R.id.actions_horarios).setVisible(true);
     	else 
@@ -215,11 +221,11 @@ public final class HomeActivity extends FragmentActivity
 		actionBar.addTab(tabAsignaturas);
 		show_menu=true;
 
-		actionBar.setTitle("Mi Glider");
+		actionBar.setTitle(getString(R.string.myglider));
 		if(DB.COMUNIDAD)
 		{
 			actionBar.removeTab(tabHorario);
-    		actionBar.setTitle("Comunidad Glider");
+    		actionBar.setTitle(getString(R.string.community));
     		asignaturas.todas();
 		}else if(ON_DISPLAY==ASIGNATURAS)
 			actionBar.selectTab(tabAsignaturas);
@@ -246,7 +252,7 @@ public final class HomeActivity extends FragmentActivity
 	{
 		Horarios.ASIGNATURA=DB.Asignaturas.LIST_ID_ASIGNATURAS[Base.itemSeleted];		
 		actionBar.selectTab(tabHorario);
-		tabHorario.setText(onDisplay(HORARIOS)+"\n>"
+		tabHorario.setText(onDisplay(HORARIOS,this)+"\n>"
 				+DB.titulo(DB.Asignaturas.LIST_ASIGNATURAS[Base.itemSeleted],11));
 	}
 	public void buscar()
@@ -301,8 +307,8 @@ public final class HomeActivity extends FragmentActivity
 		else 
 		{
 			if(DB.COMUNIDAD)
-				actionBar.setTitle("Comunidad Glider");
-			else actionBar.setTitle("Mi Glider");
+				actionBar.setTitle(getString(R.string.community));
+			else actionBar.setTitle(getString(R.string.myglider));
 			
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			actionBar.selectTab(tabAsignaturas);
