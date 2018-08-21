@@ -8,7 +8,9 @@ import controllers.Asignaturas;
 import controllers.Horarios;
 import crud.Base;
 import util.ListDias;
+import webservice.LOG;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.AlertDialog;
@@ -66,10 +68,12 @@ public final class HomeActivity extends FragmentActivity
 	}
 	public static final String onDisplay(Context c)
 	{	return onDisplay(ON_DISPLAY,c);}
+
+	//@SuppressLint("NewApi")
 	public static final String onDisplay(int i,Context c)
 	{
 		String out = "";
-		switch (i) 
+		switch (i)
 		{
 
 			case APUNTES:out = c.getString(R.string.apuntes);break;
@@ -77,7 +81,7 @@ public final class HomeActivity extends FragmentActivity
 			case LECTURAS:out = c.getString(R.string.lecturas);break;
 			case CALIFICABLES:out = c.getString(R.string.calificables);break;
 			case HORARIOS:out = c.getString(R.string.horarios);break;
-			case ASIGNATURAS:out = c.getString(R.string.asignaturas);break;
+			case ASIGNATURAS:out = c.getString(R.string.asignaturas,"");break;
 		}
 		return out;
 	}
@@ -225,7 +229,7 @@ public final class HomeActivity extends FragmentActivity
 		if(DB.COMUNIDAD)
 		{
 			actionBar.removeTab(tabHorario);
-    		actionBar.setTitle(getString(R.string.community));
+    		actionBar.setTitle(R.string.horarios);
     		asignaturas.todas();
 		}else if(ON_DISPLAY==ASIGNATURAS)
 			actionBar.selectTab(tabAsignaturas);

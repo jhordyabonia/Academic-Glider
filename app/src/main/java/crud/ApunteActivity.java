@@ -39,6 +39,8 @@ import com.jhordyabonia.ag.Server;
 
 import crud.Base.Actions;
 
+import static com.jhordyabonia.ag.HomeActivity.APUNTES;
+
 public class ApunteActivity extends FragmentActivity implements Asynchtask 
 {
 	private static final int CAPTURE_APUNTE = 777;
@@ -321,7 +323,7 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 			else button.setText(getString(R.string.edit));
 			break;
 		}
-		DB.model(HomeActivity.onDisplay(HomeActivity.APUNTES,this));
+		DB.model(DB.MODELS[APUNTES]);
 		LOCAL_DB = DB.find("asignatura", HomeActivity.idAsignaturaActual());
 		set("nombre", R.id.nombre);
 		set("descripcion", R.id.descripcion);

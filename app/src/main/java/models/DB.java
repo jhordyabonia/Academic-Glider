@@ -35,6 +35,7 @@ public abstract class DB
 	public static String DIRECTORY = "Glider";
 	public static String FILE_DB = "db.json";
 	public static File root = Environment.getExternalStorageDirectory();
+	public static String MODELS[] = {"alertas","apuntes","lecturas","calificables","horarios","asignaturas"};
 	public static int HOY = Calendar.getInstance()
             .get(Calendar.DAY_OF_WEEK)-1;
 	public static String DAYS[] = 
@@ -76,7 +77,7 @@ public abstract class DB
 	public static void update(final HomeActivity home,HashMap<String, String> datos)
 	{
 		if(datos==null)
-			datos=new HashMap<String, String>();
+			datos=new HashMap<>();
 
 		String celular=User.get("celular");
 		datos.put("celular", celular);

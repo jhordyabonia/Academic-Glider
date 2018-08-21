@@ -14,7 +14,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:shadowColor="#4996a7"
-        android:text="Academic Glider"
+        android:text="@string/app_name"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#9e9e3a"
         android:textSize="60sp"
@@ -55,7 +55,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:ems="10"
-	        android:hint="Celular"
+	        android:hint="@string/cel"
 	        android:inputType="textEmailAddress|number"
 	        android:textColor="#ffffff">
 	
@@ -86,7 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Contraseña"
+        android:hint="@string/pass"
         android:inputType="textPassword"
         android:textColor="#ffffff"
         android:typeface="normal" />
@@ -100,7 +100,7 @@
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:background="#333"
-        android:text="Entrar"
+        android:text="@string/into"
         android:textColor="#9e9e3a"
         android:textColorHint="#ffffff"
         android:textColorLink="#ffffff" />
@@ -113,7 +113,7 @@
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:layout_marginTop="25dp"
-        android:text="¿Olvido su contraseña?"
+        android:text="@string/forgiven_pass"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#9e9e3a" />
 
@@ -134,7 +134,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:text="Registrarme"
+        android:text="@string/signup"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#9e9e3a" />
 

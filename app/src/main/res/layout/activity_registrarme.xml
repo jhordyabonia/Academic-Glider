@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="Academic Glider"
+            android:text="@string/app_name"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#9e9e3a" />
 
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:gravity="center"
-            android:text="Registrarme"
+            android:text="@string/signup"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#9e9e3a"
             android:textSize="40sp" />
@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Nombre"
+                android:hint="@string/name"
                 android:inputType="textPersonName"
                 android:textColor="#fff" />
 
@@ -99,7 +99,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Nombre Universidad"
+            android:hint="@string/university"
             android:inputType="textPersonName"
             android:textColor="#fff"
             android:visibility="gone" />
@@ -123,7 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Celuar"
+                android:hint="@string/cel"
                 android:inputType="phone"
                 android:textColor="#ffffff" >
 
@@ -150,7 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="correo"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:textColor="#ffffff" />
 
@@ -175,7 +175,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Contraseña"
+                android:hint="@string/pass"
                 android:inputType="textPassword"
                 android:textColor="#ffffff" />
 
@@ -200,7 +200,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Repetir Contraseña"
+                android:hint="@string/pass2"
                 android:inputType="textPassword"
                 android:textColor="#ffffff" />
 
@@ -212,7 +212,7 @@
             android:layout_height="34dp"
             android:layout_marginTop="20dp"
             android:background="#333"
-            android:text="Registrarme"
+            android:text="@string/signup"
             android:textColor="#ffffff" />
     </LinearLayout>
 

@@ -10,10 +10,12 @@ import com.jhordyabonia.ag.HomeActivity;
 import controllers.Adapter.ITEM_TYPE;
 import controllers.Adapter.Item;
 
+import static com.jhordyabonia.ag.HomeActivity.APUNTES;
+
 public class Apuntes extends Controller {
 	@Override
 	public void show() {
-		DB.model(HomeActivity.onDisplay(HomeActivity.APUNTES,getContext()));
+		DB.model(DB.MODELS[APUNTES]);
 		LOCAL_DB = DB.find("asignatura", HomeActivity.idAsignaturaActual());
 
 		base_data = new Adapter(rootView.getContext(),ITEM_TYPE.apunte,Adapter.apuntes);

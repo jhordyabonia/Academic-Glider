@@ -31,6 +31,9 @@ import controllers.Adapter.ITEM_TYPE;
 import controllers.Adapter.Item;
 import crud.Base;
 
+import static com.jhordyabonia.ag.HomeActivity.HORARIOS;
+import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
+
 public class Horarios implements OnItemClickListener 
 {
 	public static String DIA=DB.DAYS[DB.HOY];
@@ -49,7 +52,7 @@ public class Horarios implements OnItemClickListener
 	public void show() 
 	{
 		home.setContentView(R.layout.lienzo);
-		ImageView imageView = (ImageView) home.findViewById(R.id.add);
+		ImageView imageView = home.findViewById(R.id.add);
 		if(DB.Asignaturas.LIST_ASIGNATURAS.length<=0||DB.COMUNIDAD)
 			imageView.setVisibility(View.GONE);
 		imageView.setImageResource(R.drawable.ic_tab_add);
@@ -78,7 +81,7 @@ public class Horarios implements OnItemClickListener
 				return false;
 			}
 		});
-		DB.model(HomeActivity.onDisplay(HomeActivity.HORARIOS,home));
+		DB.model(DB.MODELS[HORARIOS]);
 		if(ASIGNATURA!=null)
 			LOCAL_DB = DB.find("asignatura", ASIGNATURA);
 		else LOCAL_DB = DB.find("dia", DIA);
@@ -137,7 +140,7 @@ public class Horarios implements OnItemClickListener
 				DB.update(home);
 			}
 		};
-		String url_tmp = HomeActivity.onDisplay(home) + "/delete";
+		String url_tmp =  DB.MODELS[ON_DISPLAY]+ "/delete";
 		Server.send(url_tmp, home, recep);
 	}
 
@@ -149,7 +152,7 @@ public class Horarios implements OnItemClickListener
 			Controller.CLICK_BLOQUEADO=false;
 			return;
 		}
-		TextView tv = (TextView)v.findViewById(R.id.textView4);
+		TextView tv = v.findViewById(R.id.textView4);
 		if(tv!=null)
 			if(tv.getText().toString().equals(v.getContext().getString(R.string.empty)))
 				return;

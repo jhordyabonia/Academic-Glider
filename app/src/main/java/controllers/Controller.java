@@ -34,6 +34,8 @@ import com.jhordyabonia.ag.Server;
 
 import crud.Base;
 
+import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
+
 public abstract class Controller extends Fragment implements OnItemClickListener
 {
 	public static boolean CLICK_BLOQUEADO=false;
@@ -134,7 +136,7 @@ public abstract class Controller extends Fragment implements OnItemClickListener
 				DB.update();
 			}
 		};
-		String url_tmp = HomeActivity.onDisplay(getContext()) + "/delete";
+		String url_tmp = DB.MODELS[ON_DISPLAY] + "/delete";
 		Server.send(url_tmp, getActivity(), recep);
 	}
 	public abstract void show();

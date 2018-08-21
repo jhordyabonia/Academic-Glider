@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     
-    <item android:id="@+id/calendario" android:title="Registrar evento en calendario" android:enabled="false"></item><item android:id="@+id/alarma" android:title="Alerta activa" android:checkable="true"></item>
-    <item android:id="@+id/delete" android:title="Eliminar"></item>
+    <item android:id="@+id/calendario" android:title="@string/signup_calendar" android:enabled="false"></item>
+    <item android:id="@+id/alarma" android:title="@string/active_alert" android:checkable="true"></item>
+    <item android:id="@+id/delete" android:title="@string/delete"></item>
     
     
 

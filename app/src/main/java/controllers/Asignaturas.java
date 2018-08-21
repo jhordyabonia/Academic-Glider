@@ -47,6 +47,8 @@ import controllers.Adapter.Item;
 import crud.AsignaturaActivity;
 import crud.Base;
 
+import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
+
 public class Asignaturas implements OnItemClickListener 
 {
 	private HomeActivity home;
@@ -70,14 +72,14 @@ public class Asignaturas implements OnItemClickListener
 					@Override
 					public void onPageSelected(int position) 
 					{	
-						HomeActivity.ON_DISPLAY = position;
+						ON_DISPLAY = position;
 						Base.itemSeleted = 0;
 					}
 				});
-		if(HomeActivity.ON_DISPLAY==HomeActivity.ASIGNATURAS)
-			HomeActivity.ON_DISPLAY=display;
-		else if(HomeActivity.ON_DISPLAY!=HomeActivity.HORARIOS)
-			mViewPager.setCurrentItem(HomeActivity.ON_DISPLAY,true);
+		if(ON_DISPLAY==HomeActivity.ASIGNATURAS)
+			ON_DISPLAY=display;
+		else if(ON_DISPLAY!=HomeActivity.HORARIOS)
+			mViewPager.setCurrentItem(ON_DISPLAY,true);
 	}
 	public void pager(boolean show)
 	{
@@ -135,7 +137,7 @@ public class Asignaturas implements OnItemClickListener
 	public void todas() 
 	{
 		Base.itemSeleted = 0;
-		HomeActivity.ON_DISPLAY=HomeActivity.ASIGNATURAS;
+		ON_DISPLAY=HomeActivity.ASIGNATURAS;
 		home.setContentView(R.layout.lienzo);
 		ImageView imageView =  home.findViewById(R.id.add);
 
@@ -181,13 +183,14 @@ public class Asignaturas implements OnItemClickListener
 		});
 		base.setAdapter(base_data);
 
-		DB.model(HomeActivity.onDisplay(home));
+		DB.model(DB.MODELS[ON_DISPLAY]);
 		ArrayList<JSONObject> tmp = DB.find("", "");
 		if(!tmp.isEmpty())
 		try 
 		{
+
 			base_data.clear();
-			String titulo=(DB.COMUNIDAD?"":"Nota ");
+			String titulo=(DB.COMUNIDAD?"":home.getString(R.string.note)+" ");
 			int limite=(DB.COMUNIDAD?24:0);
 			for (JSONObject v : tmp)
 				base_data.add(
@@ -195,9 +198,9 @@ public class Asignaturas implements OnItemClickListener
 								v.getString("codigo"),
 								v.getString("nombre"), 
 								titulo+ DB.titulo(v.getString("nota"),limite)
-								,"Creditos "+v.getString("creditos")
+								,home.getString(R.string.credit)+" "+v.getString("creditos")
 							));
-		} catch (JSONException e) {}		
+		} catch (JSONException e) {}
 	}
 
 	public void showPopup(View v) 
@@ -232,7 +235,7 @@ public class Asignaturas implements OnItemClickListener
 					try 
 					{
 						String tmp=DB.Asignaturas.LIST_ID_ASIGNATURAS[Base.itemSeleted];
-						DB.model("asignaturas");
+						DB.model(DB.MODELS[ON_DISPLAY]);
 						JSONObject asignatura = DB.getBy("id", tmp);//.get(arg2);
 						DialogFragment existe = Asignaturas.existe(true,home,asignatura);
 						if(existe!=null)
@@ -263,7 +266,7 @@ public class Asignaturas implements OnItemClickListener
 				DB.update(home);
 			}
 		};
-		String url_tmp = HomeActivity.onDisplay(home) + "/delete";
+		String url_tmp = DB.MODELS[ON_DISPLAY]  + "/delete";
 		Server.send(url_tmp, home, recep);
 	}
 
@@ -277,7 +280,7 @@ public class Asignaturas implements OnItemClickListener
 		{
 			Fragment fragment = null;
 
-			DB.model(HomeActivity.onDisplay(home));
+			DB.model(DB.MODELS[i]);
 			switch (i) 
 			{
 				case HomeActivity.ALERTAS:
@@ -300,7 +303,7 @@ public class Asignaturas implements OnItemClickListener
 		public int getCount() {return 4;}
 		@Override
 		public CharSequence getPageTitle(int position) 
-		{return HomeActivity.onDisplay(home);}
+		{return HomeActivity.onDisplay(position,home);}
 	}
 	@Override
 	public void onItemClick(AdapterView<?> av, View v, int index_item, long arg3) 

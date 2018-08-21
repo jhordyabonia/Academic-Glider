@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Nombre"
+            android:hint="@string/name"
             android:inputType="textPersonName|datetime"
             android:visibility="gone" >
 
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Alerta"
+            android:hint="@string/alertas"
             android:inputType="datetime"
             android:visibility="gone" />
 
@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Porcentaje"
+            android:hint="@string/rate"
             android:inputType="number"
             android:visibility="gone" />
 
@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Nota"
+            android:hint="@string/note"
             android:inputType="numberDecimal"
             android:visibility="gone" />
 
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Recurrencia"
+            android:hint="@string/frecuenly"
             android:inputType="date"
             android:visibility="gone" />
 
@@ -66,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Creditos"
+            android:hint="@string/credit"
             android:inputType="number"
             android:visibility="gone" />
 
@@ -75,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Codigo"
+            android:hint="@string/code"
             android:inputType="textPersonName"
             android:visibility="gone" />
 
@@ -99,7 +99,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Ubicacion"
+            android:hint="@string/locate"
             android:inputType="textPersonName"
             android:visibility="gone" />
 
@@ -108,7 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Duracion (horas)"
+            android:hint="@string/time"
             android:inputType="number"
             android:visibility="gone" />     
         <EditText
@@ -119,7 +119,7 @@
             android:layout_weight="0.67"
             android:ems="10"
             android:gravity="top"
-            android:hint="Descripcion"
+            android:hint="@string/description_label"
             android:inputType="textMultiLine"
             android:visibility="gone" /> 	
 		<TextView
@@ -127,7 +127,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="Fecha:" 
+            android:text="@string/date"
             android:visibility="gone"/>
 		
         <DatePicker
@@ -143,7 +143,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="Hora:" 
+            android:text="@string/hour"
             android:visibility="gone"/>
         
         <TimePicker
@@ -164,7 +164,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
-        android:text="Guardar"
+        android:text="@string/save"
         android:textAppearance="?android:attr/textAppearanceMediumInverse"
         android:textStyle="normal|bold|italic" />
 

@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:layout_weight="0.0"
-                android:text="Codigo"
+                android:text="@string/code"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
 
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Nombre"
+                android:text="@string/name"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
         </TableRow>
@@ -62,7 +62,7 @@
                 android:layout_width="85dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:text="Creditos"
+                android:text="@string/credit"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -72,7 +72,7 @@
                 android:layout_gravity="bottom"
                 android:layout_weight="1"
                 android:gravity="bottom"
-                android:text="Nota"
+                android:text="@string/note"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
         </TableRow>

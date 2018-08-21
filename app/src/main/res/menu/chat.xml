@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/add_to_group" android:title="Agregar" android:icon="@drawable/ic_add_to_group" android:showAsAction="always" android:visible="false"></item>
-    <item android:id="@+id/salir" android:title="Abandonar grupo" android:visible="false"></item>
-    <item android:id="@+id/ver_perfil" android:title="Perfil" android:showAsAction="always" android:visible="false"></item>
-    <item android:id="@+id/borrar_chat" android:title="Borrar chat"></item>
+    <item android:id="@+id/add_to_group" android:title="@string/add" android:icon="@drawable/ic_add_to_group" android:showAsAction="always" android:visible="false"></item>
+    <item android:id="@+id/salir" android:title="@string/left_group" android:visible="false"></item>
+    <item android:id="@+id/ver_perfil" android:title="@string/profil" android:showAsAction="always" android:visible="false"></item>
+    <item android:id="@+id/borrar_chat" android:title="@string/delete_chat"></item>
     
 
 </menu>

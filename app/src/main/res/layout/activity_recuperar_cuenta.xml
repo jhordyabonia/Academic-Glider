@@ -21,7 +21,7 @@
          android:layout_height="wrap_content"
          android:layout_marginBottom="30dp"
          android:gravity="center_horizontal"
-         android:text="Academic Glider"
+         android:text="@string/app_name"
          android:textAppearance="?android:attr/textAppearanceSmall"
          android:textColor="#9e9e3a" />
 
@@ -31,7 +31,7 @@
          android:layout_height="wrap_content"
          android:layout_marginBottom="15dp"
          android:gravity="center"
-         android:text="Recuperar Cuenta"
+         android:text="@string/account_recover"
          android:textAppearance="?android:attr/textAppearanceLarge"
          android:textColor="#9e9e3a"
          android:textSize="30sp" />
@@ -59,7 +59,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:ems="10"
-	        android:hint="Celular"
+	        android:hint="@string/cel"
 	        android:inputType="textEmailAddress|number"
 	        android:textColor="#ffffff">
 	
@@ -90,7 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Correo"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:textColor="#ffffff"
         android:typeface="normal" />
@@ -104,7 +104,7 @@
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:background="#333"
-        android:text="Recuperar Cuenta"
+        android:text="@string/account_recover"
         android:textColor="#9e9e3a"
         android:textColorHint="#ffffff"
         android:textColorLink="#ffffff" />

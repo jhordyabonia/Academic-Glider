@@ -27,6 +27,8 @@ import com.jhordyabonia.ag.Server;
 
 import controllers.Horarios;
 
+import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
+
 public abstract class Base extends Activity implements Asynchtask {
 	public enum Actions {Add, Edit};
 
@@ -39,22 +41,22 @@ public abstract class Base extends Activity implements Asynchtask {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.crud);
-		((Button) findViewById(R.id.save))
-				.setOnClickListener(new OnClickListener() {
+		findViewById(R.id.save)
+			.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						send(v);
 					}
 				});
 
-		DB.model(HomeActivity.onDisplay(this));
-		if (HomeActivity.ON_DISPLAY == HomeActivity.HORARIOS)
+		DB.model(DB.MODELS[ON_DISPLAY]);
+		if (ON_DISPLAY== HomeActivity.HORARIOS)
 		{	
 			if(Horarios.ASIGNATURA!=null)
 				LOCAL_DB = DB.find("asignatura", Horarios.ASIGNATURA);
 			else 
 				LOCAL_DB = DB.find("dia", Horarios.DIA);
-		}else if (HomeActivity.ON_DISPLAY != HomeActivity.ASIGNATURAS)
+		}else if (ON_DISPLAY!= HomeActivity.ASIGNATURAS)
 			LOCAL_DB = DB.find("asignatura", HomeActivity.idAsignaturaActual());
 		else
 			LOCAL_DB = DB.find("", "");
@@ -145,13 +147,13 @@ public abstract class Base extends Activity implements Asynchtask {
 		
 		String hora_[]=hora.split(":");
 
-		TimePicker _hora = (TimePicker)findViewById(R.id.hora);
+		TimePicker _hora = findViewById(R.id.hora);
 		_hora.setCurrentHour(Integer.valueOf(hora_[0]));
 		_hora.setCurrentMinute(Integer.valueOf(hora_[1]));
 	}
 	protected String getFecha()
 	{
-		DatePicker _fecha= (DatePicker)findViewById(R.id.fecha);
+		DatePicker _fecha= findViewById(R.id.fecha);
 		String fecha=_fecha.getDayOfMonth()+"-"+
 				(_fecha.getMonth()+1 )+"-"+
 				_fecha.getYear();
@@ -180,12 +182,12 @@ public abstract class Base extends Activity implements Asynchtask {
 		Button button = ((Button) v);
 		if (button.getText().toString().contains(getString(R.string.edit)))
 		{
-			button.setText("Actualizar");
+			button.setText(R.string.update);
 			show(true);
 			return;
 		}
 		HashMap<String, String> data_tmp = getData();
-		String url_tmp = HomeActivity.onDisplay(this);
+		String url_tmp = DB.MODELS[ON_DISPLAY];
 		if (button.getText().toString().contains(getString(R.string.update)))
 		{
 			data_tmp.put("id", getIdItemSeleted());
@@ -211,9 +213,9 @@ public abstract class Base extends Activity implements Asynchtask {
 			finish(); 
 		else if (action == Actions.Edit)
 		{
-			Button button = (Button) findViewById(R.id.save);
+			Button button =  findViewById(R.id.save);
 			if (button != null)
-				button.setText("Editar");
+				button.setText(R.string.edit);
 			show(false);
 		}
 		HomeActivity.UPDATE=true;				
@@ -221,27 +223,27 @@ public abstract class Base extends Activity implements Asynchtask {
 
 	protected void fill() 
 	{
-		Button button = (Button) findViewById(R.id.save);
+		Button button = findViewById(R.id.save);
 		switch (action)
 		{
 		case Add:
 			show(true);
-			getActionBar().setTitle(getString(R.string.add) + HomeActivity.onDisplay(this));
+			getActionBar().setTitle(getString(R.string.add) +" "+ HomeActivity.onDisplay(this));
 			break;
 		case Edit:
 			show(false);
-			getActionBar().setTitle(getString(R.string.see) + HomeActivity.onDisplay(this));
-			button.setText("Editar");
+			getActionBar().setTitle(getString(R.string.see) +" "+ HomeActivity.onDisplay(this));
+			button.setText(R.string.edit);
 			break;
 		}
 		if(DB.COMUNIDAD)
 			button.setVisibility(View.GONE);
-	};
+	}
 
 	public static void crud(Activity parent, Actions a) 
 	{
 		action = a;
-		switch (HomeActivity.ON_DISPLAY) 
+		switch (ON_DISPLAY)
 		{
 		case HomeActivity.ALERTAS:
 			parent.startActivity(new Intent(parent, AlertaActivity.class));

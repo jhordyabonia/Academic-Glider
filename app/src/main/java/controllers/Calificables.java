@@ -25,11 +25,13 @@ import controllers.Adapter.Item;
 
 import crud.Base;
 
+import static com.jhordyabonia.ag.HomeActivity.CALIFICABLES;
+
 public class Calificables extends Controller {
 	@Override
 	public void show() 
 	{
-		DB.model(HomeActivity.onDisplay(HomeActivity.CALIFICABLES,getContext()));
+		DB.model(DB.MODELS[CALIFICABLES]);
 		LOCAL_DB = DB.find("asignatura", HomeActivity.idAsignaturaActual());
 		base_data = new Adapter(rootView.getContext(),ITEM_TYPE.calificable,Adapter.calificables);
 		base.setAdapter(base_data);

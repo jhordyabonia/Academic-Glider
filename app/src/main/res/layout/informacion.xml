@@ -25,7 +25,7 @@
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
-            android:text="INFORMACION"
+            android:text="@string/info_title"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </TableRow>
 

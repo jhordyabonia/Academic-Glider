@@ -32,6 +32,8 @@ import controllers.Adapter.Item;
 
 import crud.Base;
 
+import static com.jhordyabonia.ag.HomeActivity.ALERTAS;
+
 public class Alertas extends Controller
 {
   public static void eliminar_alama(Context t,int id)
@@ -201,7 +203,7 @@ public class Alertas extends Controller
 	@Override
 	public void show() 
 	{		
-		DB.model(HomeActivity.onDisplay(HomeActivity.ALERTAS,getContext()));
+		DB.model(DB.MODELS[ALERTAS]);
 		LOCAL_DB = DB.find("asignatura", HomeActivity.idAsignaturaActual());
 
 		base_data = new Adapter(rootView.getContext(),ITEM_TYPE.alerta, Adapter.alertas);
