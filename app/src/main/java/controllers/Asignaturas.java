@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jhordyabonia.ag.HomeActivity;
+import com.jhordyabonia.ag.PlaceholderFragment;
 import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
 
@@ -54,17 +55,21 @@ public class Asignaturas implements OnItemClickListener
 	private HomeActivity home;
 	private ListView base;
 	private Adapter base_data;
+	ViewPager mViewPager;
 
 	public Asignaturas(HomeActivity fa)
 	{	home = fa;}
-	public void show(int display) 
+
+	public void setPager(ViewPager vPager)
+	{mViewPager=vPager;}
+	public void show(int display)
 	{
-		home.setContentView(R.layout.fragment_collection_object);
-		home.invalidateOptionsMenu();
+		//home.setContentView(R.layout.fragment_collection_object);
+		//home.invalidateOptionsMenu();
 		CollectionPagerAdapter mCollectionPagerAdapter =
 				new CollectionPagerAdapter
 				(home.getSupportFragmentManager());
-		ViewPager mViewPager =  home.findViewById(R.id.pager);
+		//ViewPager mViewPager =  view.findViewById(R.id.pager);
 		mViewPager.setAdapter(mCollectionPagerAdapter);
 		mViewPager.setOnPageChangeListener
 				(new ViewPager.SimpleOnPageChangeListener() 
@@ -81,11 +86,11 @@ public class Asignaturas implements OnItemClickListener
 		else if(ON_DISPLAY!=HomeActivity.HORARIOS)
 			mViewPager.setCurrentItem(ON_DISPLAY,true);
 	}
-	public void pager(boolean show)
+	public void pager(View view,boolean show)
 	{
 		if(!show)
 		{
-			home.findViewById(R.id.pager)
+			view.findViewById(R.id.pager)
 			.setVisibility(View.GONE);
 			return;
 		}
@@ -121,27 +126,28 @@ public class Asignaturas implements OnItemClickListener
 			};
 
 			//Indicador de pagina
-			((TextView)home.findViewById(R.id.textView2))
+			((TextView)view.findViewById(R.id.textView2))
 			.setText(data);
 			//adelante
-			home.findViewById(R.id.adelante)
+			view.findViewById(R.id.adelante)
 			.setOnClickListener(listener);
 			//atras
-			home.findViewById(R.id.atras)
+			view.findViewById(R.id.atras)
 			.setOnClickListener(listener);
 			//habilitando paginador
-			home.findViewById(R.id.pager)
+			view.findViewById(R.id.pager)
 			.setVisibility(View.VISIBLE);
 		} catch (JSONException e) {}		
 	}
-	public void todas() 
+	public void todas(View view)
 	{
 		Base.itemSeleted = 0;
 		ON_DISPLAY=HomeActivity.ASIGNATURAS;
-		home.setContentView(R.layout.lienzo);
-		ImageView imageView =  home.findViewById(R.id.add);
+		//home.setContentView(R.layout.lienzo);
+		ImageView imageView =  view.findViewById(R.id.add);
 
-		base =  home.findViewById(R.id.list);
+		base =  view.findViewById(R.id.list);
+
 		if(DB.COMUNIDAD)
 		{	
 			imageView.setVisibility(View.VISIBLE);
@@ -152,7 +158,6 @@ public class Asignaturas implements OnItemClickListener
 					{home.buscar();}
 				}
 			);
-			pager(true);
 		}
 		else
 		{
@@ -163,9 +168,10 @@ public class Asignaturas implements OnItemClickListener
 					{Base.crud(home, Base.Actions.Add);}
 				}
 			);
-			pager(false);
 		}
-		base_data = new Adapter(home,ITEM_TYPE.asignatura,Adapter.asignaturas);
+
+		pager(view,DB.COMUNIDAD);
+		base_data = new Adapter(view.getContext(),ITEM_TYPE.asignatura,Adapter.asignaturas);
 
 		base.setDividerHeight(0);
 		base.setOnItemClickListener(this);
@@ -317,8 +323,9 @@ public class Asignaturas implements OnItemClickListener
 		if(tv!=null)
 			if(tv.getText().toString().equals(v.getContext().getString(R.string.empty)))
 				return;
+
 		Base.itemSeleted = index_item;
-		home.abrirAsignatura(); 
+		home.abrirAsignatura();
 	}
 	public static DialogFragment asignaturas_list(FragmentActivity activity, String titulo, String[] items,
 			final DialogInterface.OnClickListener actions)
@@ -448,7 +455,7 @@ public class Asignaturas implements OnItemClickListener
 	}
 
 	String compartir_com = "";
-	ArrayList<String> items_a_compartir = new ArrayList<String>();
+	ArrayList<String> items_a_compartir = new ArrayList<>();
 
 	public static DialogFragment compartir(Activity activity,String compartir_com,int index_asignatura)
 	{return new CompartirAsignatura(activity,compartir_com,index_asignatura);}

@@ -18,12 +18,12 @@
    	  	<item name="android:actionBarStyle">@style/ActionBar</item>
    	    <item name="android:actionBarTabTextStyle">@style/TabText</item>
    	    <item name="android:actionBarTabBarStyle">@style/TabBar</item>
-    </style>       
-     <style name="ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar"> 
-         <item name="android:logo">@drawable/bg</item>
-    	<item name="android:background">#000000</item>  
-   		<item name="android:titleTextStyle">@style/TitleText</item>
-     </style>
+    </style>
+    <style name="ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:logo">@drawable/ic_drawer</item>
+        <item name="android:background">#000000</item>
+        <item name="android:titleTextStyle">@style/TitleText</item>
+    </style>
      <style name="TitleText" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">    
          <item name="android:textColor">#FFFFFF</item>    
      </style>	

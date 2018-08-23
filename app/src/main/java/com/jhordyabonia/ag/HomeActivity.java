@@ -15,6 +15,7 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,9 +23,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
@@ -33,8 +37,13 @@ import java.util.Locale;
 
 import javax.xml.transform.Source;
 
-public final class HomeActivity extends FragmentActivity 
-{
+import static com.jhordyabonia.ag.PlaceholderFragment.newInstance;
+
+public class HomeActivity extends FragmentActivity  implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+
+	private NavigationDrawerFragment mNavigationDrawerFragment;
+	public static boolean DROP_MODE=false;
+
 	private FirebaseAnalytics mFirebaseAnalytics;
 	public static final int LOGIN= 7;
 	public static final int CUENTA = 6;
@@ -54,11 +63,11 @@ public final class HomeActivity extends FragmentActivity
 	
 	private ActionBar.Tab tabAsignaturas;
 	private ActionBar.Tab tabHorario;
-	private Horarios horario;
-	private Asignaturas asignaturas;
-	private ActionBar actionBar;
-	private DialogFragment list_dias;
-	private DialogFragment list_comunidad;
+	public/*private*/ Horarios horario;
+	public/*private*/ Asignaturas asignaturas;
+	public/*private*/ ActionBar actionBar;
+	public/*private*/ DialogFragment list_dias;
+	public/*private*/ DialogFragment list_comunidad;
 	
 	public static final String idAsignaturaActual()
 	{	
@@ -81,22 +90,51 @@ public final class HomeActivity extends FragmentActivity
 			case LECTURAS:out = c.getString(R.string.lecturas);break;
 			case CALIFICABLES:out = c.getString(R.string.calificables);break;
 			case HORARIOS:out = c.getString(R.string.horarios);break;
-			case ASIGNATURAS:out = c.getString(R.string.asignaturas,"");break;
+			case ASIGNATURAS:out = c.getString(R.string.asignaturas);break;
 		}
 		return out;
 	}
-	
+
+	@Override
+	public void onNavigationDrawerItemSelected(int position) {
+		// update the main content by replacing fragments
+		FragmentManager fragmentManager = getFragmentManager();
+		fragmentManager.beginTransaction()
+				.replace(R.id.container, newInstance(position))
+				.commit();
+	}
+
+	//new navegation
+	public void dropMode(boolean m)
+	{
+		DROP_MODE=m;
+		if(m) {
+			setContentView(R.layout.activity_main);
+			mNavigationDrawerFragment = (NavigationDrawerFragment)
+					getFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+			// Set up the drawer.
+			mNavigationDrawerFragment.setUp(
+					R.id.navigation_drawer,
+					(DrawerLayout) findViewById(R.id.drawer_layout));
+		}
+	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		tabHorario = actionBar.newTab().setText(onDisplay(HORARIOS,this))
+
+    	actionBar = getActionBar();
+
+        if(!DROP_MODE) {
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
+
+		tabHorario = actionBar.newTab().setText(onDisplay(HORARIOS, this))
+					.setTabListener(tabListener);
+		tabAsignaturas = actionBar.newTab().setText(onDisplay(ASIGNATURAS, this))
 				.setTabListener(tabListener);
-		tabAsignaturas = actionBar.newTab().setText(onDisplay(ASIGNATURAS,this))
-				.setTabListener(tabListener);		
 
 		list_dias = new ListDias(this);
 		list_comunidad= new Buscador(this);
@@ -112,18 +150,27 @@ public final class HomeActivity extends FragmentActivity
 		bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "HomeActivity");
 		bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
 		mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
 	}
 	public void show_dias(int which)
 	{
 		Horarios.setDia(which);
-		tabHorario.setText(onDisplay(HORARIOS,this) + "\n> "+ DB.DAYS[which]);
-		horario.show();
+		if(!DROP_MODE)
+			tabHorario.setText(onDisplay(HORARIOS,this) + "\n> "+ DB.DAYS[which]);
+		//findViewById(R.id.)
+
+		View view=findViewById(R.id.FrameLayout1);
+		horario.show(view);
 	}
 	@Override
 	public void onResume()
 	{
-		Base.itemSeleted=0;
 		super.onResume();
+		Base.itemSeleted=0;
+
+		//if(DROP_MODE)
+		//	return;
+
 		if(DB.LOGGED==false)
 			new Login(this);
 		else
@@ -136,19 +183,26 @@ public final class HomeActivity extends FragmentActivity
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) 
     {
+		/*if(DROP_MODE)
+			return true;*/
+
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu)
-    {		
-    	if(DB.COMUNIDAD)
+    {
+		/*if(DROP_MODE)
+			return true;*/
+
+		if(DB.COMUNIDAD)
       		menu.findItem(R.id.comunidad).setTitle(getString(R.string.myglider));
     	else
     		menu.findItem(R.id.comunidad).setTitle(getString(R.string.community));
-    	if(ON_DISPLAY==HORARIOS)
+
+    	if(ON_DISPLAY==HORARIOS||DROP_MODE)
     		menu.findItem(R.id.actions_horarios).setVisible(true);
-    	else 
+    	else
     		menu.findItem(R.id.actions_horarios).setVisible(false);
     	
     	if(ON_DISPLAY<HORARIOS)
@@ -163,7 +217,15 @@ public final class HomeActivity extends FragmentActivity
     }
     public boolean onOptionsItemSelected(MenuItem item) 
     {
-    	Intent intent;
+
+		if(DROP_MODE)
+		{
+			if(item.getItemId()==R.id.actions_horarios)
+				list_dias.show(getSupportFragmentManager(), "missiles");
+			return true;
+		}
+
+		Intent intent;
         switch (item.getItemId()) 
         {           
         	case android.R.id.home:
@@ -226,31 +288,50 @@ public final class HomeActivity extends FragmentActivity
 		show_menu=true;
 
 		actionBar.setTitle(getString(R.string.myglider));
-		if(DB.COMUNIDAD)
+		if(DB.COMUNIDAD&&!DROP_MODE)
 		{
 			actionBar.removeTab(tabHorario);
     		actionBar.setTitle(R.string.horarios);
-    		asignaturas.todas();
-		}else if(ON_DISPLAY==ASIGNATURAS)
+			setContentView(R.layout.lienzo);
+			View view=findViewById(R.id.FrameLayout1);
+    		asignaturas.todas(view);
+		}else if(ON_DISPLAY==ASIGNATURAS&&!DROP_MODE)
 			actionBar.selectTab(tabAsignaturas);
-		else if(ON_DISPLAY==HORARIOS)
+		else if(ON_DISPLAY==HORARIOS&&!DROP_MODE)
 			actionBar.selectTab(tabHorario);
 		else
 		{ 
 			actionBar.setTitle(DB.titulo(DB.Asignaturas.LIST_ASIGNATURAS[ASIGNATURA_ACTUAL]));
-			asignaturas.show(ON_DISPLAY);
-		}	
+
+			if(!DROP_MODE) {
+				setContentView(R.layout.fragment_collection_object);
+				ViewPager mViewPager = findViewById(R.id.pager);
+				asignaturas.setPager(mViewPager);
+				asignaturas.show(ON_DISPLAY);
+			}
+		}
 
 		actionBar.show(); 
-		invalidateOptionsMenu();
+		//invalidateOptionsMenu();
 	}
+	public void setAsignaturaActual(int i){ASIGNATURA_ACTUAL=i;}
 	public void abrirAsignatura()
 	{
-		ASIGNATURA_ACTUAL=Base.itemSeleted;
-		asignaturas.show(HomeActivity.ALERTAS);
-		
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+		setAsignaturaActual(Base.itemSeleted);
 		actionBar.setTitle(DB.titulo(DB.Asignaturas.LIST_ASIGNATURAS[ASIGNATURA_ACTUAL],34));
+
+		if(DROP_MODE)
+		{
+			onNavigationDrawerItemSelected(-1);
+			return;
+		}
+
+		setContentView(R.layout.fragment_collection_object);
+		ViewPager mViewPager =  findViewById(R.id.pager);
+		asignaturas.setPager(mViewPager);
+		asignaturas.show(HomeActivity.ALERTAS);
+
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 	}
 	public void horarios_asignatura()
 	{
@@ -282,7 +363,9 @@ public final class HomeActivity extends FragmentActivity
 			}else
 			{
 				ON_DISPLAY = ASIGNATURAS;
-				asignaturas.todas();
+				setContentView(R.layout.lienzo);
+				View view=findViewById(R.id.FrameLayout1);
+				asignaturas.todas(view);
 			} 
 			invalidateOptionsMenu();
 		}
@@ -323,6 +406,11 @@ public final class HomeActivity extends FragmentActivity
 	@Override
 	public boolean onKeyDown( int arg1, KeyEvent arg2) 
 	{
+
+		if(DROP_MODE)
+			return super.onKeyDown(arg1,arg2);
+
+
 		if(back(arg1))
 			return true;
 		return super.onKeyDown(arg1,arg2);

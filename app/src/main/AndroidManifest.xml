@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jhordyabonia.ag"
     android:versionCode="002"
-    android:versionName="Genesis" >
+    android:versionName="Genesis">
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -17,14 +17,17 @@
         android:name="android.hardware.camera"
         android:required="false" />
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:name="com.jhordyabonia.ag.HomeActivity"
-            android:label="@string/app_name" >
+            android:name=".HomeActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +37,7 @@
         <activity
             android:name="chat.ListChatActivity"
             android:icon="@drawable/ic_chat"
-            android:label="@string/title_activity_list_chat_beta" >
+            android:label="@string/title_activity_list_chat_beta">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,38 +46,35 @@
         </activity>
         <activity
             android:name="chat.ChatActivity"
-            android:icon="@drawable/ic_chat_menu" >
-        </activity>
-        <activity android:name="crud.AlertaActivity" >
-        </activity>
-        <activity android:name="crud.AsignaturaActivity" >
-        </activity>
-        <activity android:name="crud.CalificableActivity" >
-        </activity>
-        <activity android:name="crud.LecturaActivity" >
-        </activity>
-        <activity android:name="crud.HorarioActivity" >
-        </activity>
-        <activity android:name="crud.ApunteActivity" >
-        </activity>
-        <activity android:name="com.jhordyabonia.ag.InformacionActivity" >
-        </activity>
-        <activity android:name="chat.ProfileActivity">
-        </activity>
-        <activity android:name="com.jhordyabonia.ag.RecuperarCuentaActivity">
-        </activity>
+            android:icon="@drawable/ic_chat_menu" />
+        <activity android:name="crud.AlertaActivity" />
+        <activity android:name="crud.AsignaturaActivity" />
+        <activity android:name="crud.CalificableActivity" />
+        <activity android:name="crud.LecturaActivity" />
+        <activity android:name="crud.HorarioActivity" />
+        <activity android:name="crud.ApunteActivity" />
+        <activity android:name=".InformacionActivity" />
+        <activity android:name="chat.ProfileActivity" />
+        <activity android:name=".RecuperarCuentaActivity" />
 
         <service
             android:name="util.UploadService"
-            android:enabled="true" >
-        </service>
+            android:enabled="true" />
         <service
             android:name="chat.ChatService"
-            android:enabled="true" >
-        </service>
+            android:enabled="true" />
 
         <receiver android:name="util.Alarma" />
 
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

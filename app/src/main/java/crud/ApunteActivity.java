@@ -40,6 +40,7 @@ import com.jhordyabonia.ag.Server;
 import crud.Base.Actions;
 
 import static com.jhordyabonia.ag.HomeActivity.APUNTES;
+import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
 public class ApunteActivity extends FragmentActivity implements Asynchtask 
 {
@@ -281,7 +282,7 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 			return;
 		}
 		HashMap<String, String> data_tmp = getData();
-		String url_tmp = HomeActivity.onDisplay(this);
+		String url_tmp = DB.MODELS[ON_DISPLAY];
 		if (button.getText().toString().contains(getString(R.string.update)))
 		{
 			data_tmp.put("id", getIdItemSeleted());

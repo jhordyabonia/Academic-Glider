@@ -41,7 +41,7 @@ public class Horarios implements OnItemClickListener
 	private HomeActivity home;
 	private ListView base;
 	private Adapter base_data;
-	private ArrayList<JSONObject> LOCAL_DB = new ArrayList<JSONObject>();
+	private ArrayList<JSONObject> LOCAL_DB = new ArrayList();
 	
 	public static void setDia(int index) 
 	{	ASIGNATURA=null; DIA = DB.DAYS[index];}
@@ -49,21 +49,26 @@ public class Horarios implements OnItemClickListener
 	public Horarios(HomeActivity fa)
 	{	home = fa; }
 
-	public void show() 
+	public void show()
 	{
 		home.setContentView(R.layout.lienzo);
-		ImageView imageView = home.findViewById(R.id.add);
+		View view=home.findViewById(R.id.FrameLayout1);
+		show(view);
+	}
+	public void show(final View v)
+	{
+		ImageView imageView = v.findViewById(R.id.add);
 		if(DB.Asignaturas.LIST_ASIGNATURAS.length<=0||DB.COMUNIDAD)
 			imageView.setVisibility(View.GONE);
 		imageView.setImageResource(R.drawable.ic_tab_add);
 		imageView.setOnClickListener(new OnClickListener()
 			{
 				public void onClick(View arg0)
-				{Base.crud(home, Base.Actions.Add);}
+				{Base.crud(v.getContext(), Base.Actions.Add);}
 			}
 		);
-		base = (ListView) home.findViewById(R.id.list);
-		base_data = new Adapter(home.getBaseContext(),ITEM_TYPE.horario,Adapter.horarios);
+		base =  v.findViewById(R.id.list);
+		base_data = new Adapter(v.getContext(),ITEM_TYPE.horario,Adapter.horarios);
 		base.setAdapter(base_data);
 
 		base.setDividerHeight(0);
@@ -90,15 +95,15 @@ public class Horarios implements OnItemClickListener
 		{
 			base_data.clear();
 			if(ASIGNATURA!=null)
-				for (JSONObject v : LOCAL_DB)
-					base_data.add(new Item(v.getString("dia")
-							, v.getString("hora")
-							+ "  " + v.get("ubicacion")));
+				for (JSONObject vv : LOCAL_DB)
+					base_data.add(new Item(vv.getString("dia")
+							, vv.getString("hora")
+							+ "  " + vv.get("ubicacion")));
 			else
-				for (JSONObject v : LOCAL_DB)
-					base_data.add(new Item(DB.Asignaturas.getName(v.getString("asignatura"))
-							,DB.titulo(v.getString("hora"))
-							+ "  " + v.get("ubicacion")));
+				for (JSONObject vv : LOCAL_DB)
+					base_data.add(new Item(DB.Asignaturas.getName(vv.getString("asignatura"))
+							,DB.titulo(vv.getString("hora"))
+							+ "  " + vv.get("ubicacion")));
 		} catch (JSONException e) {}
 	}
 

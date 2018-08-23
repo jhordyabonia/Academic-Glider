@@ -10,6 +10,7 @@ import models.DB;
 
 import webservice.Asynchtask;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -240,7 +241,7 @@ public abstract class Base extends Activity implements Asynchtask {
 			button.setVisibility(View.GONE);
 	}
 
-	public static void crud(Activity parent, Actions a) 
+	public static void crud(Context parent, Actions a)
 	{
 		action = a;
 		switch (ON_DISPLAY)

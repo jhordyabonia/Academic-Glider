@@ -101,12 +101,12 @@
     <string name="account">Account </string>
 
     <string-array name="items_subject">
-        <item >All</item >
-        <item >Schedule</item >
-        <item >Notes</item >
-        <item >Readings</item >
-        <item >Qualifiable</item >
-        <item >Alerts</item >
+        <item>All</item>
+        <item>Schedule</item>
+        <item>Notes</item>
+        <item>Readings</item>
+        <item>Qualifiable</item>
+        <item>Alerts</item>
     </string-array>
 
     <string name="action_settings">Nueva </string>
@@ -114,5 +114,15 @@
     <string name="title_activity_list_chat_beta">AGlider Chat (Beta) </string>
     <string name="title_activity_profil">ProfilActivity </string>
     <string name="title_activity_recuperar_cuenta">Recover account </string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+    <string name="title_activity_main2">Main2Activity</string>
 
 </resources>
