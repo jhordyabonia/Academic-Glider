@@ -22,6 +22,7 @@ import android.widget.Toast;
 public class Cuenta implements Asynchtask,OnItemSelectedListener
 {
 	HomeActivity home;
+	View lienzo=null;
 	Spinner list;
 	EditText otra_u;
 	boolean logged=false;
@@ -34,24 +35,36 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 		this.home=home;	
 		home.getActionBar().hide();
 		home.show_menu=false;
-		home.setContentView(R.layout.activity_registrarme);
-		
-		((Button) home.findViewById(R.id.registrarme))
-			.setOnClickListener(new OnClickListener()
-				{
-					@Override
-					public void onClick(View v) 
-					{registrarme();		}
-				}
-			);	
-		otra_u=(EditText) home.findViewById(R.id.universidad_otra);
-		img_u=(View) home.findViewById(R.id.img_universidad2);
-		
+		View v=null;
+		if(!HomeActivity.DROP_MODE)
+		{
+			home.setContentView(R.layout.activity_registrarme);
+			v=home.findViewById(R.id.linearLayout);
+		}
+		if(v==null) return;
+
+		setLienzo(v);
+	}
+	public void setLienzo(View l)
+	{
+		lienzo=l;
+
+		lienzo.findViewById(R.id.registrarme)
+				.setOnClickListener(new OnClickListener()
+									{
+										@Override
+										public void onClick(View v)
+										{registrarme();		}
+									}
+				);
+		otra_u= lienzo.findViewById(R.id.universidad_otra);
+		img_u= lienzo.findViewById(R.id.img_universidad2);
+
 		ArrayAdapter<String> base =
-				new ArrayAdapter<String>(home,R.layout.base);			
+				new ArrayAdapter<String>(home,R.layout.base);
 		base.add(home.getString(R.string.university));
 
-		list =  home.findViewById(R.id.universidad);
+		list =  lienzo.findViewById(R.id.universidad);
 		list.setAdapter(base);
 		list.setPrompt(home.getString(R.string.select_university));
 		list.setOnItemSelectedListener(this);
@@ -66,19 +79,22 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 		Toast.makeText(home,home.getString(R.string.insert_2_password),
 				Toast.LENGTH_LONG).show();
 		
-		((Button) home.findViewById(R.id.registrarme))
+		((Button) lienzo.findViewById(R.id.registrarme))
 			.setText(home.getString(R.string.update));
 
-		Image.Loader loader= new Image.Loader((ImageView)home.findViewById(R.id.imagen_usuario));
+		Image.Loader loader= new Image.Loader((ImageView) lienzo.findViewById(R.id.imagen_usuario));
         //DownLoadImage loader = new DownLoadImage(home,R.id.imagen_usuario);
     	loader.execute(DB.User.get("foto"));
-    	
-    	home.findViewById(R.id.textView1).setVisibility(View.GONE);
-		((EditText)home.findViewById(R.id.celular)).setText(DB.User.get("celular"));
-		((EditText)home.findViewById(R.id.nombre)).setText(DB.User.get("nombre"));
-		((EditText)home.findViewById(R.id.email)).setText(DB.User.get("correo"));
-		home.getActionBar().removeAllTabs();
-		home.getActionBar().hide();		
+
+		lienzo.findViewById(R.id.textView1).setVisibility(View.GONE);
+		((EditText)lienzo.findViewById(R.id.celular)).setText(DB.User.get("celular"));
+		((EditText)lienzo.findViewById(R.id.nombre)).setText(DB.User.get("nombre"));
+		((EditText)lienzo.findViewById(R.id.email)).setText(DB.User.get("correo"));
+
+		if(!HomeActivity.DROP_MODE) {
+			home.getActionBar().removeAllTabs();
+			home.getActionBar().hide();
+		}
 	}	
 	@Override
 	public void processFinish(String result) 
@@ -123,16 +139,16 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 	}
 	private void setError(int id,String msj)
 	{
-		((EditText)home.findViewById(id))
+		((EditText)lienzo.findViewById(id))
 			.setError(msj);
 	}
 	private boolean datos()
 	{
-		String celular=((EditText) home.findViewById(R.id.celular)).getText().toString();
-		String password=((EditText)home.findViewById(R.id.password)).getText().toString();
-		String password2=((EditText) home.findViewById(R.id.password2)).getText().toString();
-		String nombre=((EditText)home.findViewById(R.id.nombre)).getText().toString();
-		String email=((EditText)home.findViewById(R.id.email)).getText().toString();
+		String celular=((EditText) lienzo.findViewById(R.id.celular)).getText().toString();
+		String password=((EditText)lienzo.findViewById(R.id.password)).getText().toString();
+		String password2=((EditText) lienzo.findViewById(R.id.password2)).getText().toString();
+		String nombre=((EditText)lienzo.findViewById(R.id.nombre)).getText().toString();
+		String email=((EditText)lienzo.findViewById(R.id.email)).getText().toString();
 		String universidad=getUniversidad();
 
 		if(nombre.length()<8||!nombre.contains(" "))

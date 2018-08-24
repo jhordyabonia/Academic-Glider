@@ -8,17 +8,13 @@ import controllers.Asignaturas;
 import controllers.Horarios;
 import crud.Base;
 import util.ListDias;
-import webservice.LOG;
+import util.NavigationDrawerFragment;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -33,10 +29,6 @@ import android.view.View;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
 
-import java.util.Locale;
-
-import javax.xml.transform.Source;
-
 import static com.jhordyabonia.ag.PlaceholderFragment.newInstance;
 
 public class HomeActivity extends FragmentActivity  implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -45,6 +37,7 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 	public static boolean DROP_MODE=false;
 
 	private FirebaseAnalytics mFirebaseAnalytics;
+	private static final int NOTIFICATION = 8;
 	public static final int LOGIN= 7;
 	public static final int CUENTA = 6;
 	public static final int ASIGNATURAS = 5;
@@ -94,10 +87,21 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 		}
 		return out;
 	}
-
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
+
+		boolean community=position==5||position==55;
+
+		if(position==2&&DB.COMUNIDAD)
+		{
+			DB.COMUNIDAD=false;
+			position=5;
+		}
+
+		if(community)
+			DB.COMUNIDAD=community;
+
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()
 				.replace(R.id.container, newInstance(position))
@@ -157,7 +161,6 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 		Horarios.setDia(which);
 		if(!DROP_MODE)
 			tabHorario.setText(onDisplay(HORARIOS,this) + "\n> "+ DB.DAYS[which]);
-		//findViewById(R.id.)
 
 		View view=findViewById(R.id.FrameLayout1);
 		horario.show(view);
@@ -167,9 +170,6 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 	{
 		super.onResume();
 		Base.itemSeleted=0;
-
-		//if(DROP_MODE)
-		//	return;
 
 		if(DB.LOGGED==false)
 			new Login(this);
@@ -182,25 +182,18 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 	}
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) 
-    {
-		/*if(DROP_MODE)
-			return true;*/
-
-        getMenuInflater().inflate(R.menu.main, menu);
+    { getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu)
     {
-		/*if(DROP_MODE)
-			return true;*/
-
 		if(DB.COMUNIDAD)
       		menu.findItem(R.id.comunidad).setTitle(getString(R.string.myglider));
     	else
     		menu.findItem(R.id.comunidad).setTitle(getString(R.string.community));
 
-    	if(ON_DISPLAY==HORARIOS||DROP_MODE)
+    	if(ON_DISPLAY==HORARIOS)
     		menu.findItem(R.id.actions_horarios).setVisible(true);
     	else
     		menu.findItem(R.id.actions_horarios).setVisible(false);
@@ -218,18 +211,13 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
     public boolean onOptionsItemSelected(MenuItem item) 
     {
 
-		if(DROP_MODE)
-		{
-			if(item.getItemId()==R.id.actions_horarios)
-				list_dias.show(getSupportFragmentManager(), "missiles");
-			return true;
-		}
-
 		Intent intent;
         switch (item.getItemId()) 
         {           
         	case android.R.id.home:
-        		back(KeyEvent.KEYCODE_BACK);
+        		if(!DROP_MODE)
+        			back(KeyEvent.KEYCODE_BACK);
+        		else mNavigationDrawerFragment.open();
         		return true;
         	case R.id.cuenta:
     			(new Cuenta(this)).fill();
@@ -291,7 +279,7 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 		if(DB.COMUNIDAD&&!DROP_MODE)
 		{
 			actionBar.removeTab(tabHorario);
-    		actionBar.setTitle(R.string.horarios);
+    		actionBar.setTitle(R.string.community);
 			setContentView(R.layout.lienzo);
 			View view=findViewById(R.id.FrameLayout1);
     		asignaturas.todas(view);
@@ -308,11 +296,31 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 				ViewPager mViewPager = findViewById(R.id.pager);
 				asignaturas.setPager(mViewPager);
 				asignaturas.show(ON_DISPLAY);
+			}else
+			{
+				onNavigationDrawerItemSelected(classicToDrop_mode(ON_DISPLAY));
 			}
 		}
-
 		actionBar.show(); 
-		//invalidateOptionsMenu();
+		invalidateOptionsMenu();
+	}
+	public int classicToDrop_mode(int i){
+		int out;
+		switch (i) {
+			case ASIGNATURAS:
+				out = DB.COMUNIDAD ? 55 : 2;
+				break;
+			case HORARIOS:
+				out = 1;
+				break;
+			case NOTIFICATION:
+				out=0;
+				break;
+			default:
+				out = -1;
+		}
+
+		return out;
 	}
 	public void setAsignaturaActual(int i){ASIGNATURA_ACTUAL=i;}
 	public void abrirAsignatura()
@@ -380,9 +388,14 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 				new Login(this);
 			else
 			{
-				actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-				ON_DISPLAY=ASIGNATURAS;
-				make(null,false);
+				if(!DROP_MODE) {
+					actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+					ON_DISPLAY = ASIGNATURAS;
+					make(null, false);
+				}else {
+					onNavigationDrawerItemSelected(2);
+					actionBar.show();
+				}
 			}
 		}else if(DB.COMUNIDAD&&ON_DISPLAY==ASIGNATURAS)
 		{
@@ -396,20 +409,18 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 			if(DB.COMUNIDAD)
 				actionBar.setTitle(getString(R.string.community));
 			else actionBar.setTitle(getString(R.string.myglider));
-			
-			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-			actionBar.selectTab(tabAsignaturas);
+
+			if(DROP_MODE){
+				actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+				actionBar.selectTab(tabAsignaturas);
+			}
 		}
 		return true;
-
 	}
+
 	@Override
 	public boolean onKeyDown( int arg1, KeyEvent arg2) 
 	{
-
-		if(DROP_MODE)
-			return super.onKeyDown(arg1,arg2);
-
 
 		if(back(arg1))
 			return true;

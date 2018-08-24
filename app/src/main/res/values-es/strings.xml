@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="myglider">My Glider </string>
+    <string name="notifications">Notificaciones </string>
     <string name="asignaturas">asignaturas </string>
     <string name="apuntes">apuntes </string>
     <string name="calificables">calificables </string>
