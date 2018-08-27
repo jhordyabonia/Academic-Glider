@@ -13,7 +13,6 @@ public class MainActivity extends HomeActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.dropMode(true);
-        this.onNavigationDrawerItemSelected(2);
+        //this.onNavigationDrawerItemSelected(2);
     }
-
 }

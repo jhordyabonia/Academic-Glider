@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import models.DB;
 import webservice.Asynchtask;
+import webservice.LOG;
 
 import android.content.Intent;
 import android.view.View;
@@ -33,7 +34,7 @@ public class Login
 		}
 	};
 	public Login(final HomeActivity  home) 
-	{	
+	{
 		HomeActivity.ON_DISPLAY=HomeActivity.LOGIN;
 		DB.LOGGED=false;
 		this.home=home;
@@ -51,6 +52,7 @@ public class Login
 		
 		home.findViewById(R.id.registrarme_formulario)
 		.setOnClickListener(listener);
+		LOG.save("new Login","loging_debug.txt");
 	}
 	public static void login(final HomeActivity home)
 	{

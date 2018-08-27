@@ -8,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import chat.DBChat;
 import controllers.Alertas;
 import models.DB;
 import util.InformacionFragment;
+import webservice.LOG;
 
 import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
 import static com.jhordyabonia.ag.HomeActivity.DROP_MODE;
@@ -23,7 +26,7 @@ public  class PlaceholderFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     HomeActivity home;
-    public static int BEFORE=0;
+    View rootView=null;
 
     public static PlaceholderFragment newInstance(int sectionNumber) {
         PlaceholderFragment fragment = new PlaceholderFragment();
@@ -37,7 +40,6 @@ public  class PlaceholderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         home = (HomeActivity) getActivity();
-        View rootView=null;
         Bundle args = getArguments();
         int on_display = args.getInt(ARG_SECTION_NUMBER);
 
@@ -47,6 +49,13 @@ public  class PlaceholderFragment extends Fragment {
                 ViewPager mViewPager = rootView.findViewById(R.id.pager);
                 home.asignaturas.setPager(mViewPager);
                 home.asignaturas.show(HomeActivity.ALERTAS);
+                break;
+            case 0:
+                rootView = inflater.inflate(R.layout.lienzo, container, false);
+                Notificaciones noti= new Notificaciones();
+                noti.paint(rootView);
+                ON_DISPLAY=HomeActivity.NOTIFICATION;
+                home.actionBar.setTitle(R.string.notifications);
                 break;
             case 1:
                 rootView = inflater.inflate(R.layout.lienzo, container, false);

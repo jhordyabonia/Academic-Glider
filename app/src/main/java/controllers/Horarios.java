@@ -41,7 +41,7 @@ public class Horarios implements OnItemClickListener
 	private HomeActivity home;
 	private ListView base;
 	private Adapter base_data;
-	private ArrayList<JSONObject> LOCAL_DB = new ArrayList();
+	private ArrayList<JSONObject> LOCAL_DB = new ArrayList<>();
 	
 	public static void setDia(int index) 
 	{	ASIGNATURA=null; DIA = DB.DAYS[index];}

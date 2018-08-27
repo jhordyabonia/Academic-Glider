@@ -65,6 +65,7 @@
         <activity android:name=".InformacionActivity" />
         <activity android:name="chat.ProfileActivity" />
         <activity android:name=".RecuperarCuentaActivity" />
+        <activity android:name=".NotificacionesActivity" />
 
         <service
             android:name="util.UploadService"

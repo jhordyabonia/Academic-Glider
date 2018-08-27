@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.jhordyabonia.ag.R;
 
+import java.util.ArrayList;
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
@@ -31,6 +33,9 @@ import com.jhordyabonia.ag.R;
  */
 public class NavigationDrawerFragment extends Fragment {
 
+
+    public static ArrayList<Integer> HISTORY= new ArrayList<>();
+    private int display_now=-1;
     /**
      * Remember the position of the selected item.
      */
@@ -115,6 +120,7 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.exit),
                 }));
        // mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+        //        HISTORY.add(on_display);
         return mDrawerListView;
     }
 
@@ -201,7 +207,10 @@ public class NavigationDrawerFragment extends Fragment {
         else mDrawerLayout.openDrawer(mFragmentContainerView);
     }
 
-    private void selectItem(int position) {
+    public void selectItem(int position) {
+        selectItem(position,true);
+    }
+    private void selectItem(int position,boolean add) {
 
         getActionBar().show();
         mCurrentSelectedPosition = position;
@@ -214,6 +223,17 @@ public class NavigationDrawerFragment extends Fragment {
         if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(position);
         }
+        if(add)
+            HISTORY.add(++display_now,position);
+
+    }
+    public boolean back()
+    {
+        if(--display_now>=0){
+            selectItem(HISTORY.get(display_now),false);
+            return true;
+        }else display_now=-1;
+        return false;
     }
 
     @Override

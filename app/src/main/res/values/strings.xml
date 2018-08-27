@@ -3,7 +3,7 @@
 
     <string name="app_name">Academic Glider </string>
     <string name="myglider">Mi Glider </string>
-    <string name="notifications">Notificationes </string>
+    <string name="notifications">Notifications </string>
     <string name="asignaturas">Subjects </string>
     <string name="apuntes">Notes </string>
     <string name="calificables">Qualifiables </string>
@@ -26,6 +26,7 @@
     <string name="network_err">Problems with the network, Check your connection
       or try later </string>
 
+    <string name="send">Send </string>
     <string name="update">Update </string>
     <string name="two_fields">You must, enter both fields </string>
     <string name="empty">There is still nothing here </string>
@@ -125,5 +126,44 @@
 
     <string name="action_example">Example action</string>
     <string name="title_activity_main2">Main2Activity</string>
+
+
+
+    <string name="info_FAQ">Frequent questions</string>
+    <string name="info_see">See Tabulated Subjects</string>
+    <string name="info_into_diplay">On the home screen, "My Glider" Touch the tab "SUBJECTS"</string>
+    <string name="info_ver_horarios">See Schedules</string>
+    <string name="info_ver_horarios0">To see the schedules of each day of the week. On the home screen, "My Glider" double-tap the "SCHEDULES "</string>
+    <string name="info_ver_horarios1">To see the schedules of a subject. In the tabulations of subjects, keep the subject of interest pre-selected and later, in menu delplegado select the option "Schedules" </string>
+    <string name="info_agregar_asignatura">Add a Subject</string>
+    <string name="info_in_tab">In the subject tab, touch the tab (add) "+"</string>
+    <string name="info_agregar_horarios">Add Schedules</string>
+
+    <string name="info_0">With the tab "HOURS" selected, touch the tab (add) "+"</string>
+    <string name="info_1">Add Qualifiable</string>
+    <string name="info_2">In the subject tab, touch the subject of interest to open it. Scroll to the page "Qualifiable", sliding to the sides the pages, of the subject. Touch the tab (add) "+"</string>
+    <string name="info_3">Add Alerts</string>
+    <string name="info_4">In the subject tab, touch the subject of interest to open it. Scroll to the "Alerts" page, sliding pages of the subject. Touch the tab (add) "+"</string>
+    <string name="info_5">Add Notes</string>
+    <string name="info_6">In the subject tab, touch the subject of interest to open it. Scroll to the page "Apuntes", sliding pages to the sides, of the subject. Touch the tab (add) "+"</string>
+    <string name="info_7">Download a subject from the Glider Community</string>
+    <string name="info_8">On the home screen, "My Glider" open the "Context Menu ". select the option "Community Glider".</string>
+    <string name="info_9">On the screen, "Community Glider" Browse or search among the subjects, shared by the community, by tapping the "Search" and filtering the content, by universities and / or names of the subjects.</string>
+    <string name="info_10">Keep pressing the subject of interest, and in the menu displayed, select the option Download.</string>
+    <string name="info_11">Share a subject in the Glider Community</string>
+    <string name="info_12">On the home screen, "My Glider", in the tabulated subjects, hold the subject of interest and then, in the menu select the option "Share", in the displayed dialog, select the pages of the subject , that you want to share and touch the "Share" button.</string>
+    <string name="info_13">How to take advantage</string>
+    <string name="info_14">Create alerts of your qualifications</string>
+    <string name="info_15">\nKeep alarms active</string>
+    <string name="info_16">\nBefore creating a subject, search and download it from the Glider Community</string>
+    <string name="info_17">\nEliminate expired alerts, notes and subjects that you no longer use</string>
+    <string name="info_18">\nShare the subjects you have created, in the Glider Community, before eliminating them</string>
+    <string name="info_19">\nSend your comments, or ideas on how to improve the app</string>
+    <string name="info_20">\nDescribe and send the possible failures of the app, that you find</string>
+    <string name="info_21">Developer</string>
+    <string name="info_22">Tenia algo de tiempo libre por estos dias&#8230; asi que hice esta app. Espero, si no les gusta almenos les sea util :P \nSi tienes una idea para mejorarla. Llama o escribeme; \n\n315&#8211;824&#8211;1412\njeigl7@gmail.com</string>
+    <string name="info_23">Message</string>
+    <string name="info_24">With the tab "HOURS" selected, touch the tab (add) "+"</string>
+    <string name="info_feedback">FeedBack</string>
 
 </resources>

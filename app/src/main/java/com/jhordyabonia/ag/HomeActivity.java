@@ -9,6 +9,7 @@ import controllers.Horarios;
 import crud.Base;
 import util.ListDias;
 import util.NavigationDrawerFragment;
+import webservice.LOG;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -37,7 +38,7 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 	public static boolean DROP_MODE=false;
 
 	private FirebaseAnalytics mFirebaseAnalytics;
-	private static final int NOTIFICATION = 8;
+	public static final int NOTIFICATION = 8;
 	public static final int LOGIN= 7;
 	public static final int CUENTA = 6;
 	public static final int ASIGNATURAS = 5;
@@ -154,6 +155,8 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 		bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "HomeActivity");
 		bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
 		mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+		LOG.save("new Login","loging_debug0.txt");
+
 
 	}
 	public void show_dias(int which)
@@ -171,7 +174,7 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 		super.onResume();
 		Base.itemSeleted=0;
 
-		if(DB.LOGGED==false)
+		if(!DB.LOGGED)
 			new Login(this);
 		else
 		{			
@@ -201,10 +204,25 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
     	if(ON_DISPLAY<HORARIOS)
     		menu.findItem(R.id.chat)
 					.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-    	else 
+    	/*else
 			menu.findItem(R.id.chat)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT
-						|MenuItem.SHOW_AS_ACTION_ALWAYS);
+						|MenuItem.SHOW_AS_ACTION_ALWAYS);*/
+
+		if(ON_DISPLAY==NOTIFICATION)
+			menu.findItem(R.id.actions_notifications).setVisible(false);
+		else
+			menu.findItem(R.id.actions_notifications).setVisible(true);
+
+    	if(DROP_MODE){
+
+			menu.findItem(R.id.cuenta).setVisible(false);
+			menu.findItem(R.id.comunidad).setVisible(false);
+			menu.findItem(R.id.contactos).setVisible(false);
+			menu.findItem(R.id.informacion).setVisible(false);
+			menu.findItem(R.id.salir).setVisible(false);
+			//menu.findItem(R.id.chat ).setVisible(false);
+		}
     	
     	return show_menu;
     }
@@ -219,9 +237,12 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
         			back(KeyEvent.KEYCODE_BACK);
         		else mNavigationDrawerFragment.open();
         		return true;
-        	case R.id.cuenta:
-    			(new Cuenta(this)).fill();
-            	return true;
+			case R.id.actions_notifications:
+				startActivity(new Intent(this,NotificacionesActivity.class));
+				return true;
+			case R.id.cuenta:
+				(new Cuenta(this)).fill();
+				return true;
             case R.id.comunidad:
             	DB.COMUNIDAD=!DB.COMUNIDAD;
         		DB.update(this);	
@@ -330,7 +351,8 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 
 		if(DROP_MODE)
 		{
-			onNavigationDrawerItemSelected(-1);
+			mNavigationDrawerFragment.selectItem(-1);
+			//ON_DISPLAY
 			return;
 		}
 
@@ -343,7 +365,13 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 	}
 	public void horarios_asignatura()
 	{
-		Horarios.ASIGNATURA=DB.Asignaturas.LIST_ID_ASIGNATURAS[Base.itemSeleted];		
+		Horarios.ASIGNATURA=DB.Asignaturas.LIST_ID_ASIGNATURAS[Base.itemSeleted];
+
+		if(DROP_MODE)
+		{
+			mNavigationDrawerFragment.selectItem(1);
+			return;
+		}
 		actionBar.selectTab(tabHorario);
 		tabHorario.setText(onDisplay(HORARIOS,this)+"\n>"
 				+DB.titulo(DB.Asignaturas.LIST_ASIGNATURAS[Base.itemSeleted],11));
@@ -382,6 +410,7 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 	{
 		if(arg1!=KeyEvent.KEYCODE_BACK)
 			return false;
+
 		if(ON_DISPLAY==CUENTA)
 		{
 			if(!DB.LOGGED)
@@ -393,8 +422,8 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 					ON_DISPLAY = ASIGNATURAS;
 					make(null, false);
 				}else {
-					onNavigationDrawerItemSelected(2);
-					actionBar.show();
+					//onNavigationDrawerItemSelected(2);
+					//actionBar.show();
 				}
 			}
 		}else if(DB.COMUNIDAD&&ON_DISPLAY==ASIGNATURAS)
@@ -410,10 +439,11 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 				actionBar.setTitle(getString(R.string.community));
 			else actionBar.setTitle(getString(R.string.myglider));
 
-			if(DROP_MODE){
+			if(DROP_MODE) {
 				actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-				actionBar.selectTab(tabAsignaturas);
-			}
+
+			}else actionBar.selectTab(tabAsignaturas);
+
 		}
 		return true;
 	}
@@ -421,9 +451,13 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 	@Override
 	public boolean onKeyDown( int arg1, KeyEvent arg2) 
 	{
+		if(DROP_MODE)
+        {
+            if(arg1==KeyEvent.KEYCODE_BACK)
+                if(mNavigationDrawerFragment.back())
+                     return true;
+        }else  if(back(arg1)) return true;
 
-		if(back(arg1))
-			return true;
 		return super.onKeyDown(arg1,arg2);
 	}
 	@Override

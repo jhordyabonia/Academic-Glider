@@ -15,13 +15,14 @@ import com.jhordyabonia.ag.R;
 
 public class Adapter extends ArrayAdapter{
 
-    public enum ITEM_TYPE{asignatura,alerta,lectura,horario,calificable,apunte};
-	public  static ArrayList<Item> asignaturas= new ArrayList<Item>();
-	public  static ArrayList<Item> alertas= new ArrayList<Item>();
-	public  static ArrayList<Item> apuntes= new ArrayList<Item>();
-	public  static ArrayList<Item> horarios= new ArrayList<Item>();
-	public  static ArrayList<Item> calificables= new ArrayList<Item>();
-	public  static ArrayList<Item> lecturas= new ArrayList<Item>();
+    public enum ITEM_TYPE{asignatura,alerta,lectura,horario,calificable,apunte, notificaciones};
+	public  static ArrayList<Item> asignaturas= new ArrayList<>();
+	public  static ArrayList<Item> alertas= new ArrayList<>();
+	public  static ArrayList<Item> apuntes= new ArrayList<>();
+	public  static ArrayList<Item> horarios= new ArrayList<>();
+	public  static ArrayList<Item> calificables= new ArrayList<>();
+	public  static ArrayList<Item> lecturas= new ArrayList<>();
+	public  static ArrayList<Item> notificaciones = new ArrayList<>();
 	
 	private Context context;
 	private ArrayList<Item> locale;

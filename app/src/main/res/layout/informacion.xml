@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="Preguntas Frecuentes"
+            android:text="@string/info_FAQ"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ImageView
@@ -79,137 +79,137 @@
             android:id="@+id/TextView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ver Tabulado de Asignaturas"
+            android:text="@string/info_see"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/TextView16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="En la pantalla de inicio, &apos;Mi Glider&apos; toca la pestaña &apos;ASIGNATURAS&apos;" />
+            android:text="@string/info_into_diplay" />
 
         <TextView
             android:id="@+id/TextView15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ver Horarios"
+            android:text="@string/info_ver_horarios"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/TextView14"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Para ver los horarios de cada dia de la semana. En la pantalla de inicio, &apos;Mi Glider&apos; toca 2 veces la pestaña &apos;HORARIOS&apos;" />
+            android:text="@string/info_ver_horarios0" />
 
         <TextView
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="fill"
-            android:text="Para ver los horarios de una asignatura. En el tabulado de asignaturas, manten precionada la asignatura de interes y posteriormente, en menu delplegado selecciona la opcion &apos;Horarios&apos;" />
+            android:text="@string/info_ver_horarios1" />
 
         <TextView
             android:id="@+id/TextView05"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Agregar una Asignatura"
+            android:text="@string/info_agregar_asignatura"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/TextView04"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="En el tabulado de asignaturas, toca la pestaña (add) &apos;+&apos;" />
+            android:text="@string/info_in_tab" />
 
         <TextView
             android:id="@+id/TextView06"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Agregar Horarios"
+            android:text="@string/info_agregar_horarios"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/TextView07"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Con la pestaña &apos;HORARIOS&apos; seleccionada, toca la pestaña (add) &apos;+&apos;" />
+            android:text="@string/info_0" />
 
         <TextView
             android:id="@+id/TextView02"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Agregar Calificables"
+            android:text="@string/info_1"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/TextView03"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="En el tabulado de asignaturas, toca la asignatura de interes para abrirla. Desplazate hasta la pagina &apos;Calificables&apos;, deslizando a los lados  las paginas, de la asignatura. toca la pestaña (add) &apos;+&apos;" />
+            android:text="@string/info_2" />
 
         <TextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Agregar Alertas"
+            android:text="@string/info_3"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="En el tabulado de asignaturas, toca la asignatura de interes para abrirla. Desplazate hasta la pagina &apos;Alertas&apos;, deslizando a los lados  las paginas, de la asignatura. toca la pestaña (add) &apos;+&apos;" />
+            android:text="@string/info_4" />
 
         <TextView
             android:id="@+id/TextView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Agregar Apuntes"
+            android:text="@string/info_5"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/TextView10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="En el tabulado de asignaturas, toca la asignatura de interes para abrirla. Desplazate hasta la pagina &apos;Apuntes&apos;, deslizando a los lados  las paginas, de la asignatura. toca la pestaña (add) &apos;+&apos;" />
+            android:text="@string/info_6" />
 
         <TextView
             android:id="@+id/TextView09"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Descargar una asignatura de la Comunidad Glider"
+            android:text="@string/info_7"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/TextView08"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="En la pantalla de inicio, &apos;Mi Glider&apos; abre el &apos;Menu contextual&apos;. selecciona la opcion &apos;Comunidad Glider&apos;. " />
+            android:text="@string/info_8" />
 
         <TextView
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="En la pantalla, &apos;Comunidad Glider&apos; navega o busca entre las asignaturas, compartidas por la comunidad, tocando la pestaña &apos;Buscar&apos; y filtrando el contenido, por universidades y/o nombres de las asignaturas." />
+            android:text="@string/info_9" />
 
         <TextView
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Manten presionada la asignatura de interes, y en el menu desplegado, selecciona la opcion Descargar." />
+            android:text="@string/info_10" />
 
         <TextView
             android:id="@+id/TextView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Compartir una asignatura en la Comunidad Glider"
+            android:text="@string/info_11"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/TextView13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="En la pantalla de inicio, &apos;Mi Glider&apos;, en el tabulado de asignaturas, manten precionada la asignatura de interes y posteriormente, en el menu delplegado selecciona la opcion &apos;Compartir&apos;, en el dialogo desplegado, selecciona las paginas de la asignatura, que deseas compartir y toca el boton &apos;Compartir&apos;." />
+            android:text="@string/info_12" />
     </LinearLayout>
     </ScrollView>
 
@@ -225,7 +225,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="Como Sacarle Provecho"
+            android:text="@string/info_13"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ImageView
@@ -265,48 +265,48 @@
                 android:id="@+id/TextView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Crea alertas de tus calificaciones"
+                android:text="@string/info_14"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/TextView19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="\nManten activas las alarmas"
+                android:text="@string/info_15"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/textView21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="\nAntes de crear una asignatura, buscala y descarga desde la Comunidad Glider"
+                android:text="@string/info_16"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/TextView21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="\nElimina las alertas vencidas, apuntes y asignaturas que ya no uses"
+                android:text="@string/info_17"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/TextView20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="\nComparte las asignaturas que hallas creado, en la Comunidad Glider, antes de eliminarlas"
+                android:text="@string/info_18"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/textView19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="\nEnvia tus comentarios, o ideas sobre como mejorar el app"
+                android:text="@string/info_19"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
             <TextView
                 android:id="@+id/textView39"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="\nDescribe y envia los posibles fallos del app, que encuentres"
+                android:text="@string/info_20"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
     </ScrollView>
@@ -321,7 +321,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="Desarrollador"
+            android:text="@string/info_21"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ImageView
@@ -350,7 +350,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="25dp"
-        android:text="Tenia algo de tiempo libre por estos dias... asi que hice esta app. Espero, si no les gusta almenos les sea util :P \nSi tienes una idea para mejorarla. Llama o escribeme; \n\n315-824-1412\njeigl7@gmail.com"
+        android:text="@string/info_22"
         android:visibility="gone" />
     
     <TableRow
@@ -364,7 +364,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="FeedBack"
+            android:text="@string/info_feedback"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ImageView
@@ -393,7 +393,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:text="Mensaje"
+        android:text="@string/info_23"
         android:visibility="gone" />
 
     <EditText
@@ -419,7 +419,7 @@
         android:layout_marginBottom="50dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:text="Enviar"
+        android:text="@string/send"
         android:visibility="gone" />
 
 </LinearLayout>

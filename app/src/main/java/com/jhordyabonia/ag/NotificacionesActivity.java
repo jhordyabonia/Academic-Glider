@@ -1,0 +1,25 @@
+package com.jhordyabonia.ag;
+
+import android.app.FragmentManager;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.view.View;
+
+import util.InformacionFragment;
+
+import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
+
+public class NotificacionesActivity extends FragmentActivity
+{
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.lienzo);
+        Notificaciones noti= new Notificaciones();
+
+        noti.paint(findViewById(R.id.FrameLayout1));
+        ON_DISPLAY=HomeActivity.NOTIFICATION;
+        getActionBar().setTitle(R.string.notifications);
+    }
+}

@@ -24,6 +24,7 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Toast;
 
 import com.jhordyabonia.ag.HomeActivity;
+import com.jhordyabonia.ag.Notificaciones;
 import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
 
@@ -64,7 +65,9 @@ public class Alertas extends Controller
 		  {
 			  String result=fijar_alarma(a,t,cancel);
 			  //if(result.contains("Vencida"))
-				  Toast.makeText(t,result, Toast.LENGTH_SHORT).show();
+			//	  Toast.makeText(t,result, Toast.LENGTH_SHORT).show();
+
+			  Notificaciones.add("","Alerta","",result);
 		  }
 	  }
 	  catch (NumberFormatException e) {} 
@@ -124,7 +127,8 @@ public class Alertas extends Controller
 		  return;
 	  }
 	  String dd = fijar_alarma(a,t);
-	  Toast.makeText(t,dd, Toast.LENGTH_SHORT).show();
+	  //Toast.makeText(t,dd, Toast.LENGTH_SHORT).show();
+		Notificaciones.add("","Alerta",a.getString("id"),dd);
 	} 
 	catch (NumberFormatException e) {}
 	catch (JSONException e) {}	  
@@ -146,19 +150,20 @@ public class Alertas extends Controller
 			{
 				if(result.contains("Error"))
 				{
-					Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+					//Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+					Notificaciones.add("","Alerta",id,result);
 				}else if(result.contains("activada"))
 				{
-					Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+					//Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
 					HomeActivity home = (HomeActivity)getActivity();
-					establecerAlarma(item,home);				
+					establecerAlarma(item,home);
+					Notificaciones.add("","Alerta",id,result);
 					
 					if(home!=null)
 						DB.update(home);
 					else DB.update();
 				}else
-				Toast.makeText(getActivity(), "Problemas con la red, Verifica tu conexion" +
-						" o intenta mas tarde", Toast.LENGTH_SHORT).show();				
+				Toast.makeText(getActivity(), R.string.network_err, Toast.LENGTH_SHORT).show();
 			}
 		};
 		Server.send("alertas/alerta", getActivity(), recep);
