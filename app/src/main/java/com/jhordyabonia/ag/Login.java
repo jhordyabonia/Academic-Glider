@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import models.DB;
 import webservice.Asynchtask;
-import webservice.LOG;
 
 import android.content.Intent;
 import android.view.View;
@@ -26,7 +25,10 @@ public class Login
 				case R.id.entrar:			
 					login(home); break;
 				case R.id.registrarme_formulario:
-					new Cuenta(home); break;
+                    home.setContentView(R.layout.activity_registrarme);
+                    View vi=home.findViewById(R.id.linearLayout);
+                    (new Cuenta(home)).setLienzo(vi);
+					break;
 				case R.id.olvide_clave:
 					home.startActivity(new Intent (home,RecuperarCuentaActivity.class));
 					break;
@@ -52,7 +54,6 @@ public class Login
 		
 		home.findViewById(R.id.registrarme_formulario)
 		.setOnClickListener(listener);
-		LOG.save("new Login","loging_debug.txt");
 	}
 	public static void login(final HomeActivity home)
 	{
@@ -77,8 +78,7 @@ public class Login
 					HomeActivity.ON_DISPLAY=HomeActivity.ASIGNATURAS;
 					DB.save(home, result, DB.FILE_DB);
 					home.startActivity(new Intent (home,HomeActivity.class));
-					//home.dropMode(HomeActivity.DROP_MODE);
-					//home.make(result,true);
+					home.finish();
 				}
 				else if(result.equals("Datos incorrectos!"))
 					Toast.makeText(home, result, Toast.LENGTH_SHORT).show();

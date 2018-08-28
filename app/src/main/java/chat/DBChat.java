@@ -14,6 +14,7 @@ import webservice.Asynchtask;
 import android.app.Activity;
 import android.widget.Toast;
 
+import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
 
 public class DBChat 
@@ -147,7 +148,7 @@ public class DBChat
 						if(result.contains(":"))					
 							setFecha(a,result);
 						else if(a!=null)
-							Toast.makeText(a,"Se muestran, fecha y hora del servidor",
+							Toast.makeText(a, R.string.network_date,
 									Toast.LENGTH_LONG).show();
 					}					
 				}
@@ -161,7 +162,7 @@ public class DBChat
 	}
 	private static long fechaInMillis(String in)
 	{
-		String tmp_fecha[]=new String[3];
+		String tmp_fecha[];
 		if(in.contains(" "))
 			tmp_fecha=in.substring(0,in.indexOf(" ")).split("-");
 		else tmp_fecha=(in+" 00:00:00").substring(0,

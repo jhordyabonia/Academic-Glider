@@ -16,6 +16,7 @@ import org.json.JSONException;
 import webservice.Asynchtask;
 
 import com.jhordyabonia.ag.HomeActivity;
+import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
 
 import controllers.Alertas;
@@ -98,8 +99,7 @@ public abstract class DB
 				if(home!=null)
 				{
 					if(result.isEmpty())
-					Toast.makeText(home, "Error en el servidor, " +
-							"intenta mas tarde", Toast.LENGTH_SHORT).show();
+					Toast.makeText(home, R.string.network_err, Toast.LENGTH_SHORT).show();
 					else if(result.equals("Datos incorrectos!"))
 						Toast.makeText(home, result, Toast.LENGTH_SHORT).show();
 					else if(result.contains(TOKEN))
@@ -110,8 +110,7 @@ public abstract class DB
 					}
 					else
 					{
-						Toast.makeText(home, "Problemas con la red, Verifica tu conexion" +
-								" o intenta mas tarde", Toast.LENGTH_SHORT).show();
+						Toast.makeText(home, R.string.network_err, Toast.LENGTH_SHORT).show();
 						home.make(null,false);
 					}
 				}else

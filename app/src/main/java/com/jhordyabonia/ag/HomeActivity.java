@@ -26,6 +26,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
@@ -35,7 +36,7 @@ import static com.jhordyabonia.ag.PlaceholderFragment.newInstance;
 public class HomeActivity extends FragmentActivity  implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
 	private NavigationDrawerFragment mNavigationDrawerFragment;
-	public static boolean DROP_MODE=false;
+	public static boolean DROP_MODE=true;
 
 	private FirebaseAnalytics mFirebaseAnalytics;
 	public static final int NOTIFICATION = 8;
@@ -49,7 +50,7 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 	public static final int ALERTAS = 0;
 
 	public static int ON_DISPLAY = ASIGNATURAS;
-	public static boolean UPDATE=false;
+	public static boolean UPDATE = false;
 
 	private static int ASIGNATURA_ACTUAL = 0;
 	
@@ -78,13 +79,12 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 		String out = "";
 		switch (i)
 		{
-
-			case APUNTES:out = c.getString(R.string.apuntes);break;
-			case ALERTAS:out = c.getString(R.string.alertas);break;
-			case LECTURAS:out = c.getString(R.string.lecturas);break;
-			case CALIFICABLES:out = c.getString(R.string.calificables);break;
-			case HORARIOS:out = c.getString(R.string.horarios);break;
-			case ASIGNATURAS:out = c.getString(R.string.asignaturas);break;
+			case APUNTES:out = c.getString(R.string.apuntes); break;
+			case ALERTAS:out = c.getString(R.string.alertas); break;
+			case LECTURAS:out = c.getString(R.string.lecturas); break;
+			case CALIFICABLES:out = c.getString(R.string.calificables); break;
+			case HORARIOS:out = c.getString(R.string.horarios); break;
+			case ASIGNATURAS:out = c.getString(R.string.asignaturas); break;
 		}
 		return out;
 	}
@@ -310,8 +310,9 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 		else if(ON_DISPLAY==HORARIOS&&!DROP_MODE)
 			actionBar.selectTab(tabHorario);
 		else
-		{ 
-			actionBar.setTitle(DB.titulo(DB.Asignaturas.LIST_ASIGNATURAS[ASIGNATURA_ACTUAL]));
+		{
+			if(DB.Asignaturas.LIST_ASIGNATURAS.length<ASIGNATURA_ACTUAL)
+				actionBar.setTitle(DB.titulo(DB.Asignaturas.LIST_ASIGNATURAS[ASIGNATURA_ACTUAL]));
 
 			if(!DROP_MODE) {
 				setContentView(R.layout.fragment_collection_object);
@@ -441,9 +442,13 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 			else actionBar.setTitle(getString(R.string.myglider));
 
 			if(DROP_MODE) {
-				actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+				actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 
-			}else actionBar.selectTab(tabAsignaturas);
+			}else{
+
+				actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+				actionBar.selectTab(tabAsignaturas);
+			}
 
 		}
 		return true;

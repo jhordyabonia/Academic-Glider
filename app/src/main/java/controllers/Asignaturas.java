@@ -143,7 +143,6 @@ public class Asignaturas implements OnItemClickListener
 	{
 		Base.itemSeleted = 0;
 		ON_DISPLAY=HomeActivity.ASIGNATURAS;
-		//home.setContentView(R.layout.lienzo);
 		ImageView imageView =  view.findViewById(R.id.add);
 
 		base =  view.findViewById(R.id.list);

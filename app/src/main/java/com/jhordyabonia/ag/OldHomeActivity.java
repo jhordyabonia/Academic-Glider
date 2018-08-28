@@ -6,8 +6,7 @@ import android.widget.TextView;
 import models.DB;
 import util.NavigationDrawerFragment;
 
-public class MainActivity extends HomeActivity
+public class OldHomeActivity extends HomeActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-    public MainActivity()
-    {super();DROP_MODE=true;}
+    public OldHomeActivity(){DROP_MODE=false;}
 }

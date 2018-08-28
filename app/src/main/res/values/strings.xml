@@ -125,7 +125,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_example">Example action</string>
-    <string name="title_activity_main2">Main2Activity</string>
+    <string name="no_qualify">Sin calificar</string>
+    <string name="network_date">Se muestran, fecha y hora del servidor</string>
 
 
 
