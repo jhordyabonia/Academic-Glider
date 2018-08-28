@@ -74,8 +74,11 @@ public class Login
 					Toast.makeText(home, home.getString(R.string.network_err), Toast.LENGTH_SHORT).show();
 				else if(result.contains(DB.TOKEN))
 				{
-					HomeActivity.ON_DISPLAY=HomeActivity.ASIGNATURAS;				
-					home.make(result,true);
+					HomeActivity.ON_DISPLAY=HomeActivity.ASIGNATURAS;
+					DB.save(home, result, DB.FILE_DB);
+					home.startActivity(new Intent (home,HomeActivity.class));
+					//home.dropMode(HomeActivity.DROP_MODE);
+					//home.make(result,true);
 				}
 				else if(result.equals("Datos incorrectos!"))
 					Toast.makeText(home, result, Toast.LENGTH_SHORT).show();

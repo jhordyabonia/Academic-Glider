@@ -114,6 +114,7 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.asignaturas),
                         getString(R.string.contacts),
                         getString(R.string.chats),
+                        getString(R.string.groups),
                         getString(R.string.community),
                         getString(R.string.account),
                         getString(R.string.info_title),

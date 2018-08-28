@@ -208,7 +208,7 @@ public abstract class DB
 			db = new JSONObject(core_raw);
 			LOGGED=true;
 			return true;
-		} catch (JSONException e) {return false;}
+		} catch (JSONException e) {LOGGED=false;return false;}
 	}
 
 	public static void model(String name)

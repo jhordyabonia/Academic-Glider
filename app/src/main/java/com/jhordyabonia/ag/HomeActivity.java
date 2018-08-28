@@ -92,12 +92,12 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 	public void onNavigationDrawerItemSelected(int position) {
 		// update the main content by replacing fragments
 
-		boolean community=position==5||position==55;
+		boolean community=position==6||position==66;
 
 		if(position==2&&DB.COMUNIDAD)
 		{
 			DB.COMUNIDAD=false;
-			position=5;
+			position=6;
 		}
 
 		if(community)
@@ -122,6 +122,8 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 			mNavigationDrawerFragment.setUp(
 					R.id.navigation_drawer,
 					(DrawerLayout) findViewById(R.id.drawer_layout));
+			if(DB.LOGGED)
+				onNavigationDrawerItemSelected(2);
 		}
 	}
 	@Override
@@ -130,11 +132,7 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 		super.onCreate(savedInstanceState);
 
     	actionBar = getActionBar();
-
-        if(!DROP_MODE) {
-			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-			actionBar.setDisplayHomeAsUpEnabled(true);
-		}
+		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		tabHorario = actionBar.newTab().setText(onDisplay(HORARIOS, this))
 					.setTabListener(tabListener);
@@ -144,9 +142,15 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 		list_dias = new ListDias(this);
 		list_comunidad= new Buscador(this);
 		String result= DB.load(DB.FILE_DB);
-		if(result.isEmpty())
+		//LOG.save(result,"2045.txt");
+
+		if(result.trim().isEmpty())
 			new Login(this);
 		else	make(result,true);
+
+		if(!DROP_MODE)
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		else  dropMode(DROP_MODE);
 
 		FirebaseCrash.log("HomeActivity created");
 		mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -155,9 +159,6 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 		bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "HomeActivity");
 		bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
 		mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
-		LOG.save("new Login","loging_debug0.txt");
-
-
 	}
 	public void show_dias(int which)
 	{
@@ -329,7 +330,7 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 		int out;
 		switch (i) {
 			case ASIGNATURAS:
-				out = DB.COMUNIDAD ? 55 : 2;
+				out = DB.COMUNIDAD ? 66 : 2;
 				break;
 			case HORARIOS:
 				out = 1;

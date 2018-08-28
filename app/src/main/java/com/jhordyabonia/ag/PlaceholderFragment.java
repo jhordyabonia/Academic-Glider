@@ -63,27 +63,27 @@ public  class PlaceholderFragment extends Fragment {
                 ON_DISPLAY=HORARIOS;
                 home.actionBar.setTitle(R.string.horarios);
                 break;
-            case 5:
+            case 6:
                 DB.update(home);
-            case 55:
+            case 66:
             case 2:
                 rootView = inflater.inflate(R.layout.lienzo, container, false);
                 home.asignaturas.todas(rootView);
                 ON_DISPLAY=ASIGNATURAS;
                 home.actionBar.setTitle(R.string.asignaturas);
                 break;
-            case 6:
+            case 7:
                 rootView = inflater.inflate(R.layout.activity_registrarme, container, false);
                 Cuenta account=new Cuenta(home);
                 account.setLienzo(rootView);
                 account.fill();
                 break;
-            case 7:
+            case 8:
                 rootView = inflater.inflate(R.layout.informacion, container, false);
                 new InformacionFragment.Informacion(rootView);
                 home.actionBar.setTitle(R.string.info_title);
                 break;
-            case 8:
+            case 9:
                 Alertas.fijar_alarmas(home,true);
                 DB.delete(DBChat.FILE_CHATS);
                 DB.delete(DB.FILE_DB);
