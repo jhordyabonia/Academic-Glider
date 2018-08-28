@@ -23,6 +23,7 @@ import controllers.Alertas;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -50,11 +51,7 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 	public static final int GRUPOS = 0;
 	public static int ON_DISPLAY = CONTACTOS;
 
-	private final ListChat listChat[]=new ListChat[3];
-	public final ArrayList<String> chats=new ArrayList<>();
-	public final ArrayList<String> grupos=new ArrayList<>();
-	public final ArrayList<String> contactos=new ArrayList<>();
-	public final ArrayList<Integer> contactos_id=new ArrayList<>();
+	private final ListChat.Display listChat[]=new ListChat.Display[3];
 
 	private DialogFragment newChat;
 	
@@ -91,12 +88,7 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		for(int i=0;i<3;i++)
-		{
-			listChat[i] = new ListChat();
-			Bundle args = new Bundle();
-			args.putInt("ON_DISPLAY", i);
-			listChat[i].setArguments(args);
-		}
+			listChat[i]=new ListChat.Display(i);
 
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager());
@@ -176,19 +168,19 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 			return "";
 		}
 	}
-	public AsyncTask<String, Void, String> getContactCheker()
+	public static AsyncTask<String, Void, String> getContactCheker(final Activity activity)
 	{
 		return new AsyncTask<String, Void, String>()
 		{
 			@Override
 			protected String doInBackground(String... arg0) 
 			{
-				Cursor cursor = getContacts();
+				Cursor cursor = getContacts(activity.getBaseContext());
 				JSONArray data= new JSONArray();
 		        if(cursor.moveToFirst())
 		        	do try 
 					{					
-						for(String cel:celular(cursor.getString(0)).split(","))
+						for(String cel:celular(cursor.getString(0),activity).split(","))
 						{	
 							String nombre=cursor.getString(1);
 							if(cel.isEmpty()||data.toString().contains(cel))
@@ -215,7 +207,7 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 					public void processFinish(String result) 
 					{
 						if(!result.isEmpty()&&result.startsWith("[{"))
-						     DB.save(ListChatActivity.this, result, DBChat.FILE_CONTACTS);
+						     DB.save(activity, result, DBChat.FILE_CONTACTS);
 					}
 				};
 				Server.send("contactos", null, recep);
@@ -223,7 +215,7 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 		};	
 	}
 		
-	private Cursor getContacts()
+	private static Cursor getContacts(Context c)
     {
         // Run query
         Uri uri = ContactsContract.Contacts.CONTENT_URI;
@@ -235,16 +227,16 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
         String[] selectionArgs = null;
         String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
         
-        return getContentResolver().query(
+        return c.getContentResolver().query(
         		uri,
         		projection,
         		selection,
         		selectionArgs,
         		sortOrder);
     }
-	private String celular(String id)
+	private static String celular(String id,Context context)
 	 {
-		 Cursor c = getContentResolver().query(
+		 Cursor c = context.getContentResolver().query(
 				 ContactsContract.Data.CONTENT_URI,
 				 new String[] 
 					 { 
@@ -286,9 +278,9 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 		}
 
 	}
-	public  void chat_new(final Activity a,String nombre,String descripcion)
+	public static void chat_new(final Activity a,String nombre,String descripcion)
 	{ chat_new(a,nombre,descripcion,"");}
-	public  void chat_new(final Activity a,String nombre,String descripcion,String u2)
+	public static  void chat_new(final Activity a,String nombre,String descripcion,String u2)
 	{
 		HashMap<String, String> datos=new HashMap<>();
 		datos.put("usuario", User.get("id"));
@@ -307,10 +299,10 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 				{
 					JSONObject chat_tmp = new JSONObject(result);
 					DBChat.insert(chat_tmp);
-					add_msj(null,false);
+					((Inbox)a).add_msj(null,false);
 				} catch (JSONException e) 
 				{
-					Toast.makeText(ListChatActivity.this,result,
+					Toast.makeText(a,result,
 						Toast.LENGTH_LONG).show();
 				}
 			}
@@ -324,7 +316,6 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
     	{
     		listChat[GRUPOS].load();
     		listChat[CHATS].load();
-			throw new JSONException("");
     	}catch (JSONException e){}
 	}
 	

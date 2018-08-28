@@ -111,7 +111,7 @@
         <item>Alerts</item>
     </string-array>
 
-    <string name="action_settings">Nueva </string>
+    <string name="action_settings">New </string>
     <string name="title_activity_list_chat">AGlider Chat </string>
     <string name="title_activity_list_chat_beta">AGlider Chat (Beta) </string>
     <string name="title_activity_profil">ProfilActivity </string>

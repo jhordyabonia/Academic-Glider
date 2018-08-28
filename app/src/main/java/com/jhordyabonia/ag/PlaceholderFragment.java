@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import chat.DBChat;
+import chat.ListChat;
+import chat.ListChatActivity;
 import controllers.Alertas;
 import models.DB;
 import util.InformacionFragment;
@@ -71,6 +73,24 @@ public  class PlaceholderFragment extends Fragment {
                 home.asignaturas.todas(rootView);
                 ON_DISPLAY=ASIGNATURAS;
                 home.actionBar.setTitle(R.string.asignaturas);
+                break;
+            case 3:
+                ListChat contacts= new ListChat(ListChatActivity.CONTACTOS);
+                rootView = inflater.inflate(R.layout.lienzo_chat, container, false);
+                contacts.setMain(home);
+                contacts.show(rootView);
+                break;
+            case 4:
+                ListChat chat= new ListChat(ListChatActivity.CHATS);
+                rootView = inflater.inflate(R.layout.lienzo_chat, container, false);
+                chat.setMain(home);
+                chat.show(rootView);
+                break;
+            case 5:
+                ListChat groups= new ListChat(ListChatActivity.GRUPOS);
+                rootView = inflater.inflate(R.layout.lienzo_chat, container, false);
+                groups.setMain(home);
+                groups.show(rootView);
                 break;
             case 7:
                 rootView = inflater.inflate(R.layout.activity_registrarme, container, false);
