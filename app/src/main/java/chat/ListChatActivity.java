@@ -1,20 +1,19 @@
 package chat;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import models.DB;
 import models.DB.User;
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import util.Buscador;
 import webservice.Asynchtask;
 
 import chat.ChatService.Inbox;
 import com.jhordyabonia.ag.HomeActivity;
 import com.jhordyabonia.ag.InformacionActivity;
+import com.jhordyabonia.ag.Notificaciones;
 import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
 
@@ -23,14 +22,9 @@ import controllers.Alertas;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Messenger;
-import android.provider.ContactsContract;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -41,15 +35,12 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-public class ListChatActivity extends FragmentActivity implements Inbox, View.OnClickListener,
+import static chat.DBChat.ON_CHAT;
+import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
+
+public class ListChatActivity extends FragmentActivity implements Inbox, ListChat.ChatMain,View.OnClickListener,
 		ActionBar.TabListener {
-
-	public static final int CONTACTOS = 2;
-	public static final int CHATS = 1;
-	public static final int GRUPOS = 0;
-	public static int ON_DISPLAY = CONTACTOS;
 
 	private final ListChat.Display listChat[]=new ListChat.Display[3];
 
@@ -58,6 +49,7 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 	private ViewPager mViewPager;
 	private boolean out = false;
+	@Override
 	public void setPage(int i,boolean b)
 	{mViewPager.setCurrentItem(i,b);}
 	@Override
@@ -88,7 +80,7 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		for(int i=0;i<3;i++)
-			listChat[i]=new ListChat.Display(i);
+			listChat[i]=new ListChat.Display(i+ON_CHAT);
 
 		mSectionsPagerAdapter = new SectionsPagerAdapter(
 				getSupportFragmentManager());
@@ -103,7 +95,7 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 				@Override
 				public void onPageSelected(int position) {
 					actionBar.setSelectedNavigationItem(position);
-					ON_DISPLAY=position;
+					ON_DISPLAY=position+ON_CHAT;
 				}
 			}
 		);
@@ -114,13 +106,16 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		};
-		
+
 		Intent mIntent=getIntent();
 		if(mIntent!=null)
-			ON_DISPLAY=mIntent.getIntExtra("ON_DISPLAY", CONTACTOS);
+			ON_DISPLAY=mIntent.getIntExtra("ON_DISPLAY", HomeActivity.CONTACTOS);
 
-		mViewPager.setCurrentItem(ON_DISPLAY, false);
+		mViewPager.setCurrentItem(onDisplay(ON_DISPLAY), false);
 		newChat = new ChatNewDialog(this);
+	}
+	public static int onDisplay(int i){
+		return i>=ON_CHAT?i-ON_CHAT:i;
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -131,7 +126,7 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 		mViewPager.setCurrentItem(tab.getPosition());
-		ON_DISPLAY=tab.getPosition();
+		ON_DISPLAY=ON_CHAT+tab.getPosition();
 	}
 
 	@Override
@@ -156,113 +151,25 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 		@Override
 		public CharSequence getPageTitle(int position) 
 		{
-			switch (position) 
+			switch (position+ON_CHAT)
 			{
-				case CONTACTOS:
+				case HomeActivity.CONTACTOS:
 					return getString(R.string.contacts);
-				case CHATS:
+				case HomeActivity.CHATS:
 					return getString(R.string.chats);
-				case GRUPOS:
+				case HomeActivity.GRUPOS:
 					return getString(R.string.groups);
 			}
 			return "";
 		}
 	}
-	public static AsyncTask<String, Void, String> getContactCheker(final Activity activity)
-	{
-		return new AsyncTask<String, Void, String>()
-		{
-			@Override
-			protected String doInBackground(String... arg0) 
-			{
-				Cursor cursor = getContacts(activity.getBaseContext());
-				JSONArray data= new JSONArray();
-		        if(cursor.moveToFirst())
-		        	do try 
-					{					
-						for(String cel:celular(cursor.getString(0),activity).split(","))
-						{	
-							String nombre=cursor.getString(1);
-							if(cel.isEmpty()||data.toString().contains(cel))
-								continue;
-							
-			        		JSONObject _data=new JSONObject();
-			        		_data.put("nombre", nombre.isEmpty()?cel:nombre);
-							_data.put("cel", cel);
-						
-							data.put(_data);
-						}
-					} catch (JSONException e) {}
-					while(cursor.moveToNext());	
-				return data.toString();
-			}
-			protected void onPostExecute(String contacts) 
-		    {
-				HashMap<String, String> datos=new HashMap<String, String>();
-				datos.put("contactos", contacts);
-				Server.setDataToSend(datos);
-				Asynchtask recep = new Asynchtask() 
-				{
-					@Override
-					public void processFinish(String result) 
-					{
-						if(!result.isEmpty()&&result.startsWith("[{"))
-						     DB.save(activity, result, DBChat.FILE_CONTACTS);
-					}
-				};
-				Server.send("contactos", null, recep);
-		    }			
-		};	
-	}
-		
-	private static Cursor getContacts(Context c)
-    {
-        // Run query
-        Uri uri = ContactsContract.Contacts.CONTENT_URI;
-        String[] projection = new String[] {
-                ContactsContract.Contacts._ID,
-                ContactsContract.Contacts.DISPLAY_NAME,
-               };
-        String selection = "";
-        String[] selectionArgs = null;
-        String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
-        
-        return c.getContentResolver().query(
-        		uri,
-        		projection,
-        		selection,
-        		selectionArgs,
-        		sortOrder);
-    }
-	private static String celular(String id,Context context)
-	 {
-		 Cursor c = context.getContentResolver().query(
-				 ContactsContract.Data.CONTENT_URI,
-				 new String[] 
-					 { 
-					 	ContactsContract.Data._ID,
-					 	ContactsContract.CommonDataKinds.Phone.NUMBER,
-					 	ContactsContract.CommonDataKinds.Phone.TYPE,
-					 	ContactsContract.CommonDataKinds.Phone.LABEL
-					 },
-				ContactsContract.Data.CONTACT_ID +"=?"+" AND "+ ContactsContract.Data.MIMETYPE +"='"+ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE +"'",
-				new String[] { String.valueOf(id) },
-				null);
-		 String out="";
-		 if(c.moveToFirst())
-			 do
-			 {
-				 out+=","+c.getString(1);
-			 }while(c.moveToNext());
-		 return out;
-	 }
 
 	public void onClick(View arg0)
 	{
 
-		if(ON_DISPLAY==CHATS)
-			setPage(CONTACTOS,false);
-		else if(ON_DISPLAY==GRUPOS)
+		if(ON_DISPLAY== HomeActivity.CHATS)
+			setPage(onDisplay(HomeActivity.CONTACTOS),false);
+		else if(ON_DISPLAY== HomeActivity.GRUPOS)
 			newChat.show(getSupportFragmentManager(), "missiles");
 		else
 		{
@@ -288,7 +195,7 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 			datos.put("usuario2", u2);
 		datos.put("nombre",nombre);
 		datos.put("descripcion",descripcion);
-		datos.put("tipo", ""+(u2.isEmpty()?GRUPOS:CHATS));
+		datos.put("tipo", ""+(u2.isEmpty()? HomeActivity.GRUPOS-ON_CHAT: HomeActivity.CHATS-ON_CHAT));
 		Server.setDataToSend(datos);
 		Asynchtask recep = new Asynchtask() 
 		{
@@ -299,12 +206,10 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 				{
 					JSONObject chat_tmp = new JSONObject(result);
 					DBChat.insert(chat_tmp);
+					//if( a instanceof  Inbox)
 					((Inbox)a).add_msj(null,false);
 				} catch (JSONException e) 
-				{
-					Toast.makeText(a,result,
-						Toast.LENGTH_LONG).show();
-				}
+				{Notificaciones.add("","chat","0",result);}
 			}
 		};
 		Server.send("chat/add", a, recep);
@@ -314,8 +219,8 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 	public void add_msj(JSONObject msj, boolean move) throws JSONException {
 		try 
     	{
-    		listChat[GRUPOS].load();
-    		listChat[CHATS].load();
+    		listChat[HomeActivity.GRUPOS-ON_CHAT].load();
+    		listChat[HomeActivity.CHATS-ON_CHAT].load();
     	}catch (JSONException e){}
 	}
 	
@@ -333,8 +238,8 @@ public class ListChatActivity extends FragmentActivity implements Inbox, View.On
 		updater();
     	try 
     	{
-    		listChat[GRUPOS].load();
-    		listChat[CHATS].load();
+    		listChat[HomeActivity.GRUPOS-ON_CHAT].load();
+    		listChat[HomeActivity.CHATS-ON_CHAT].load();
     	}catch (JSONException e){}
 	}
 	private void updater()    

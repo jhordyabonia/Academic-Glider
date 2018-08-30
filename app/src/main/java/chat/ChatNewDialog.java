@@ -1,5 +1,6 @@
 package chat;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import com.jhordyabonia.ag.R;
@@ -8,6 +9,8 @@ import com.jhordyabonia.ag.Server;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -26,9 +29,9 @@ import models.DB;
 
 public class ChatNewDialog extends DialogFragment
 {
-        private ListChatActivity main;
+        private FragmentActivity main;
         private View view;
-        public ChatNewDialog(ListChatActivity m){main=m;}
+        public ChatNewDialog(FragmentActivity m){main=m;}
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState)
@@ -58,7 +61,7 @@ public class ChatNewDialog extends DialogFragment
                                 Toast.LENGTH_LONG).show();
                                 return;
                                 }
-                            main.chat_new(main,
+                                ListChatActivity.chat_new(main,
                                 nombre.getText().toString(),
                                 descripcion.getText().toString());
                              }

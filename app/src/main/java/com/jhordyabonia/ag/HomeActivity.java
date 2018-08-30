@@ -1,6 +1,8 @@
 package com.jhordyabonia.ag;
 
+import chat.ChatService;
 import chat.DBChat;
+import chat.ListChat;
 import util.Buscador;
 import models.DB;
 import controllers.Alertas;
@@ -9,7 +11,6 @@ import controllers.Horarios;
 import crud.Base;
 import util.ListDias;
 import util.NavigationDrawerFragment;
-import webservice.LOG;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -26,19 +27,25 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
 
+import org.json.JSONObject;
+
+import static chat.DBChat.ON_CHAT;
 import static com.jhordyabonia.ag.PlaceholderFragment.newInstance;
 
-public class HomeActivity extends FragmentActivity  implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class HomeActivity extends FragmentActivity
+		implements NavigationDrawerFragment.NavigationDrawerCallbacks, ListChat.ChatMain, ChatService.Inbox {
 
 	private NavigationDrawerFragment mNavigationDrawerFragment;
 	public static boolean DROP_MODE=true;
 
 	private FirebaseAnalytics mFirebaseAnalytics;
+    public static final int CONTACTOS = ON_CHAT+2;
+    public static final int CHATS = ON_CHAT+1;
+    public static final int GRUPOS = ON_CHAT;
 	public static final int NOTIFICATION = 8;
 	public static final int LOGIN= 7;
 	public static final int CUENTA = 6;
@@ -124,6 +131,8 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 					(DrawerLayout) findViewById(R.id.drawer_layout));
 			if(DB.LOGGED)
 				onNavigationDrawerItemSelected(2);
+
+			DBChat.init(this);
 		}
 	}
 	@Override
@@ -250,12 +259,12 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
                 return true;
             case R.id.contactos:
             	intent=new Intent(this,chat.ListChatActivity.class);
-            	intent.putExtra("ON_DISPLAY", chat.ListChatActivity.CONTACTOS);
+            	intent.putExtra("ON_DISPLAY", CONTACTOS);
             	startActivity(intent);
             	return true;
             case R.id.chat:
             	intent=new Intent(this,chat.ListChatActivity.class);
-            	intent.putExtra("ON_DISPLAY", chat.ListChatActivity.CHATS);
+            	intent.putExtra("ON_DISPLAY", CHATS);
             	startActivity(intent);
             	return true;
             case R.id.informacion:
@@ -276,6 +285,15 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
         }
 		return true;
     }
+    @Override
+    public void setPage(int i,boolean b)
+    {onNavigationDrawerItemSelected(classicToDrop_mode(i));}
+	@Override
+	public void add_msj(JSONObject msj, boolean move) {
+		if(ON_DISPLAY== GRUPOS)
+			onNavigationDrawerItemSelected(5);
+	}
+
 	public void make(String result,boolean reMake) 
 	{	
 		if(result!=null)
@@ -332,6 +350,15 @@ public class HomeActivity extends FragmentActivity  implements NavigationDrawerF
 		switch (i) {
 			case ASIGNATURAS:
 				out = DB.COMUNIDAD ? 66 : 2;
+				break;
+			case GRUPOS:
+				out = 5;
+				break;
+			case CHATS:
+				out = 4;
+				break;
+			case CONTACTOS:
+				out = 3;
 				break;
 			case HORARIOS:
 				out = 1;

@@ -1,6 +1,7 @@
 package chat;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 
 import models.DB;
@@ -12,6 +13,11 @@ import org.json.JSONObject;
 import webservice.Asynchtask;
 
 import android.app.Activity;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.widget.Toast;
 
 import com.jhordyabonia.ag.R;
@@ -19,8 +25,8 @@ import com.jhordyabonia.ag.Server;
 
 public class DBChat 
 {
+	public static final int ON_CHAT=100;
 	public static long LOCAL_HOUR = 0;
-	public static int ON_DISPLAY = -1;
 	public static int LAST_MSJ = 0;
 	public static boolean FECHA_WS=true;
 	public static String FILE_CHATS = "chats.json";
@@ -225,4 +231,94 @@ public class DBChat
 		fecha=fecha.replace(anno+"-","");
 		return fecha;
 	}
+
+    public static AsyncTask<String, Void, String> getContactCheker(final Activity activity)
+    {
+        return new AsyncTask<String, Void, String>()
+        {
+            @Override
+            protected String doInBackground(String... arg0)
+            {
+                Cursor cursor = getContacts(activity.getBaseContext());
+                JSONArray data= new JSONArray();
+                if(cursor.moveToFirst())
+                    do try
+                    {
+                        for(String cel:celular(cursor.getString(0),activity).split(","))
+                        {
+                            String nombre=cursor.getString(1);
+                            if(cel.isEmpty()||data.toString().contains(cel))
+                                continue;
+
+                            JSONObject _data=new JSONObject();
+                            _data.put("nombre", nombre.isEmpty()?cel:nombre);
+                            _data.put("cel", cel);
+
+                            data.put(_data);
+                        }
+                    } catch (JSONException e) {}
+                    while(cursor.moveToNext());
+                return data.toString();
+            }
+            protected void onPostExecute(String contacts)
+            {
+                HashMap<String, String> datos=new HashMap<String, String>();
+                datos.put("contactos", contacts);
+                Server.setDataToSend(datos);
+                Asynchtask recep = new Asynchtask()
+                {
+                    @Override
+                    public void processFinish(String result)
+                    {
+                        if(!result.isEmpty()&&result.startsWith("[{"))
+                             DB.save(activity, result, FILE_CONTACTS);
+                    }
+                };
+                Server.send("contactos", null, recep);
+            }
+        };
+    }
+
+    private static Cursor getContacts(Context c)
+	{
+		// Run query
+		Uri uri = ContactsContract.Contacts.CONTENT_URI;
+		String[] projection = new String[] {
+		ContactsContract.Contacts._ID,
+		ContactsContract.Contacts.DISPLAY_NAME,
+		};
+		String selection = "";
+		String[] selectionArgs = null;
+		String sortOrder = ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
+
+		return c.getContentResolver().query(
+						uri,
+						projection,
+						selection,
+						selectionArgs,
+						sortOrder);
+	}
+
+    private static String celular(String id, Context context)
+     {
+         Cursor c = context.getContentResolver().query(
+                 ContactsContract.Data.CONTENT_URI,
+                 new String[]
+                     {
+                         ContactsContract.Data._ID,
+                         ContactsContract.CommonDataKinds.Phone.NUMBER,
+                         ContactsContract.CommonDataKinds.Phone.TYPE,
+                         ContactsContract.CommonDataKinds.Phone.LABEL
+                     },
+                ContactsContract.Data.CONTACT_ID +"=?"+" AND "+ ContactsContract.Data.MIMETYPE +"='"+ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE +"'",
+                new String[] { String.valueOf(id) },
+                null);
+         String out="";
+         if(c.moveToFirst())
+             do
+             {
+                 out+=","+c.getString(1);
+             }while(c.moveToNext());
+         return out;
+     }
 }

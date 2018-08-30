@@ -2,24 +2,24 @@ package com.jhordyabonia.ag;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
+import chat.ChatNewDialog;
 import chat.DBChat;
 import chat.ListChat;
-import chat.ListChatActivity;
 import controllers.Alertas;
 import models.DB;
 import util.InformacionFragment;
-import webservice.LOG;
 
+import static com.jhordyabonia.ag.HomeActivity.CHATS;
+import static com.jhordyabonia.ag.HomeActivity.CONTACTOS;
+import static com.jhordyabonia.ag.HomeActivity.GRUPOS;
 import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
-import static com.jhordyabonia.ag.HomeActivity.DROP_MODE;
 import static com.jhordyabonia.ag.HomeActivity.HORARIOS;
 import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
@@ -37,6 +37,30 @@ public  class PlaceholderFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+    private View.OnClickListener chat_listener=
+    new View.OnClickListener(){
+
+        public void onClick(View view)
+        {
+            if(ON_DISPLAY==CHATS)
+              home.setPage(CONTACTOS,false);
+            else if(ON_DISPLAY==GRUPOS){
+                new ChatNewDialog(home).show(home.getSupportFragmentManager(), "missiles");
+            }else
+            {
+                String msj=getString(R.string.msj_share1) +"\n"+
+                        getString(R.string.msj_share2) +Server.URL_SERVER;
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_TEXT, msj);
+                intent.setType("text/plain");
+                Intent chooser = Intent.createChooser(intent, getString(R.string.invite));
+
+                if (intent.resolveActivity(home.getPackageManager()) != null)
+                    startActivity(chooser);
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,22 +99,31 @@ public  class PlaceholderFragment extends Fragment {
                 home.actionBar.setTitle(R.string.asignaturas);
                 break;
             case 3:
-                ListChat contacts= new ListChat(ListChatActivity.CONTACTOS);
+                ON_DISPLAY=CONTACTOS;
                 rootView = inflater.inflate(R.layout.lienzo_chat, container, false);
+                ListChat contacts= new ListChat(CONTACTOS);
                 contacts.setMain(home);
+                contacts.setListener(chat_listener);
                 contacts.show(rootView);
+                home.actionBar.setTitle(R.string.contacts);
                 break;
             case 4:
-                ListChat chat= new ListChat(ListChatActivity.CHATS);
+                ON_DISPLAY=CHATS;
                 rootView = inflater.inflate(R.layout.lienzo_chat, container, false);
-                chat.setMain(home);
-                chat.show(rootView);
+                ListChat chats= new ListChat(CHATS);
+                chats.setMain(home);
+                chats.setListener(chat_listener);
+                chats.show(rootView);
+                home.actionBar.setTitle(R.string.chats);
                 break;
             case 5:
-                ListChat groups= new ListChat(ListChatActivity.GRUPOS);
+                ON_DISPLAY=GRUPOS;
                 rootView = inflater.inflate(R.layout.lienzo_chat, container, false);
+                ListChat groups= new ListChat(GRUPOS);
                 groups.setMain(home);
+                groups.setListener(chat_listener);
                 groups.show(rootView);
+                home.actionBar.setTitle(R.string.groups);
                 break;
             case 7:
                 rootView = inflater.inflate(R.layout.activity_registrarme, container, false);

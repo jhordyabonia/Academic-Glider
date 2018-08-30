@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jhordyabonia.ag.R;
@@ -28,12 +27,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import models.DB;
-import util.CompartirAsignatura;
 
-import static chat.ListChatActivity.CONTACTOS;
-import static chat.ListChatActivity.CHATS;
-import static chat.ListChatActivity.GRUPOS;
-import static chat.ListChatActivity.ON_DISPLAY;
+import static chat.DBChat.ON_CHAT;
+import static com.jhordyabonia.ag.HomeActivity.CONTACTOS;
+import static com.jhordyabonia.ag.HomeActivity.CHATS;
+import static com.jhordyabonia.ag.HomeActivity.GRUPOS;
+import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
 public class  ListChat  implements AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener
 {
@@ -60,6 +59,9 @@ public class  ListChat  implements AdapterView.OnItemClickListener,AdapterView.O
     private ListView base;
     private ChatAdapter base_data;
     private Activity main;
+    private View.OnClickListener listener;
+    public void setListener(View.OnClickListener l)
+    {listener=l;}
     public ListChat(int i){VIEW=i;}
     public void setMain(Activity a){main=a;}
     public View show(View root)
@@ -73,9 +75,15 @@ public class  ListChat  implements AdapterView.OnItemClickListener,AdapterView.O
         ImageView imageView =  root.findViewById(R.id.add);
         imageView.setVisibility(View.VISIBLE);
 
-        View.OnClickListener t= (View.OnClickListener)main;
-        if(t!=null)
-            imageView.setOnClickListener(t);
+        if(main instanceof View.OnClickListener)
+        {
+            View.OnClickListener t= (View.OnClickListener)main;
+            if(t!=null)
+                imageView.setOnClickListener(t);
+        }else if(listener!=null)
+            imageView.setOnClickListener(listener);
+        else
+            imageView.setVisibility(View.GONE);
 
         try
         {
@@ -95,12 +103,13 @@ public class  ListChat  implements AdapterView.OnItemClickListener,AdapterView.O
                     contactos.add(tmp.getString("cel_"));
                     contactos_id.add(tmp.getInt("id"));
                 }
-                ListChatActivity.getContactCheker(main).execute();
+                DBChat.getContactCheker(main).execute();
                 base.setOnItemLongClickListener(null);
                 imageView.setImageResource(R.drawable.ic_add_contact);
                 root.findViewById(R.id.textView1).setVisibility(View.GONE);
             }else load();
-        }catch (JSONException e) {ListChatActivity.getContactCheker(main).execute();}
+        }catch (JSONException e) {
+            DBChat.getContactCheker(main).execute();}
 
         return root;
     }
@@ -117,7 +126,7 @@ public class  ListChat  implements AdapterView.OnItemClickListener,AdapterView.O
         for(int i = 0; i< DBChat.get().length(); i++)
         {
             JSONObject tmp = DBChat.get(i);
-            if(VIEW==tmp.getInt("tipo"))
+            if(VIEW-ON_CHAT==tmp.getInt("tipo"))
             {
                 String nombre=tmp.getString("nombre");
                 JSONArray msjs=new JSONArray();;
@@ -195,8 +204,7 @@ public class  ListChat  implements AdapterView.OnItemClickListener,AdapterView.O
                     case R.id.borrar_chat:
                         try
                         {
-                            JSONObject tmp_=null;
-                            tmp_ = DBChat.get(Integer.valueOf(DBChat.find("index","id",chat)));
+                            JSONObject tmp_= DBChat.get(Integer.valueOf(DBChat.find("index","id",chat)));
                             if(tmp_!=null)
                                 tmp_.put("mensajes", null);
                             Intent intent =
@@ -253,7 +261,7 @@ public class  ListChat  implements AdapterView.OnItemClickListener,AdapterView.O
             { c=b;b=a;a=c;}
             ListChatActivity.chat_new(main,"_"+a+"_"+b+"_",
                     "",""+contactos_id.get(arg2));
-            ListChatActivity t= (ListChatActivity)main;
+            ChatMain t= (ChatMain)main;
             if(t!=null)
                 t.setPage(CHATS,true);
             return;
@@ -263,6 +271,10 @@ public class  ListChat  implements AdapterView.OnItemClickListener,AdapterView.O
                         chat.ChatActivity.class);
         intent.putExtra("CHAT", chat);
         main.startActivity(intent);
+    }
+    public interface ChatMain
+    {
+        void setPage(int i, boolean t);
     }
 }
 

@@ -7,8 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -47,6 +45,8 @@ import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
 
 import crud.Base;
+
+import static chat.DBChat.ON_CHAT;
 
 public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClickListener,OnItemLongClickListener
 {
@@ -207,7 +207,7 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 		try 
 		{
 			chat = new JSONObject(DBChat.find("id",""+CHAT));
-			grupo = chat.getInt("tipo")==ListChatActivity.GRUPOS;
+			grupo = chat.getInt("tipo")== HomeActivity.GRUPOS-ON_CHAT;
 			CHAT=chat.getInt("id");
 			String nombre=chat.getString("nombre");
 			String id= chat.getString("nombre")
@@ -341,7 +341,7 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 		
 			asignaturas.add(null);
 		}
-		if(chat.getInt("tipo")!=ListChatActivity.GRUPOS)
+		if(chat.getInt("tipo")!= HomeActivity.GRUPOS)
 			read();
 		
 		if(move)
