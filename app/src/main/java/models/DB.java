@@ -146,7 +146,9 @@ public abstract class DB
 		{
 			File ruta = new File(root, DIRECTORY);
 			File f = new File(ruta, file);
-			if (!f.exists())throw new Exception();
+			if (!f.exists())
+				f.mkdir();
+
 			BufferedReader fin = new BufferedReader
 					(new InputStreamReader(new FileInputStream(f)));
 			out = fin.readLine();
@@ -279,8 +281,9 @@ public abstract class DB
 	{		
 		public static String get(String key) 
 		{
-			String out = "";
+			if(!LOGGED) return "";
 
+			String out = "";
 			try 
 			{
 				out = db.getJSONObject("usuario").getString(key);

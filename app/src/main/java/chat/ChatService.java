@@ -1,6 +1,8 @@
 package chat;
 
 import java.util.HashMap;
+
+import static models.DB.LOGGED;
 import static models.DB.User;
 
 import org.json.JSONArray;
@@ -13,6 +15,7 @@ import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -26,14 +29,32 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.Vibrator;
+import android.widget.Toast;
 
 public class ChatService extends Service implements Asynchtask 
 {	
 	public  static final String MESSENGER = "messenger";
 	private  static final String MENSAJE_NUEVO = "mensaje_nuevo";
+
+	public  static void updater(Activity launch, int CHAT)
+    {
+
+		if(!LOGGED) return;
+
+        launch.stopService(new Intent(launch,ChatService.class));
+    	if(!(launch instanceof Inbox))
+    		return;
+
+    	Messenger messenger= new Messenger(new MHandler((Inbox)launch));
+    	Intent intent = new Intent(launch,ChatService.class);
+    	intent.putExtra(MESSENGER, messenger);
+    	intent.putExtra("CHAT", CHAT);
+        launch.startService(intent);
+    }
+
 	public interface Inbox
 	{
-		public void add_msj(JSONObject msj,boolean move) throws JSONException;
+		void add_msj(JSONObject msj,boolean move) throws JSONException;
 	} 
 	public static class MHandler extends Handler 
 	{
@@ -65,6 +86,11 @@ public class ChatService extends Service implements Asynchtask
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) 
 	{
+	    if(intent==null)
+        {
+            Toast.makeText(this,"intent = null",Toast.LENGTH_LONG).show();
+            return  super.onStartCommand(intent, flags, startId);
+        }
 		Bundle extras = intent.getExtras();
 		
 		if(extras !=null) 
@@ -194,5 +220,5 @@ public class ChatService extends Service implements Asynchtask
 	public static boolean ACTIVE=true;
 	private Messenger messenger; 
 	private final String ID=User.get("id");
-	private final HashMap<String, String> datos=new HashMap<String, String>();	
+	private final HashMap<String, String> datos=new HashMap();
 }

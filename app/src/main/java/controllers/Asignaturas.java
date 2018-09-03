@@ -373,7 +373,15 @@ public class Asignaturas implements OnItemClickListener
 				list_tmp[count++]=activity.getString(R.string.see_all);
 			else list_tmp = new String [list_in.size()];
 		}else list_tmp = new String [list_in.size()];
+
 		final String list[]=list_tmp;
+
+		try
+		{
+			for(JSONObject obj:list_in)
+				list[count++]=obj.getString("nombre");
+		} catch (JSONException e) {}
+
 		DialogInterface.OnClickListener listener
 		=new DialogInterface.OnClickListener()
 		{
@@ -382,28 +390,38 @@ public class Asignaturas implements OnItemClickListener
 			{
 				if(LIST_ASIGNATURAS.length!=list.length)
 				{
-				   if(!(!alt&&DB.COMUNIDAD))
+				   if(HomeActivity.DROP_MODE)
 				   {
-					   if(0==which)
+					   if(!alt)
 					   {
-						   actualizar(false,activity,todas,descargar);
-						   return;
-						}
-					   which-=1;
-				   }
-				 }
-				
-				 try  
+						   if(0==which)
+						   {
+							   actualizar(false,activity,todas,descargar);
+							   return;
+						   }
+					   }
+				   }else
+				   	{
+					   if(!(!alt&&DB.COMUNIDAD))
+					   {
+						   if(0==which)
+						   {
+							   actualizar(false,activity,todas,descargar);
+							   return;
+						   }
+					   }
+					}
+					which-=1;
+					Toast.makeText(activity, "which-1", Toast.LENGTH_SHORT).show();
+				}
+
+				 if(list_in.size()>which) try
 				 {actualizar_asignatura(activity,descargar,list_in.get(which).getString("id"));}
 				 catch (JSONException e) {}
+				 else Toast.makeText(activity, "major", Toast.LENGTH_SHORT).show();
 			}
 		};
-		
-		try 
-		{
-			for(JSONObject obj:list_in)
-				list[count++]=obj.getString("nombre");
-		} catch (JSONException e) {};
+
 		asignaturas_list(activity,"actualizar",list,listener)
 		.show(activity.getSupportFragmentManager(), "missiles");		
 	}

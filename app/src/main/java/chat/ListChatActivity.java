@@ -74,7 +74,7 @@ public class ListChatActivity extends FragmentActivity implements Inbox, ListCha
 		DBChat.init(this);
 		
 		setContentView(R.layout.activity_list_chat);
-		updater();
+		ChatService.updater(this,0);
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -235,21 +235,13 @@ public class ListChatActivity extends FragmentActivity implements Inbox, ListCha
 	{
 		super.onResume();
 		out = false;
-		updater();
+		ChatService.updater(this,0);
     	try 
     	{
     		listChat[HomeActivity.GRUPOS-ON_CHAT].load();
     		listChat[HomeActivity.CHATS-ON_CHAT].load();
     	}catch (JSONException e){}
 	}
-	private void updater()    
-    {
-    	Messenger messenger= new Messenger(new ChatService.MHandler(this));
-    	Intent intent = new Intent(this,ChatService.class);
-    	intent.putExtra(ChatService.MESSENGER, messenger);
-    	intent.putExtra("CHAT", 0);
-    	startService(intent);		
-    }
 	@Override
 	public boolean onKeyDown( int arg1, KeyEvent arg2) 
 	{

@@ -71,8 +71,17 @@ public class Notificaciones  implements AdapterView.OnItemClickListener{
     }
     public static void save()
     {
-        String data=new String(db_notificaciones.toString());
-        LOG.save(data,FILE);
+        JSONArray tmp = new JSONArray();
+
+        for(int n=0;n<db_notificaciones.length();n++) {
+
+            if (db_notificaciones.isNull(n))
+                continue;
+            else try { tmp.put(db_notificaciones.get(n));}
+            catch (JSONException e) {continue;}
+        }
+        LOG.save(tmp.toString(),FILE);
+        db_notificaciones=tmp;
     }
     public void paint(View v) {
         display=v;
@@ -114,8 +123,12 @@ public class Notificaciones  implements AdapterView.OnItemClickListener{
             @Override
             public boolean onMenuItemClick(MenuItem arg0)
             {
+                try{
                 base_data.remove(base_data.getItem(id_item));
-                save();
+                    db_notificaciones.put(id_item,null);
+                    //db_notificaciones.remove(id_item);
+                save();}catch(JSONException e){
+                }
                 return false;
             }
         });

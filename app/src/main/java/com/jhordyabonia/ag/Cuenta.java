@@ -13,11 +13,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import static com.jhordyabonia.ag.HomeActivity.DROP_MODE;
 
 public class Cuenta implements Asynchtask,OnItemSelectedListener
 {
@@ -36,7 +39,7 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 		home.getActionBar().hide();
 		home.show_menu=false;
 		View v=null;
-		if(!HomeActivity.DROP_MODE)
+		if(!DROP_MODE)
 		{
 			home.setContentView(R.layout.activity_registrarme);
 			v=home.findViewById(R.id.linearLayout);
@@ -48,6 +51,17 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 	public void setLienzo(View l)
 	{
 		lienzo=l;
+
+		final CheckBox drop=lienzo.findViewById(R.id.drop_mode);
+		drop.setOnClickListener(new OnClickListener()
+									{
+										@Override
+										public void onClick(View v)
+										{home.setDropMode(drop.isChecked());	}
+									}
+				                );
+		drop.setVisibility(DB.LOGGED?View.VISIBLE:View.GONE);
+		drop.setChecked(DROP_MODE);
 
 		lienzo.findViewById(R.id.registrarme)
 				.setOnClickListener(new OnClickListener()
@@ -91,7 +105,7 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 		((EditText)lienzo.findViewById(R.id.nombre)).setText(DB.User.get("nombre"));
 		((EditText)lienzo.findViewById(R.id.email)).setText(DB.User.get("correo"));
 
-		if(!HomeActivity.DROP_MODE) {
+		if(!DROP_MODE) {
 			home.getActionBar().removeAllTabs();
 			home.getActionBar().hide();
 		}

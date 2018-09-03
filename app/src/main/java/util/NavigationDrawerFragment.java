@@ -228,6 +228,11 @@ public class NavigationDrawerFragment extends Fragment {
             HISTORY.add(++display_now,position);
 
     }
+    public  void clearHistory()
+    {
+        HISTORY.clear();
+        HISTORY.add(0);
+    }
     public boolean back()
     {
         if(--display_now>=0){

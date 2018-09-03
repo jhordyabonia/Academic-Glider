@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jhordyabonia.ag"
-    android:versionCode="002"
-    android:versionName="Genesis">
+    android:versionCode="003"
+    android:versionName="Exodo">
 
     <uses-sdk
-        android:minSdkVersion="11"
-        android:targetSdkVersion="17" />
+        android:minSdkVersion="14"
+        android:targetSdkVersion="26" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -35,27 +35,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".OldHomeActivity"
-            android:label="Aglider (old)">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="chat.ListChatActivity"
-            android:icon="@drawable/ic_chat"
-            android:label="@string/title_activity_list_chat_beta">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name="chat.ChatActivity"
             android:icon="@drawable/ic_chat_menu" />
+        <activity android:name="chat.ListChatActivity"/>
+        <activity android:name="chat.ProfileActivity" />
         <activity android:name="crud.AlertaActivity" />
         <activity android:name="crud.AsignaturaActivity" />
         <activity android:name="crud.CalificableActivity" />
@@ -63,7 +46,6 @@
         <activity android:name="crud.HorarioActivity" />
         <activity android:name="crud.ApunteActivity" />
         <activity android:name=".InformacionActivity" />
-        <activity android:name="chat.ProfileActivity" />
         <activity android:name=".RecuperarCuentaActivity" />
         <activity android:name=".NotificacionesActivity" />
 

@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Messenger;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -135,7 +134,7 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 					}
 				);
 		load();
-		updater();
+		ChatService.updater(ChatActivity.this,CHAT);
 		}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) 
@@ -413,19 +412,5 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 			Toast.makeText(this, getString(R.string.keep_press_to_download), Toast.LENGTH_LONG).show();
 		else 
 			Toast.makeText(this, getString(R.string.keep_press_to_copy), Toast.LENGTH_LONG).show();
-	}	
-	private void updater()    
-    {
-    	Messenger messenger= new Messenger(new ChatService.MHandler(this));
-    	Intent intent = new Intent(this,ChatService.class);
-    	intent.putExtra(ChatService.MESSENGER, messenger);
-    	intent.putExtra("CHAT", CHAT);
-    	startService(intent);
-    }
-	@Override
-	protected void onPause()
-	{
-		super.onPause();
-		stopService(new Intent(this,ChatService.class));
 	}
 }

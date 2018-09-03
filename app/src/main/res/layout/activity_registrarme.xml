@@ -206,6 +206,28 @@
 
         </TableRow>
 
+        <TableRow
+            android:id="@+id/tableRow5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:gravity="center"
+                android:text="@string/classic_nav"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#9e9e3a"
+                android:textSize="20dp" />
+
+            <CheckBox
+                android:id="@+id/drop_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </TableRow>
         <Button
             android:id="@+id/registrarme"
             android:layout_width="match_parent"

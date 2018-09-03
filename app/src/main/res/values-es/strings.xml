@@ -118,7 +118,7 @@
     <string name="title_activity_profil">ProfilActivity </string>
     <string name="title_activity_recuperar_cuenta">Recuperar Cuenta </string>
     <string name="action_settings">New </string>
-
+    <string name="classic_nav">Navegacion clasica </string>
 
 
     <string name="info_FAQ">Preguntas Frecuentes </string>
