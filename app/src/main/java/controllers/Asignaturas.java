@@ -197,14 +197,25 @@ public class Asignaturas implements OnItemClickListener
 			base_data.clear();
 			String titulo=(DB.COMUNIDAD?"":home.getString(R.string.note)+" ");
 			int limite=(DB.COMUNIDAD?24:0);
-			for (JSONObject v : tmp)
-				base_data.add(
-						new Item(
-								v.getString("codigo"),
-								v.getString("nombre"), 
-								titulo+ DB.titulo(v.getString("nota"),limite)
-								,home.getString(R.string.credit)+" "+v.getString("creditos")
+			for (JSONObject v : tmp) {
+				if(v.getString("id").equals("-1")) {
+					base_data.add(
+							new Item("",
+									v.getString("nombre"),
+									titulo + DB.titulo(v.getString("nota"), limite)
+									, home.getString(R.string.credit) + " " + v.getString("creditos")
 							));
+					break;
+				}else {
+					base_data.add(
+							new Item(
+									v.getString("codigo"),
+									v.getString("nombre"),
+									titulo + DB.titulo(v.getString("nota"), limite)
+									, home.getString(R.string.credit) + " " + v.getString("creditos")
+							));
+				}
+			}
 		} catch (JSONException e) {}
 	}
 

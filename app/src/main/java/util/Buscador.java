@@ -70,4 +70,4 @@ public class Buscador extends DialogFragment implements Asynchtask,OnClickListen
 		DB.update(home,datos);
 		dismiss();
 	}
-};
+}

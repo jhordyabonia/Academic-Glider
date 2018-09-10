@@ -25,8 +25,7 @@
 
     <string name="fail_register">Error de validacion,
     Verifica los datos ingresados </string>
-    <string name="network_err">Problemas con la red, Verifica tu conexion
-     o intenta mas tarde </string>
+    <string name="network_err">Problemas con la red, Verifica tu conexion o intenta mas tarde </string>
 
     <string name="send">Enviar </string>
     <string name="update"> Actualizar </string>

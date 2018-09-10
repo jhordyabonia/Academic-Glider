@@ -23,8 +23,7 @@
     <string name="pass_err2">Passwords do not match </string>
 
     <string name="fail_register">Validation error, Check the data entered </string>
-    <string name="network_err">Problems with the network, Check your connection
-      or try later </string>
+    <string name="network_err">Problems with the network, Check your connection or try later </string>
 
     <string name="send">Send </string>
     <string name="update">Update </string>
