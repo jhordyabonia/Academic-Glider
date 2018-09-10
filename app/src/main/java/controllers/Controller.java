@@ -74,7 +74,8 @@ public abstract class Controller extends Fragment implements OnItemClickListener
 				Base.itemSeleted = index_item;
 				CLICK_BLOQUEADO=true;
 				if(!DB.COMUNIDAD)
-					showPopup(v);
+					if(!LOCAL_DB.isEmpty())
+						showPopup(v);
 				return false;
 			}
 		});
@@ -92,7 +93,8 @@ public abstract class Controller extends Fragment implements OnItemClickListener
 		}
 		TextView tv = v.findViewById(R.id.textView4);
 		if(tv!=null)
-			if(tv.getText().toString().equals(v.getContext().getString(R.string.empty)))
+			if(LOCAL_DB.isEmpty())
+			//if(tv.getText().toString().equals(v.getContext().getString(R.string.empty)))
 				return;
 		Base.itemSeleted = index_item;
 		Base.crud(getActivity(), Base.Actions.Edit);
