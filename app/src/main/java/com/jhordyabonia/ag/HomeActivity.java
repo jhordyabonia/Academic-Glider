@@ -524,6 +524,9 @@ public class HomeActivity extends FragmentActivity
 	{
 		if(DROP_MODE)
         {
+        	if(mNavigationDrawerFragment==null)
+        		dropMode(true);
+
         	if(DB.LOGGED) {
 				if (arg1 == KeyEvent.KEYCODE_BACK)
 					if (mNavigationDrawerFragment.back())
