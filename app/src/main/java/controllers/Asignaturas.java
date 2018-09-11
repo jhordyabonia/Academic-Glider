@@ -207,12 +207,17 @@ public class Asignaturas implements OnItemClickListener
 							));
 					break;
 				}else {
+					String img=v.getString("nombre")+".jpg";
+					if(!v.isNull("image"))
+						img=v.getString("image");
+
 					base_data.add(
 							new Item(
 									v.getString("codigo"),
 									v.getString("nombre"),
 									titulo + DB.titulo(v.getString("nota"), limite)
 									, home.getString(R.string.credit) + " " + v.getString("creditos")
+									,img
 							));
 				}
 			}

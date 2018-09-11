@@ -115,33 +115,47 @@ public class Image extends Fragment {
     public static class Loader extends AsyncTask<String, Void, Bitmap> {
 
         private WeakReference imageViewReference[];
+        private String mURL =Server.URL_SERVER.replace("pu", "uploads/fotos/");
         public Loader(ImageView... imageView) {
+            make(imageView);
+        }public Loader(String url,ImageView... imageView) {
+            make(imageView);
+            mURL=url;
+        }
+        public void make(ImageView... imageView)
+        {
             imageViewReference= new WeakReference[imageView.length];
             int counter=0;
             for (ImageView ima:imageView)
-                    imageViewReference[counter++] = new WeakReference<>(ima);
+                imageViewReference[counter++] = new WeakReference<>(ima);
+
         }
 
         @Override
         protected synchronized Bitmap doInBackground(String... fotos) {
             Bitmap imagen = null;
             try {
+
+                String name=fotos[0];
+                if(name.contains("http"))
+                    name=mURL+".jpg";
+
                 File ruta_sd = Environment.getExternalStorageDirectory();
-                File ruta = new File(ruta_sd.getAbsolutePath(), DB.DIRECTORY + "//" + fotos[0]);
+                File ruta = new File(ruta_sd, DB.DIRECTORY + "//" + name);
 
                 if (ruta.exists())
                     imagen = BitmapFactory.decodeFile(ruta.getAbsolutePath());
 
                 if (imagen == null) {
-
-                    URL imageUrl = new URL(Server.URL_SERVER.replace("pu", "uploads/fotos/") + fotos[0]);
+                    URL imageUrl;
+                    if(mURL.contains("http"))
+                        imageUrl = new URL(mURL + fotos[0]);
+                    else imageUrl = new URL(fotos[0]);
                     HttpURLConnection urlConnection = (HttpURLConnection) imageUrl.openConnection();
                     InputStream inputStream = urlConnection.getInputStream();
-                    //imagen = BitmapFactory.decodeStream(inputStream);
-                    imagen = BitmapFactory.decodeFile(save(inputStream, fotos[0]));
+                    imagen = BitmapFactory.decodeFile(save(inputStream, name));
                 }
-            } catch (IOException e) {
-            }
+            } catch (IOException e) {}
             return imagen;
         }
 

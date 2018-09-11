@@ -18,7 +18,7 @@
         android:id="@+id/FrameLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/textSize"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
         android:layout_marginTop="6dp"
@@ -41,13 +41,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="top|left"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:gravity="top"
                 android:orientation="vertical">
 
                 <TableRow
@@ -57,22 +59,26 @@
 
                     <TextView
                         android:id="@+id/textView1"
-                        android:layout_width="85dp"
+                        android:layout_width="@dimen/codeSize"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         android:layout_weight="0.0"
                         android:maxLines="1"
+                        android:paddingRight="3dp"
                         android:text="@string/code"
                         android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="@dimen/textSizeTitle"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/textView2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/codeSize"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:paddingRight="3dp"
                         android:text="@string/name"
                         android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="@dimen/textSizeTitle"
                         android:textStyle="bold" />
                 </TableRow>
 
@@ -83,11 +89,11 @@
 
                     <TextView
                         android:id="@+id/textView3"
-                        android:layout_width="85dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         android:text="@string/credit"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="@dimen/textSize" />
 
                     <TextView
                         android:id="@+id/textView4"
@@ -97,18 +103,19 @@
                         android:layout_weight="1"
                         android:gravity="bottom"
                         android:text="@string/note"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textSize="@dimen/textSize" />
                 </TableRow>
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:src="@drawable/ic_alarm_no"
-                android:visibility="gone" />
+                android:background="@drawable/bg_img"
+                android:src="@drawable/ic_alarm_no" />
         </LinearLayout>
     </FrameLayout>
 </FrameLayout>

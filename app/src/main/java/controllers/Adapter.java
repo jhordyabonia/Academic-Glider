@@ -3,6 +3,8 @@ package controllers;
 import java.util.ArrayList;
 
 import models.DB;
+import util.Image;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +63,10 @@ public class Adapter extends ArrayAdapter{
 				.setText(tmp.creditos);
 				((TextView)root.findViewById(R.id.textView4))
 				.setText(tmp.nota);
-				break;
+				if(tmp.image!=null) {
+					Image.Loader loader = new Image.Loader(tmp.nombre, (ImageView) root.findViewById(R.id.imageView1));
+					loader.execute(tmp.image);
+				}break;
 			case alerta:
 				root.findViewById(R.id.textView1)
 				.setVisibility(View.GONE);
@@ -121,6 +126,7 @@ public class Adapter extends ArrayAdapter{
 		return root;
 	}
 	public static class Item {
+		public String image;
        	public String codigo;
         public String nombre;
         public String nota;
@@ -138,10 +144,22 @@ public class Adapter extends ArrayAdapter{
             this.active = t;
         }
         public Item(String c, String n, String nt, String cr) {
+        	while(c.length()<10)
+				c+=" ";
             this.codigo = c.toUpperCase();
-            this.nombre = DB.titulo(n.toUpperCase(),20);
+            this.nombre = DB.titulo(n.toUpperCase(),30);
             this.nota = DB.titulo(nt,20);
             this.creditos = cr;
         }
+
+		public Item(String c, String n, String nt, String cr, String img) {
+			while(c.length()<10)
+				c+=" ";
+			this.codigo = c.toUpperCase();
+			this.nombre = DB.titulo(n.toUpperCase(),30);
+			this.nota = DB.titulo(nt,20);
+			this.creditos = cr;
+			this.image=img;
+		}
     }  
 }
