@@ -313,11 +313,11 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 		{
 		case Add:
 			show(true);
-			getActionBar().setTitle(getString(R.string.add) + HomeActivity.onDisplay(this));
+			getActionBar().setTitle(getString(R.string.add) + " " + HomeActivity.onDisplay(this));
 			break;
 		case Edit:
 			show(false);
-			getActionBar().setTitle(getString(R.string.see) + HomeActivity.onDisplay(this));
+			getActionBar().setTitle(getString(R.string.see) + " " +HomeActivity.onDisplay(this));
 			Button button = findViewById(R.id.save);
 			if(DB.COMUNIDAD)
 				button.setVisibility(View.GONE);

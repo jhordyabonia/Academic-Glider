@@ -2,6 +2,7 @@ package util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
@@ -25,13 +27,14 @@ import java.net.URL;
 import crud.ApunteActivity;
 import static crud.ApunteActivity.zoom;
 import models.DB;
+import webservice.LOG;
 
 public class Image extends Fragment {
+    private static int HEIGHT=1836/3,WIDTH=3264/3;
     private boolean camera;
     private View root;
     private ApunteActivity base;
     private Loader loader;
-
     public Image(boolean camera, ApunteActivity b) {
         base = b;
         zoom = false;
@@ -128,9 +131,29 @@ public class Image extends Fragment {
             int counter=0;
             for (ImageView ima:imageView)
                 imageViewReference[counter++] = new WeakReference<>(ima);
-
         }
+        public static int calculateInSampleSize(
+                BitmapFactory.Options options, int reqWidth, int reqHeight) {
+            // Raw height and width of image
+            final int height = options.outHeight;
+            final int width = options.outWidth;
+            int inSampleSize = 1;
 
+            if (height > reqHeight || width > reqWidth) {
+
+                final int halfHeight = height / 2;
+                final int halfWidth = width / 2;
+
+                // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+                // height and width larger than the requested height and width.
+                while ((halfHeight / inSampleSize) >= reqHeight
+                        && (halfWidth / inSampleSize) >= reqWidth) {
+                    inSampleSize *= 2;
+                }
+            }
+
+            return inSampleSize;
+        }
         @Override
         protected synchronized Bitmap doInBackground(String... fotos) {
             Bitmap imagen = null;
@@ -142,10 +165,19 @@ public class Image extends Fragment {
 
                 File ruta_sd = Environment.getExternalStorageDirectory();
                 File ruta = new File(ruta_sd, DB.DIRECTORY + "//" + name);
-
-                if (ruta.exists())
-                    imagen = BitmapFactory.decodeFile(ruta.getAbsolutePath());
-
+                final BitmapFactory.Options options = new BitmapFactory.Options();
+                //buca la imagen local
+                if (ruta.exists()) {
+                    //Lectura de dimenciones solamenete
+                    name=ruta.getAbsolutePath();
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeFile(name,options);
+                    options.inSampleSize = calculateInSampleSize(options,WIDTH,HEIGHT);
+                    ///Lectura de la img
+                    options.inJustDecodeBounds = false;
+                    imagen = BitmapFactory.decodeFile(name,options);
+                }
+                //Si no hay imagen la descarga
                 if (imagen == null) {
                     URL imageUrl;
                     if(mURL.contains("http"))
@@ -153,7 +185,15 @@ public class Image extends Fragment {
                     else imageUrl = new URL(fotos[0]);
                     HttpURLConnection urlConnection = (HttpURLConnection) imageUrl.openConnection();
                     InputStream inputStream = urlConnection.getInputStream();
-                    imagen = BitmapFactory.decodeFile(save(inputStream, name));
+                    //guardado de la img
+                    name=save(inputStream, name);
+                    //Lectura de dimenciones solamenete
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeFile(name,options);
+                    options.inSampleSize = calculateInSampleSize(options,WIDTH,HEIGHT);
+                    ///Lectura de la img
+                    options.inJustDecodeBounds = false;
+                    imagen = BitmapFactory.decodeFile(name,options);
                 }
             } catch (IOException e) {}
             return imagen;

@@ -28,6 +28,7 @@ import com.jhordyabonia.ag.Server;
 
 import controllers.Horarios;
 
+import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
 import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
 public abstract class Base extends Activity implements Asynchtask {
@@ -50,7 +51,11 @@ public abstract class Base extends Activity implements Asynchtask {
 					}
 				});
 
-		DB.model(DB.MODELS[ON_DISPLAY]);
+		int on_display=ON_DISPLAY;
+		if(ON_DISPLAY>=100)
+			on_display=ASIGNATURAS;
+
+		DB.model(DB.MODELS[on_display]);
 		if (ON_DISPLAY== HomeActivity.HORARIOS)
 		{	
 			if(Horarios.ASIGNATURA!=null)
@@ -250,7 +255,8 @@ public abstract class Base extends Activity implements Asynchtask {
 			parent.startActivity(new Intent(parent, AlertaActivity.class));
 			break;
 		case HomeActivity.APUNTES:
-			parent.startActivity(new Intent(parent, ApunteActivity.class));
+			parent.startActivity(new Intent(parent, Main.class));
+			//parent.startActivity(new Intent(parent, ApunteActivity.class));
 			break;
 		case HomeActivity.LECTURAS:
 			parent.startActivity(new Intent(parent, LecturaActivity.class));

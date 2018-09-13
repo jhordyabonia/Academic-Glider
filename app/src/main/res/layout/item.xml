@@ -18,7 +18,7 @@
         android:id="@+id/FrameLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/textSize"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
         android:layout_marginTop="6dp"
@@ -111,11 +111,13 @@
             <ImageView
                 android:id="@+id/imageView1"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
                 android:layout_weight="1"
-                android:background="@drawable/bg_img"
-                android:src="@drawable/ic_alarm_no" />
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_alarm_no"
+                android:visibility="gone" />
+
         </LinearLayout>
     </FrameLayout>
 </FrameLayout>

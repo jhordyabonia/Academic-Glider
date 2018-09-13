@@ -49,8 +49,11 @@ public class Adapter extends ArrayAdapter{
 	{
 		LayoutInflater inflater = LayoutInflater.from(context);
 		
-		final View root = inflater.inflate(R.layout.item,null);	
-		
+		final View root;
+		if(type==ITEM_TYPE.asignatura)
+			root = inflater.inflate(R.layout.item_asignatura,null);
+		else root = inflater.inflate(R.layout.item,null);
+
 		Item tmp = locale.get(position);
 		switch(type)
 		{
@@ -61,12 +64,26 @@ public class Adapter extends ArrayAdapter{
 				.setText(tmp.nombre);
 				((TextView)root.findViewById(R.id.textView3))
 				.setText(tmp.creditos);
+				if(tmp.descripcion!=null)
+					if(!tmp.descripcion.isEmpty())
+						((TextView)root.findViewById(R.id.loremipsum))
+								.setText(tmp.descripcion);
+
+				if(tmp.nota.isEmpty()){
+					root.findViewById(R.id.textView48).setVisibility(View.GONE);
+					tmp.nota="Sin Calificar";
+				}
 				((TextView)root.findViewById(R.id.textView4))
 				.setText(tmp.nota);
-				if(tmp.image!=null) {
+				if(tmp.image!=null&&!DB.COMUNIDAD) {
+                    root.findViewById(R.id.imageView1).setVisibility(View.VISIBLE);
 					Image.Loader loader = new Image.Loader(tmp.nombre, (ImageView) root.findViewById(R.id.imageView1));
 					loader.execute(tmp.image);
-				}break;
+				}
+				if(DB.COMUNIDAD)
+					root.findViewById(R.id.textView48).setVisibility(View.GONE);
+
+				break;
 			case alerta:
 				root.findViewById(R.id.textView1)
 				.setVisibility(View.GONE);
@@ -127,6 +144,7 @@ public class Adapter extends ArrayAdapter{
 	}
 	public static class Item {
 		public String image;
+		public String descripcion;
        	public String codigo;
         public String nombre;
         public String nota;
@@ -136,29 +154,26 @@ public class Adapter extends ArrayAdapter{
         public Item(String n,String cr) 
         {            
             this.nombre = DB.titulo(n,70);
-            this.nota = DB.titulo(cr,104);
+            this.nota = DB.titulo(cr,"",104);
         }
         public Item( String n, String nt,boolean t) {            
             this.nombre = DB.titulo(n,70);
-            this.nota = DB.titulo(nt,104);
+            this.nota = DB.titulo(nt,"",104);
             this.active = t;
         }
         public Item(String c, String n, String nt, String cr) {
-        	while(c.length()<10)
-				c+=" ";
-            this.codigo = c.toUpperCase();
+        	this.codigo = c.toUpperCase();
             this.nombre = DB.titulo(n.toUpperCase(),30);
-            this.nota = DB.titulo(nt,20);
+            this.nota = DB.titulo(nt,"",20);
             this.creditos = cr;
         }
 
-		public Item(String c, String n, String nt, String cr, String img) {
-			while(c.length()<10)
-				c+=" ";
+		public Item(String c, String n, String nt, String cr, String des,String img) {
 			this.codigo = c.toUpperCase();
-			this.nombre = DB.titulo(n.toUpperCase(),30);
-			this.nota = DB.titulo(nt,20);
+			this.nombre = DB.titulo(n.toUpperCase(),104);
+			this.nota = DB.titulo(nt,"",20);
 			this.creditos = cr;
+			this.descripcion=DB.titulo(des,"",110);
 			this.image=img;
 		}
     }  

@@ -34,6 +34,7 @@ public class DBChat
 	private static JSONArray chats;
 	private static JSONArray contactos;
 
+	static {init();}
 	public static void init()
 	{ init(null);}
 	public static void init(final Activity a)

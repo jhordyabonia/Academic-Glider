@@ -162,7 +162,14 @@
     <string name="info_19">\nSend your comments, or ideas on how to improve the app</string>
     <string name="info_20">\nDescribe and send the possible failures of the app, that you find</string>
     <string name="info_21">Developer</string>
-    <string name="info_22">Tenia algo de tiempo libre por estos dias&#8230; asi que hice esta app. Espero, si no les gusta almenos les sea util :P \nSi tienes una idea para mejorarla. Llama o escribeme; \n\n315&#8211;824&#8211;1412\njeigl7@gmail.com</string>
+    <string name="info_22">
+        Academic Glider has many benefits:\n\n
+        • Simple configuration: Teachers can add students directly or provide them with a code to join them. It is configured in just a few minutes.\n\n
+        • Saves time: With a simple workflow and no need to use paper, teachers can create, review and grade tasks quickly from a single place.\n\n
+        • Improved organization: Students can see all their assignments on a specific page, and all class materials (eg, documents, photos and videos) are automatically archived in Google Drive folders.\n\n
+        • Improved communication: Teachers can use Academic Glider to send announcements and initiate classroom discussions instantly. Students can share resources with their classmates or answer questions in the news.\n\n
+        • Accessible and secure: Like the rest of the G Suite for Education services, Academic Glider does not contain advertisements, never uses your content or student data for advertising purposes and is offered free of charge.
+    </string>
     <string name="info_23">Message</string>
     <string name="info_24">With the tab "HOURS" selected, touch the tab (add) "+"</string>
     <string name="info_feedback">FeedBack</string>

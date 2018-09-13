@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import chat.ChatService;
 import controllers.Asignaturas;
 import models.DB;
 import webservice.Asynchtask;
@@ -29,7 +30,7 @@ public class CompartirAsignatura extends DialogFragment {
     private String compartir_com;
     private  int index_asignatura;
 
-    String[]list;
+    String[]list,list_={"","horarios","apuntes","lecturas","calificables","alertas"};
     final ArrayList<String> items_a_compartir= new ArrayList();
 
     public CompartirAsignatura(Activity a, String c, int i) {
@@ -40,8 +41,7 @@ public class CompartirAsignatura extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState)
      {
          list=getResources().getStringArray(R.array.items_subject);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         android.content.DialogInterface.OnClickListener dialogListener
                     = dialogListener(activity,items_a_compartir,compartir_com,index_asignatura);
         // Set the dialog title
@@ -56,12 +56,16 @@ public class CompartirAsignatura extends DialogFragment {
                              if(which==0&&isChecked)
                              {
                                     items_a_compartir.clear();
-                                    for(String item:list)
+                                    for(String item:list_)
                                         items_a_compartir.add(item);
-                              }else if (isChecked)
-                                items_a_compartir.add(list[which]);
-                              else if (items_a_compartir.contains(list[which]))
-                                items_a_compartir.remove(list[which]);
+                              }else if(which==0&&!isChecked) {
+                                 items_a_compartir.clear();
+                             } else{
+                                 if (isChecked)
+                                     items_a_compartir.add(list_[which]);
+                                 else if (items_a_compartir.contains(list_[which]))
+                                     items_a_compartir.remove(list_[which]);
+                             }
                         }
                     }
           )
@@ -97,7 +101,12 @@ public class CompartirAsignatura extends DialogFragment {
                             @Override
                             public void processFinish(String result)
                             {
-                                Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
+                                if( activity instanceof ChatService.Inbox ) {
+                                    try {
+                                        JSONObject msj = new JSONObject(result);
+                                        ((ChatService.Inbox) activity).add_msj(msj, true);
+                                    }catch (JSONException e){Toast.makeText(activity, result, Toast.LENGTH_LONG).show();}
+                                }else Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
                             }
                         };
                         Server.send("compartir", activity, recep);
