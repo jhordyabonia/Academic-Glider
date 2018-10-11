@@ -150,7 +150,7 @@ public class ProfileActivity extends FragmentActivity
 								asignaturas.getJSONObject(arg2).getString("dato"));
 
 				DialogFragment existe = 
-						Asignaturas.existe(false,ProfileActivity.this,asignatura);
+						Asignaturas.existe(false,asignatura);
 				if(existe!=null)
 					existe.show(getSupportFragmentManager(), "missiles");
 				else Asignaturas.agregar_asignatura(asignatura.getString("id"),ProfileActivity.this);

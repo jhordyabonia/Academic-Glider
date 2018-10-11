@@ -17,6 +17,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Loader;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -257,13 +259,15 @@ public class Asignaturas implements OnItemClickListener
 				case R.id.descargar:
 					try 
 					{
-						String tmp=DB.Asignaturas.LIST_ID_ASIGNATURAS[Base.itemSeleted];
-						DB.model(DB.MODELS[ON_DISPLAY]);
-						JSONObject asignatura = DB.getBy("id", tmp);//.get(arg2);
-						DialogFragment existe = Asignaturas.existe(true,home,asignatura);
-						if(existe!=null)
-							existe.show(home.getSupportFragmentManager(), "missiles");
-						else agregar_asignatura(asignatura.getString("id"),home);
+						if(Base.itemSeleted<DB.Asignaturas.LIST_ID_ASIGNATURAS.length) {
+							String tmp = DB.Asignaturas.LIST_ID_ASIGNATURAS[Base.itemSeleted];
+							DB.model(DB.MODELS[ON_DISPLAY]);
+							JSONObject asignatura = DB.getBy("id", tmp);//.get(arg2);
+							DialogFragment existe = existe(true, asignatura);
+							if (existe != null)
+								existe.show(home.getSupportFragmentManager(), "missiles");
+							else agregar_asignatura(asignatura.getString("id"), home);
+						}else DB.Asignaturas.set_list();
 					} catch (JSONException e) {}					
 					
 					break;
@@ -371,7 +375,7 @@ public class Asignaturas implements OnItemClickListener
 	public static DialogFragment asignaturas_list(FragmentActivity activity, String titulo, String[] items,
 			final DialogInterface.OnClickListener actions)
 	{return new CompartirAsignatura.List(activity,titulo,items,actions); }
-	public static DialogFragment existe(final boolean alt,final FragmentActivity activity,JSONObject asignatura) throws JSONException
+	public static DialogFragment existe(final boolean alt,JSONObject asignatura) throws JSONException
 	{
 		if(alt)			
 		{
@@ -388,6 +392,9 @@ public class Asignaturas implements OnItemClickListener
 			DB.current();
 			DB.Asignaturas.set_list();
 		}
+
+		String tmp="asignaturas_tmp:"+asignaturas_tmp+" alt:"+alt+" asignatura-id:"+asignatura.getString("id");
+		Log.i("A.sP.click(descargar)",tmp);
 		if(!asignaturas_tmp.isEmpty())
 			return  new CompartirAsignatura.AsignaturaExist(asignaturas_tmp,alt,asignatura.getString("id"));
 
@@ -504,7 +511,7 @@ public class Asignaturas implements OnItemClickListener
 	}
 	public static void agregar_asignatura(String descargar,final Activity activity)
 	{
-		HashMap<String, String> data= new HashMap<String, String>();
+		HashMap<String, String> data= new HashMap();
 		data.put("usuario", User.get("id"));
 		data.put("asignatura", descargar);
 		Server.setDataToSend(data);
@@ -516,11 +523,12 @@ public class Asignaturas implements OnItemClickListener
             {
                 JSONObject mData;
                 String msj="";
+                Log.i("A.a_a",result);
                 try{
                     mData= new JSONObject(result);
                     msj=mData.getString("menssage");
                     DB.insert(mData);
-                }catch (JSONException e){LOG.save(e.getMessage(),"down.txt");}
+                }catch (JSONException e){LOG.save(result,"down.txt");}
                 Toast.makeText(activity, msj, Toast.LENGTH_LONG).show();
                 HomeActivity.UPDATE=true;
                 DB.update();

@@ -248,7 +248,6 @@ public abstract class DB
 		boolean COMUNIDAD_ = COMUNIDAD;
 		current(db.toString());
 
-		save(null, LOCAL, "local.txt");
 		local();
 		COMUNIDAD = true;
 		for (String model : MODELS){
@@ -257,11 +256,13 @@ public abstract class DB
 				if (tmp != null) {
 					for (int t = 0; t < tmp.length(); t++)
 						insert(model, tmp.getJSONObject(t));
+					Log.i("DB.insert:tmp ",tmp.toString());
 				}
 			}
 		}
 		COMUNIDAD=COMUNIDAD_;
 		save(null, db.toString(), FILE_DB);
+		save(null, data.toString(), "run.json");
 		current();
 		Asignaturas.set_list();
 	}

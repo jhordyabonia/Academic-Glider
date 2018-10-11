@@ -387,7 +387,7 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 			{
 				JSONObject asignatura = asignaturas.get(arg2);
 				if(asignatura==null)return true;
-				DialogFragment existe = Asignaturas.existe(false,this,asignatura);
+				DialogFragment existe = Asignaturas.existe(false,asignatura);
 				if(existe!=null)
 					existe.show(getSupportFragmentManager(), "missiles");
 				else Asignaturas.agregar_asignatura(asignatura.getString("id"),this);
