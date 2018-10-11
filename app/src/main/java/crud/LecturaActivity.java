@@ -7,6 +7,12 @@ import android.os.Bundle;
 import com.jhordyabonia.ag.HomeActivity;
 import com.jhordyabonia.ag.R;
 
+import models.DB;
+import util.Validate;
+
+import static com.jhordyabonia.ag.HomeActivity.ALERTAS;
+import static com.jhordyabonia.ag.HomeActivity.LECTURAS;
+
 public class LecturaActivity extends Base {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -17,10 +23,15 @@ public class LecturaActivity extends Base {
 
 	@Override
 	protected HashMap<String, String> getData() {
-		HashMap<String, String> datos = new HashMap<String, String>();
+		Validate v=new Validate(findViewById(R.id.crud));
+		v.setIds(R.id.nombre,R.id.descripcion);
+		v.setTitles("nombre","descripcion");
+		HashMap<String, String> datos;
+		if(v.run())
+			datos=v.datos;
+		else return null;
+
 		datos.put("asignatura", HomeActivity.idAsignaturaActual());
-		datos.put("nombre", get(R.id.nombre));
-		datos.put("descripcion", get(R.id.descripcion));
 		return datos;
 	}
 

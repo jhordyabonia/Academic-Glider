@@ -120,8 +120,8 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.info_title),
                         getString(R.string.exit),
                 }));
-       // mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        //        HISTORY.add(on_display);
+        //mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+        //HISTORY.add(mCurrentSelectedPosition);
         return mDrawerListView;
     }
 
@@ -224,22 +224,29 @@ public class NavigationDrawerFragment extends Fragment {
         if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(position);
         }
-        if(add)
-            HISTORY.add(++display_now,position);
 
+        if(add)
+            if(position>=0)
+                HISTORY.add(++display_now,position);
     }
-    public  void clearHistory()
+    public void clearHistory()
     {
         HISTORY.clear();
-        HISTORY.add(0);
+        display_now=-1;
     }
     public boolean back()
     {
-        if(--display_now>=0){
-            selectItem(HISTORY.get(display_now),false);
+        if(mCurrentSelectedPosition==-1){
+            selectItem(2,false);
             return true;
-        }else display_now=-1;
-        return false;
+        }else if(--display_now>=0){
+            if(display_now<HISTORY.size())
+                selectItem(HISTORY.get(display_now),false);
+            return true;
+        }else {
+            clearHistory();
+            return false;
+        }
     }
 
     @Override

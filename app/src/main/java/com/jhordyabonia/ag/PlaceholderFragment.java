@@ -65,16 +65,22 @@ public  class PlaceholderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         home = (HomeActivity) getActivity();
+
         Bundle args = getArguments();
         int on_display = args.getInt(ARG_SECTION_NUMBER);
+        if(!DB.LOGGED)
+            on_display=9;
 
         switch (on_display) {
             case -1:
                 rootView = inflater.inflate(R.layout.fragment_collection_object, container, false);
-                ViewPager mViewPager = rootView.findViewById(R.id.pager);
-                home.asignaturas.setPager(mViewPager);
-                home.asignaturas.show(HomeActivity.ALERTAS);
+                if(!HomeActivity.idAsignaturaActual().isEmpty()) {
+                   ViewPager mViewPager = rootView.findViewById(R.id.pager);
+                    home.asignaturas.setPager(mViewPager);
+                    home.asignaturas.show(HomeActivity.ALERTAS);
+                }else  home.asignaturas.todas(rootView);
                 break;
             case 0:
                 rootView = inflater.inflate(R.layout.lienzo, container, false);
@@ -137,13 +143,7 @@ public  class PlaceholderFragment extends Fragment {
                 home.actionBar.setTitle(R.string.info_title);
                 break;
             case 9:
-                Alertas.fijar_alarmas(home,true);
-                DB.delete(DBChat.FILE_CHATS);
-                DB.delete(DB.FILE_DB);
-                DBChat.init();
-                DB.set("");
-                DB.LOGGED=false;
-                new Login(home);
+               Login.logout(home);
                 break;
             default:
                 rootView = inflater.inflate(R.layout.lienzo, container, false);

@@ -7,6 +7,13 @@ import android.os.Bundle;
 import com.jhordyabonia.ag.HomeActivity;
 import com.jhordyabonia.ag.R;
 
+import models.DB;
+import util.Validate;
+
+import static com.jhordyabonia.ag.HomeActivity.ALERTAS;
+import static com.jhordyabonia.ag.HomeActivity.CALIFICABLES;
+import static com.jhordyabonia.ag.HomeActivity.HORARIOS;
+
 public class CalificableActivity extends Base {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,13 +28,15 @@ public class CalificableActivity extends Base {
 
 	@Override
 	protected HashMap<String, String> getData() {
-		HashMap<String, String> datos = new HashMap<String, String>();
+		Validate v=new Validate(findViewById(R.id.crud));
+		v.setIds(R.id.nombre,R.id.porcentaje,R.id.nota,R.id.descripcion);
+		v.setTitles("nombre","porcentaje","nota","descripcion");
+		HashMap<String, String> datos;
+		if(v.run())
+			datos=v.datos;
+		else return null;
 		datos.put("asignatura", HomeActivity.idAsignaturaActual());
 		datos.put("fecha", getFecha());
-		datos.put("nombre", get(R.id.nombre));
-		datos.put("porcentaje", get(R.id.porcentaje));
-		datos.put("nota", get(R.id.nota));
-		datos.put("descripcion", get(R.id.descripcion));
 		return datos;
 	}
 

@@ -163,8 +163,7 @@ public class Image extends Fragment {
                 if(name.contains("http"))
                     name=mURL+".jpg";
 
-                File ruta_sd = Environment.getExternalStorageDirectory();
-                File ruta = new File(ruta_sd, DB.DIRECTORY + "//" + name);
+                File ruta = new File(DB.root, DB.DIRECTORY + "//" + name);
                 final BitmapFactory.Options options = new BitmapFactory.Options();
                 //buca la imagen local
                 if (ruta.exists()) {

@@ -10,9 +10,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 
+import chat.DBChat;
 import webservice.Asynchtask;
 
 import com.jhordyabonia.ag.HomeActivity;
@@ -22,9 +24,14 @@ import com.jhordyabonia.ag.Server;
 import controllers.Alertas;
 import webservice.LOG;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
+
+import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
+import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
 public abstract class DB 
 {
@@ -37,16 +44,19 @@ public abstract class DB
 	public static String FILE_DB = "db.json";
 	public static File root = Environment.getExternalStorageDirectory();
 	public static String MODELS[] = {"alertas","apuntes","lecturas","calificables","horarios","asignaturas"};
-	public static int HOY = Calendar.getInstance()
-            .get(Calendar.DAY_OF_WEEK)-1;
-	public static String DAYS[] = 
-		{ "Domingo", "Lunes", "Martes","Miercoles", "Jueves", "Viernes", "Sabado" };
+	public static int HOY = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)-1;
+	public static String DAYS[] = { "Domingo", "Lunes", "Martes","Miercoles", "Jueves", "Viernes", "Sabado" };
+
+	private static JSONObject db;
+	private static String name_model = "";
+
 	public static String[] semana()
 	{	
 		String days[]=DAYS.clone();
 		days[HOY]+=" (Hoy)";
 		return days;
 	}
+
 	public static int indexDay(String d)
 	{
 		int index = 0;
@@ -58,23 +68,28 @@ public abstract class DB
 		}
 		return 0;
 	}
+
 	public static String fecha()
 	{
-		String mes=""+Calendar.getInstance().get(Calendar.MONTH);
+		Calendar cal = Calendar.getInstance();
+		String mes=""+cal.get(Calendar.MONTH);
 		mes=mes.length()<2?"0"+mes:mes;
-		String dia=""+Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+		String dia=""+cal.get(Calendar.DAY_OF_MONTH);
 		mes=mes.length()<2?"0"+mes:mes;
-		String anno=(""+Calendar.getInstance().get(Calendar.YEAR))
+		String anno=(""+cal.get(Calendar.YEAR))
 				.substring(2);
 		mes=mes.length()<2?"0"+mes:mes;
 		dia=dia.length()>1?dia:"0"+dia;
 		
 		return dia+"-"+mes+"-"+anno;
 	}
+
 	public static void update()
 	{update(null,null);}
+
 	public static void update(final HomeActivity home)
 	{update(home,null);}
+
 	public static void update(final HomeActivity home,HashMap<String, String> datos)
 	{
 		if(datos==null)
@@ -99,19 +114,20 @@ public abstract class DB
 				if(home!=null)
 				{
 					if(result.isEmpty())
-					Toast.makeText(home, R.string.network_err, Toast.LENGTH_SHORT).show();
+						Toast.makeText(home, R.string.network_err, Toast.LENGTH_SHORT).show();
 					else if(result.equals("Datos incorrectos!"))
 						Toast.makeText(home, result, Toast.LENGTH_SHORT).show();
 					else if(result.contains(TOKEN))
 					{
 						home.getActionBar().removeAllTabs();
-						home.make(result,true);
+						home.start(result);
+						home.make(true);
 						Alertas.fijar_alarmas(home);
 					}
 					else
 					{
 						Toast.makeText(home, R.string.network_err, Toast.LENGTH_SHORT).show();
-						home.make(null,false);
+						//home.make(false);
 					}
 				}else
 				{
@@ -123,11 +139,14 @@ public abstract class DB
 				}
 			}
 		};
-		Server.send("getAll/no_encrypt", home, recep);
+		if(COMUNIDAD)
+		    Server.send("getAll/no_encrypt", home, recep);
+		else if(home!=null){
+			set(load(FILE_DB));
+			Asignaturas.set_list();
+			home.make(true);
+		}
 	}
-	
-	private static JSONObject db;
-	private static String name_model = "";
 
 	public static boolean memory()
 	{
@@ -135,7 +154,7 @@ public abstract class DB
 		return estado.equals(Environment.MEDIA_MOUNTED);// &&estado.equals(Environment.MEDIA_MOUNTED_READ_ONLY);
 	}
 
-	public static String load(String file) 
+	public static String load(String file)
 	{
 		if (!memory())
 			return "";
@@ -153,7 +172,7 @@ public abstract class DB
 					(new InputStreamReader(new FileInputStream(f)));
 			out = fin.readLine();
 			fin.close();
-			delete=false;
+			delete=out.isEmpty();
 		} catch (Exception ex) {}
 		finally{if(delete)delete(file);}
 		return out;
@@ -176,13 +195,13 @@ public abstract class DB
 		} catch (Exception ex) 
 		{
 			if(a!=null)
-			Toast.makeText(a, "Advertencia, Esta sesion es temporal",
+			Toast.makeText(a, "Advertencia, Esta session es temporal",
 					Toast.LENGTH_SHORT).show();
 		}
 	}
+
 	public static void delete(String file)
 	{
-
 		if (!memory())
 			return;
 		try 
@@ -192,14 +211,18 @@ public abstract class DB
 			f.delete();			
 		}catch (Exception ex) {}
 	}
+
 	public static void local()
 	{set(LOCAL);}
+
 	public static void local(String local)
 	{LOCAL=local;}
 	public static void current()
 	{set(CURRENT);}
+
 	public static void current(String current)
 	{CURRENT=current;}
+
 	public static boolean set(String core_raw)
 	{		
 		try 
@@ -212,11 +235,97 @@ public abstract class DB
 		} catch (JSONException e) {LOGGED=false;return false;}
 	}
 
+	private static void make() throws JSONException
+	{
+		try {
+			JSONArray r=db.getJSONArray(name_model);
+			if(r==null)
+				throw new JSONException("Model '"+name_model+"' null");
+		}catch (JSONException e){db.put(name_model,new JSONArray());}
+	}
+
+	public static void insert(JSONObject data) throws JSONException {
+		boolean COMUNIDAD_ = COMUNIDAD;
+		current(db.toString());
+
+		save(null, LOCAL, "local.txt");
+		local();
+		COMUNIDAD = true;
+		for (String model : MODELS){
+			if (!data.isNull(model)) {
+				JSONArray tmp = data.getJSONArray(model);
+				if (tmp != null) {
+					for (int t = 0; t < tmp.length(); t++)
+						insert(model, tmp.getJSONObject(t));
+				}
+			}
+		}
+		COMUNIDAD=COMUNIDAD_;
+		save(null, db.toString(), FILE_DB);
+		current();
+		Asignaturas.set_list();
+	}
+
+	public static void insert(int model,JSONObject data) throws JSONException{
+		insert(MODELS[model],data);
+	}
+	public static void insert(String model,JSONObject data) throws JSONException{
+		JSONObject tmp= new JSONObject();
+		try {
+			model(model);
+			tmp = getBy("id", data.get("id"));
+			if (tmp == null)
+				db.getJSONArray(name_model).put(data);
+			else db.getJSONArray(name_model).put(tmp.getInt("count"), data);
+
+			Asignaturas.set_list();
+			if (!COMUNIDAD)
+				save(null, db.toString(), FILE_DB);
+		}catch (JSONException e)
+		{
+			if (tmp != null)
+				save(null,tmp.toString(),tmp.getString("nombre"));
+			throw e;
+		}
+	}
+
 	public static void model(String name)
-	{	name_model = name; }
+	{
+		name_model = name;
+		try{make();}
+		catch (JSONException e)
+		{save(null,e.getMessage(), name+"-error.txt");}
+	}
+
+	private static JSONArray clean(JSONArray data) throws JSONException
+	{
+		JSONArray out= new JSONArray();
+
+		for(int r=0;r<data.length();r++)
+			if(!data.isNull(r))
+				out.put(data.get(r));
+
+		return out;
+	}
+
+	public static boolean remove(JSONObject in)throws JSONException{
+		boolean out= false;
+		JSONObject tmp = getBy("id",in.get("id"));
+		if(tmp != null) try
+		{
+				db.getJSONArray(name_model).put( tmp.getInt("count"),null);
+				db.put(name_model,clean(db.getJSONArray(name_model)));
+				save(null, db.toString(), FILE_DB);
+				out = true;
+		} catch (JSONException e){}
+
+		return out;
+	}
+
 	public static Object get(String name) throws JSONException
 	{return db.get(name);}
-	public static JSONObject get(int id) 
+
+	public static JSONObject get(int id)
 	{
 		JSONObject out = null;
 		try 
@@ -238,15 +347,19 @@ public abstract class DB
 				try 
 				{
 					if (tmp.get(by).equals(where_is))
-						return tmp;
+						break;
 					tmp = get(++count);
 				} catch (JSONException e) 
 				{	continue; }
 			}
-		} 
+		}
+		if(tmp!=null)
+			try{tmp.put("count",count);}
+			catch (JSONException e ){}
 		return tmp;
 	}
-	public static ArrayList<JSONObject> find(String by, Object where_is) 
+
+	public static ArrayList<JSONObject> find(String by, Object where_is)
 	{
 		ArrayList<JSONObject> out = new ArrayList<JSONObject>();
 
@@ -336,7 +449,7 @@ public abstract class DB
 		public static void set_list()
 		{
 			int count = 0;
-			model("asignaturas");
+			model(MODELS[ASIGNATURAS]);
 			ArrayList<JSONObject> tmp = find("", "");
 			LIST_ASIGNATURAS = new String[tmp.size()];
 			LIST_ID_ASIGNATURAS = new String[tmp.size()];
@@ -354,13 +467,17 @@ public abstract class DB
 
 	public static final String titulo(String in) 
 	{return DB.titulo(in,"Sin calificar",30,true);}
-	public static final String titulo(String in,String alt) 
+
+	public static final String titulo(String in,String alt)
 	{return DB.titulo(in,alt,30,true);}
-	public static final String titulo(String in,String alt,int limite) 
+
+	public static final String titulo(String in,String alt,int limite)
 	{return DB.titulo(in,alt,limite,true);}
-	public static final String titulo(String in,int limite) 
+
+	public static final String titulo(String in,int limite)
 	{return DB.titulo(in,"Sin calificar",limite,true);}
-	public static final String titulo(String in,String alt,int limite,boolean points) 
+
+	public static final String titulo(String in,String alt,int limite,boolean points)
 	{
 		if (in.equals("0")||in.isEmpty())
 			return alt;

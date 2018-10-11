@@ -10,6 +10,9 @@ import org.json.JSONObject;
 
 import webservice.Asynchtask;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -39,9 +42,9 @@ import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 public abstract class Controller extends Fragment implements OnItemClickListener
 {
 	public static boolean CLICK_BLOQUEADO=false;
-	protected View rootView;
-	protected ListView base;
-	protected Adapter base_data;
+	protected View rootView=null;
+	protected ListView base=null;
+	protected Adapter base_data=null;
 	protected ArrayList<JSONObject> LOCAL_DB = new ArrayList<JSONObject>();
 
 	@Override
@@ -132,10 +135,29 @@ public abstract class Controller extends Fragment implements OnItemClickListener
 			@Override
 			public void processFinish(String result) 
 			{
-				if(result.contains("Eliminad"))
-					base_data.remove(base_data.getItem(Base.itemSeleted));
-				Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
-				DB.update();
+				if(!result.isEmpty())
+					if(!result.equals("Sin conexion a internet"))
+					{
+						JSONObject mData;
+						String msj="";
+						try{
+							mData= new JSONObject(result);
+							msj=mData.getString("menssage");
+							JSONObject tmp=mData.getJSONObject("data");
+
+							if(msj.contains("Eliminad")) {
+
+                                DB.model(DB.MODELS[ON_DISPLAY]);
+								if(DB.remove(tmp)) {
+                                  	Toast.makeText(rootView.getContext(), msj, Toast.LENGTH_LONG).show();
+                                    show();
+                                }else Toast.makeText(rootView.getContext(),"No se removio",Toast.LENGTH_LONG).show();
+								DB.update();
+							}
+						}catch (JSONException e){}
+
+						Toast.makeText(rootView.getContext(), msj, Toast.LENGTH_LONG).show();
+					}
 			}
 		};
 		String url_tmp = DB.MODELS[ON_DISPLAY] + "/delete";

@@ -74,8 +74,7 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 		otra_u= lienzo.findViewById(R.id.universidad_otra);
 		img_u= lienzo.findViewById(R.id.img_universidad2);
 
-		ArrayAdapter<String> base =
-				new ArrayAdapter<String>(home,R.layout.base);
+		ArrayAdapter<String>  base = new ArrayAdapter(home,R.layout.base);
 		base.add(home.getString(R.string.university));
 
 		list =  lienzo.findViewById(R.id.universidad);
@@ -90,11 +89,10 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 		home.show_menu=true;
 		logged=true;
 		
-		Toast.makeText(home,home.getString(R.string.insert_2_password),
-				Toast.LENGTH_LONG).show();
+		Toast.makeText(home,R.string.insert_2_password,Toast.LENGTH_LONG).show();
 		
 		((Button) lienzo.findViewById(R.id.registrarme))
-			.setText(home.getString(R.string.update));
+			.setText(R.string.update);
 
 		Image.Loader loader= new Image.Loader((ImageView) lienzo.findViewById(R.id.imagen_usuario));
         //DownLoadImage loader = new DownLoadImage(home,R.id.imagen_usuario);
@@ -113,30 +111,23 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 	@Override
 	public void processFinish(String result) 
 	{	
-		if(result.equals("Actualizacion Exitosa!"))
-		{
+		if(result.equals("Actualizacion Exitosa!")){
 			Toast.makeText(home, result,Toast.LENGTH_SHORT ).show();
-		}else if(result.equals("Registro Exitoso!"))
-		{			
+		}else if(result.equals("Registro Exitoso!")){
 			Toast.makeText(home, result,Toast.LENGTH_SHORT ).show();		
 			Login.login(home);
-			return;
-		}else if(result.startsWith("Universidad"))
-		{
-			ArrayAdapter<String> base =
-					new ArrayAdapter<String>(home,R.layout.base);
-			if(logged)
-			{
+		}else if(result.startsWith("Universidad")){
+			if(logged){
 				result=result.replace(DB.User.get("universidad")+",", "");
 				result=DB.User.get("universidad")+","+result;				
 			}
-			
+
+			ArrayAdapter<String>  base=new ArrayAdapter(home,R.layout.base);
 			base.addAll(result.split(","));
 			list.setAdapter(base);
 			list.setPrompt(home.getString(R.string.select_university));
-		}else 
-		{
-			Toast.makeText(home, home.getString(R.string.network_err), Toast.LENGTH_SHORT).show();
+		}else {
+			Toast.makeText(home, R.string.network_err, Toast.LENGTH_SHORT).show();
 		}
 	}
 	private String getUniversidad()
@@ -165,20 +156,17 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 		String email=((EditText)lienzo.findViewById(R.id.email)).getText().toString();
 		String universidad=getUniversidad();
 
-		if(nombre.length()<8||!nombre.contains(" "))
-		{
+		if(nombre.length()<8||!nombre.contains(" ")){
 			setError(R.id.nombre,home.getString(R.string.insert_complet_name));
 			return false;
 		}
-		if(universidad.isEmpty())
-		{
+		if(universidad.isEmpty()){
 			otra_u.setVisibility(View.VISIBLE);
 			img_u.setVisibility(View.VISIBLE);
 			setError(R.id.universidad_otra,home.getString(R.string.select_name));
 			return false;
-		}	
-		if(celular.length()<10)
-		{
+		}
+		if(celular.length()<10){
 			setError(R.id.celular,home.getString(R.string.cel_may));
 			return false;
 		}
@@ -188,22 +176,20 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 			setError(R.id.email,home.getString(R.string.email_format));
 			return false;
 		}	
-		if(password.length()<6)
-		{
+		if(password.length()<6){
 			setError(R.id.password,home.getString(R.string.pass_err));
 			return false;
 		}
-		if(!password.equals(password2))
-		{
+		if(!password.equals(password2)){
 			setError(R.id.password2,home.getString(R.string.pass_err2));
 			return false;
 		}
 
-		HashMap<String, String> datos=new HashMap<String, String>();
+		HashMap<String, String> datos=new HashMap();
 		if(url.equals("editar"))
-			datos.put("id", DB.User.get("id"));
-		datos.put("nombre", nombre);
-		datos.put("celular", celular);
+			datos.put("id",DB.User.get("id"));
+		datos.put("nombre",nombre);
+		datos.put("celular",celular);
 		datos.put("correo",email);
 		datos.put("password",password);
 		datos.put("universidad",universidad);
@@ -215,15 +201,14 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 	{
 		if(!datos())
 		{
-			Toast.makeText(home,home.getString(R.string.fail_register), Toast.LENGTH_LONG).show();
+			Toast.makeText(home,R.string.fail_register, Toast.LENGTH_LONG).show();
 			return;
 		}
 		
 		Server.send(url, home, this);
 	}
 	@Override
-	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
-			long arg3) {
+	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
 		otra_u.setVisibility(View.GONE);
 		img_u.setVisibility(View.GONE);
 		if(arg2==arg0.getCount()-1)

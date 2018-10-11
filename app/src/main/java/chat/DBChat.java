@@ -39,6 +39,8 @@ public class DBChat
 	{ init(null);}
 	public static void init(final Activity a)
 	{
+		if(!DB.LOGGED)
+			return;
 		try 
 		{
 			//DB Chat

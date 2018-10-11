@@ -3,12 +3,16 @@ package crud;
 import java.util.HashMap;
 
 import models.DB;
+import util.Validate;
 
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.jhordyabonia.ag.R;
+
+import static com.jhordyabonia.ag.HomeActivity.ALERTAS;
+import static com.jhordyabonia.ag.HomeActivity.HORARIOS;
 
 public class HorarioActivity extends Base {
 
@@ -49,7 +53,13 @@ public class HorarioActivity extends Base {
 
 	@Override
 	protected HashMap<String, String> getData() {
-		HashMap<String, String> datos = new HashMap<String, String>();
+		Validate v=new Validate(findViewById(R.id.crud));
+		v.setIds(R.id.ubicacion,R.id.duracion);
+		v.setTitles("ubicacion","duracion");
+		HashMap<String, String> datos;
+		if(v.run())
+			datos=v.datos;
+		else return null;
 		String asignatura = (String) ((Spinner) findViewById(R.id.asignatura))
 				.getSelectedItem();
 		String dia = (String) ((Spinner) findViewById(R.id.dia))
@@ -57,8 +67,6 @@ public class HorarioActivity extends Base {
 		datos.put("asignatura", DB.Asignaturas.getId(asignatura));
 		datos.put("dia", dia);
 		datos.put("hora",getHora());
-		datos.put("ubicacion", get(R.id.ubicacion));
-		datos.put("duracion", get(R.id.duracion));
 
 		return datos;
 	}

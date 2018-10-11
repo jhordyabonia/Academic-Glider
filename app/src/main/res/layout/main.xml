@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:id="@+id/crud" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff"
+        android:layout_weight="1"
+        android:layout_margin="5dp"
         android:orientation="vertical">
 
         <Spinner
@@ -20,26 +23,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:focusable="false"
-            android:hint="@string/name" />
+            android:hint="@string/name"
+            android:inputType="textPersonName|datetime">
+
+            <requestFocus />
+        </EditText>
+
 
         <ScrollView
             android:id="@+id/scrollView1"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center">
+
 
             <EditText
                 android:id="@+id/descripcion"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
+                android:layout_height="@android:dimen/thumbnail_height"
+                android:layout_gravity="top"
+                android:layout_weight="0.67"
                 android:ems="10"
-                android:focusable="false"
                 android:gravity="top"
                 android:hint="@string/description_label"
-                android:inputType="textMultiLine"
-                android:lines="5" />
+                android:inputType="textMultiLine"/>
         </ScrollView>
 
 
@@ -64,14 +71,15 @@
 
             <Button
                 android:id="@+id/save"
+                style="?android:attr/buttonStyleSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:background="#ffffff"
+                android:background="#FFFFFF"
                 android:text="@string/save"
+                android:textAppearance="?android:attr/textAppearanceMediumInverse"
                 android:textStyle="normal|bold|italic" />
         </FrameLayout>
-
     </LinearLayout>
 
     <LinearLayout

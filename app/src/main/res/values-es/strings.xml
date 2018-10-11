@@ -82,7 +82,7 @@
     <string name="into">Sign In </string>
     <string name="forgiven_pass">¿Olvido su contraseña? </string>
     <string name="signup">Registrarme </string>
-    <string name="description_label">Descripcion del grupo&#8230; Group description </string>
+    <string name="description_label">Descripcion del grupo&#8230;</string>
     <string name="request">Solicitudes: </string>
     <string name="members">Integrantes: </string>
     <string name="account_recover">Recuperar Cuenta </string>
@@ -116,7 +116,7 @@
     <string name="title_activity_list_chat_beta">AGlider Chat (Beta) </string>
     <string name="title_activity_profil">ProfilActivity </string>
     <string name="title_activity_recuperar_cuenta">Recuperar Cuenta </string>
-    <string name="action_settings">New </string>
+    <string name="action_settings">Nueva </string>
     <string name="classic_nav">Navegacion clasica </string>
 
 
@@ -124,7 +124,7 @@
     <string name="info_see">Ver Tabulado de Asignaturas </string>
     <string name="info_into_diplay">En la pantalla de inicio, "Mi Glider" toca la pestaña "ASIGNATURAS" </string>
     <string name="info_ver_horarios">Ver Horarios </string>
-    <string name="info_ver_horarios0">Para ver los horarios de cada dia de la semana. En la pantalla de inicio, "Mi Glider" toca 2 veces la pestaña "HORARIOS" </string>
+    <string name="info_ver_horarios0">Para ver los horarios de cada día de la semana. En la pantalla de inicio, "Mi Glider" toca 2 veces la pestaña "HORARIOS" </string>
     <string name="info_ver_horarios1">Para ver los horarios de una asignatura. En el tabulado de asignaturas, manten precionada la asignatura de interes y posteriormente, en menu delplegado selecciona la opcion "Horarios" </string>
     <string name="info_agregar_asignatura">Agregar una Asignatura </string>
     <string name="info_in_tab">En el tabulado de asignaturas, toca la pestaña (add) "+" </string>
@@ -132,11 +132,11 @@
 
     <string name="info_0">Con la pestaña "HORARIOS" seleccionada, toca la pestaña (add) "+"</string>
     <string name="info_1">Agregar Calificables</string>
-    <string name="info_2">En el tabulado de asignaturas, toca la asignatura de interes para abrirla. Desplazate hasta la pagina "Calificables", deslizando a los lados  las paginas, de la asignatura. toca la pestaña (add) "+"</string>
+    <string name="info_2">En el tabulado de asignaturas, toca la asignatura de interes para abrirla. Desplazate hasta la página "Calificables", deslizando a los lados  las paginas, de la asignatura. toca la pestaña (add) "+"</string>
     <string name="info_3">Agregar Alertas</string>
-    <string name="info_4">En el tabulado de asignaturas, toca la asignatura de interes para abrirla. Desplazate hasta la pagina "Alertas", deslizando a los lados  las paginas, de la asignatura. toca la pestaña (add) "+"</string>
+    <string name="info_4">En el tabulado de asignaturas, toca la asignatura de interes para abrirla. Desplazate hasta la página "Alertas", deslizando a los lados  las paginas, de la asignatura. toca la pestaña (add) "+"</string>
     <string name="info_5">Agregar Apuntes</string>
-    <string name="info_6">En el tabulado de asignaturas, toca la asignatura de interes para abrirla. Desplazate hasta la pagina "Apuntes", deslizando a los lados  las paginas, de la asignatura. toca la pestaña (add) "+"</string>
+    <string name="info_6">En el tabulado de asignaturas, toca la asignatura de interes para abrirla. Desplazate hasta la página "Apuntes", deslizando a los lados  las paginas, de la asignatura. toca la pestaña (add) "+"</string>
     <string name="info_7">Descargar una asignatura de la Comunidad Glider</string>
     <string name="info_8">En la pantalla de inicio, "Mi Glider" abre el "Menu contextual". selecciona la opcion "Comunidad Glider". </string>
     <string name="info_9">En la pantalla, "Comunidad Glider" navega o busca entre las asignaturas, compartidas por la comunidad, tocando la pestaña "Buscar" y filtrando el contenido, por universidades y/o nombres de las asignaturas.</string>
@@ -163,4 +163,10 @@
     <string name="info_23">Mensaje</string>
     <string name="info_24">Con la pestaña "HORARIOS" seleccionada, toca la pestaña (add) "+"</string>
     <string name="info_feedback">FeedBack</string>
+    <string name="name_noEmpty">El nombre no puede estar vacío</string>
+    <string name="onlyValues0_100">Solo un números entre 0 y 100</string>
+    <string name="descriptionShort">La descripcíon  debe tener mínimo 10 caracteres</string>
+    <string name="onlyValues0_5">Solo números entre 0 y 5</string>
+    <string name="codeShort">El código debe tener mínimo 5 caracteres</string>
+    <string name="noEmpty">No debe estar vacío</string>
 </resources>

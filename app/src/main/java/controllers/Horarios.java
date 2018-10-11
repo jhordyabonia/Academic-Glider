@@ -139,10 +139,25 @@ public class Horarios implements OnItemClickListener
 			@Override
 			public void processFinish(String result) 
 			{
-				if(result.contains("Eliminad"))
-					base_data.remove(base_data.getItem(Base.itemSeleted));
-				Toast.makeText(home, result, Toast.LENGTH_SHORT).show();
-				DB.update(home);
+
+				JSONObject mData;
+				String msj="";
+				try{
+					mData= new JSONObject(result);
+					msj=mData.getString("menssage");
+					JSONObject tmp=mData.getJSONObject("data");
+
+					if(msj.contains("Eliminad")) {
+
+						DB.model(DB.MODELS[ON_DISPLAY]);
+						if(DB.remove(tmp)) {
+							View view=home.findViewById(R.id.FrameLayout1);
+							show(view);
+						}else Toast.makeText(home,"No se removio",Toast.LENGTH_LONG).show();
+						DB.update();
+					}
+				}catch (JSONException e){}
+				Toast.makeText(home, msj, Toast.LENGTH_LONG).show();
 			}
 		};
 		String url_tmp =  DB.MODELS[ON_DISPLAY]+ "/delete";

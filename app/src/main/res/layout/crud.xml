@@ -3,14 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:id="@+id/crud">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="394dp"
+        android:layout_height="match_parent"
         android:layout_margin="5dp"
         android:layout_weight="1"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/nombre"
@@ -19,7 +20,7 @@
             android:ems="10"
             android:hint="@string/name"
             android:inputType="textPersonName|datetime"
-            android:visibility="gone" >
+            android:visibility="gone">
 
             <requestFocus />
         </EditText>
@@ -79,13 +80,12 @@
             android:inputType="textPersonName"
             android:visibility="gone" />
 
-      
 
         <Spinner
             android:id="@+id/asignatura"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
-            android:visibility="gone"/>
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <Spinner
             android:id="@+id/dia"
@@ -110,7 +110,8 @@
             android:ems="10"
             android:hint="@string/time"
             android:inputType="number"
-            android:visibility="gone" />     
+            android:visibility="gone" />
+
         <EditText
             android:id="@+id/descripcion"
             android:layout_width="match_parent"
@@ -121,40 +122,40 @@
             android:gravity="top"
             android:hint="@string/description_label"
             android:inputType="textMultiLine"
-            android:visibility="gone" /> 	
-		<TextView
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/_fecha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:text="@string/date"
-            android:visibility="gone"/>
-		
+            android:visibility="gone" />
+
         <DatePicker
             android:id="@+id/fecha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1" 
-            android:visibility="gone"/>
-        
+            android:layout_weight="1"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/_hora"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:text="@string/hour"
-            android:visibility="gone"/>
-        
+            android:visibility="gone" />
+
         <TimePicker
             android:id="@+id/hora"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1" 
+            android:layout_weight="1"
             android:visibility="gone" />
-          
-       	
+
 
     </LinearLayout>
 

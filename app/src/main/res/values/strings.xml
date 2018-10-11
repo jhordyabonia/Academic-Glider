@@ -173,5 +173,11 @@
     <string name="info_23">Message</string>
     <string name="info_24">With the tab "HOURS" selected, touch the tab (add) "+"</string>
     <string name="info_feedback">FeedBack</string>
+    <string name="name_noEmpty">The name can not be empty</string>
+    <string name="onlyValues0_100">Only one numbers between 0 and 100</string>
+    <string name="descriptionShort">The description must have a minimum of 10 characters</string>
+    <string name="onlyValues0_5">Only one numbers between 0 and 5</string>
+    <string name="codeShort">The code must have a minimum of 5 characters</string>
+    <string name="noEmpty">It must not be empty</string>
 
 </resources>

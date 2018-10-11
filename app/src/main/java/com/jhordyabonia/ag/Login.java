@@ -2,10 +2,13 @@ package com.jhordyabonia.ag;
 
 import java.util.HashMap;
 
+import chat.DBChat;
+import controllers.Alertas;
 import models.DB;
 import webservice.Asynchtask;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -26,8 +29,8 @@ public class Login
 					login(home); break;
 				case R.id.registrarme_formulario:
                     home.setContentView(R.layout.activity_registrarme);
-                    View vi=home.findViewById(R.id.linearLayout);
-                    (new Cuenta(home)).setLienzo(vi);
+                    //View vi=home.findViewById(R.id.linearLayout);
+                    new Cuenta(home);//.setLienzo(vi);
 					break;
 				case R.id.olvide_clave:
 					home.startActivity(new Intent (home,RecuperarCuentaActivity.class));
@@ -88,5 +91,17 @@ public class Login
 		};
 		
 		Server.send("getAll", home, recep);
+	}
+	public static void logout(final HomeActivity home)
+	{
+		Alertas.fijar_alarmas(home,true);
+		DB.delete(Notificaciones.FILE);
+		DB.delete(DBChat.FILE_CONTACTS);
+		DB.delete(DBChat.FILE_CHATS);
+		DB.delete(DB.FILE_DB);
+		DBChat.init();
+		DB.set("");
+		DB.LOGGED=false;
+		new Login(home);
 	}
 }

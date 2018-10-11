@@ -129,7 +129,7 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 				case R.id.imageView2:
 					File ruta_sd = Environment.getExternalStorageDirectory(); 
 					File ruta=new File(ruta_sd,DB.DIRECTORY);	
-					File f=new File(ruta,APUNTE_FOCUS);					
+					File f=new File(ruta,APUNTE_FOCUS);
 					
 					MediaScannerConnection.scanFile(
 							ApunteActivity.this, 
@@ -342,6 +342,17 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 	public void processFinish(String result)
 	{
 		Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+		if(!result.isEmpty())
+			if(!result.equals("Sin conexion a internet")){
+				String msj="";
+				try{
+					JSONObject mData= new JSONObject(result);
+					msj=mData.getString("menssage");
+					DB.insert(APUNTES,mData.getJSONObject("data"));
+				}catch (JSONException e){}
+				Toast.makeText(this, msj, Toast.LENGTH_LONG).show();
+			}
+
 		if (Base.action == Actions.Add)
 			finish(); 
 		else if (Base.action == Actions.Edit)

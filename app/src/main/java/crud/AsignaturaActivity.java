@@ -3,10 +3,14 @@ package crud;
 import java.util.HashMap;
 
 import models.DB;
+import util.Validate;
 
 import android.os.Bundle;
 
 import com.jhordyabonia.ag.R;
+
+import static com.jhordyabonia.ag.HomeActivity.ALERTAS;
+import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
 
 public class AsignaturaActivity extends Base {
 	@Override
@@ -23,12 +27,15 @@ public class AsignaturaActivity extends Base {
 
 	@Override
 	protected HashMap<String, String> getData() {
-		HashMap<String, String> datos = new HashMap<String, String>();
+		Validate v=new Validate(findViewById(R.id.crud));
+		v.setIds(R.id.nombre,R.id.creditos,R.id.nota);
+		v.setTitles("nombre","creditos","nota");
+		HashMap<String, String> datos;
+		if(v.run())
+			datos=v.datos;
+		else return null;
 		datos.put("usuario", DB.User.get("id"));
 		datos.put("codigo", get(R.id.codigo));
-		datos.put("nombre", get(R.id.nombre));
-		datos.put("creditos", get(R.id.creditos));
-		datos.put("nota", get(R.id.nota));
 		return datos;
 	}
 

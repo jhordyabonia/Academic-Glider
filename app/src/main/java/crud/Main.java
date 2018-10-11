@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Spinner;
@@ -31,7 +32,9 @@ import java.util.HashMap;
 
 import models.DB;
 import util.ImageAdapter;
+import util.Validate;
 import webservice.Asynchtask;
+import webservice.LOG;
 
 import static com.jhordyabonia.ag.HomeActivity.APUNTES;
 import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
@@ -53,8 +56,12 @@ public class Main extends FragmentActivity implements Asynchtask {
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
 
+        DB.model(DB.MODELS[APUNTES]);
+        ID_ASIGNATURA=HomeActivity.idAsignaturaActual();
+        LOCAL_DB = DB.find("asignatura", ID_ASIGNATURA);
+
+        setContentView(R.layout.main);
         collection=new ImageAdapter(this);
         GridView gridview =  findViewById(R.id.gridview);
         gridview.setAdapter(collection);
@@ -65,59 +72,17 @@ public class Main extends FragmentActivity implements Asynchtask {
                                     int position, long id) {
                 if(position==0)
                     addImage();
-                else Toast.makeText(Main.this, "" + position,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+                else {
+                    //if(!adding)//test
+                        APUNTE_FOCUS=apuntes.size()>=position?apuntes.get(position-1):"";
 
-        ID_ASIGNATURA=HomeActivity.idAsignaturaActual();
-        if (externa)
-        {
-            Spinner list =  findViewById(R.id.asignatura);
-            ArrayAdapter<String> base =
-                    new ArrayAdapter<String>(this,R.layout.base);
-            base.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            base.addAll(DB.Asignaturas.LIST_ASIGNATURAS);
-            base.remove(getString(R.string.see_subjects));
-            list.setAdapter(base);
-            list.setPrompt(getString(R.string.select_subject));
-            list.setVisibility(View.VISIBLE);
-            list.setSelection(DB.Asignaturas
-                    .getIndex(set("asignatura", 0)) - 1);
-        }
-        findViewById(R.id.save)
-                .setOnClickListener(listener);
-        findViewById(R.id.add_apunte)
-                .setOnClickListener(listener);
-        findViewById(R.id.imageView2)
-                .setOnClickListener(listener);
-
-        fill();
-
-    }
-    private View.OnClickListener listener=new View.OnClickListener()
-    {
-        @Override
-        public void onClick(View v)
-        {
-            switch(v.getId())
-            {
-                case R.id.save:
-                    send(v);
-                    break;
-                case R.id.add_apunte:
-                    Toast.makeText(Main.this, getString(R.string.deleting_err),
-                            Toast.LENGTH_LONG).show();
-                    break;
-                case R.id.imageView2:
                     File ruta_sd = Environment.getExternalStorageDirectory();
                     File ruta=new File(ruta_sd,DB.DIRECTORY);
                     File f=new File(ruta,APUNTE_FOCUS);
-
                     MediaScannerConnection.scanFile(
                             Main.this,
-                            new String[]
-                                    { f.toString() }, null,
+                            new String[] { f.toString()},
+                            new String[]{"image/*"},
                             new MediaScannerConnection.OnScanCompletedListener()
                             {
                                 @Override
@@ -128,11 +93,55 @@ public class Main extends FragmentActivity implements Asynchtask {
                                     startActivity(intent);
                                 }
                             });
-                    break;
+                }
             }
-        }
-    };
+        });
 
+        findViewById(R.id.save)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {send(v);}
+                });
+
+        if (externa)
+        {
+            Spinner list =  findViewById(R.id.asignatura);
+            ArrayAdapter<String> base =
+                    new ArrayAdapter(this,R.layout.base);
+            base.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            base.addAll(DB.Asignaturas.LIST_ASIGNATURAS);
+            base.remove(getString(R.string.see_subjects));
+            list.setAdapter(base);
+            list.setPrompt(getString(R.string.select_subject));
+            list.setVisibility(View.VISIBLE);
+            list.setSelection(DB.Asignaturas
+                    .getIndex(set("asignatura", 0)) - 1);
+        }
+    }
+    protected void setFecha(String fecha)
+    {
+        if(!fecha.contains("-"))
+            return;
+
+        String fecha_[]=fecha.split("-");
+
+        DatePicker _fehca = findViewById(R.id.fecha);
+        int dayOfMonth=Integer.valueOf(fecha_[0]);
+        int monthOfYear=Integer.valueOf(fecha_[1])-1;
+        int year=Integer.valueOf(fecha_[2]);
+        _fehca.init(year,monthOfYear,dayOfMonth,null);
+    }
+    @Override
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        fill();
+    }
+    protected void setVisible(int id)
+    {
+        View view = findViewById(id);
+        if (view != null)
+            view.setVisibility(View.VISIBLE);
+    }
     public void fullScream()
     {
         if(!zoom)
@@ -196,7 +205,7 @@ public class Main extends FragmentActivity implements Asynchtask {
             collection.addItem(name);
             adding=true;
             apuntes.add(name);
-        }else if(requestCode==777)
+        }else if(requestCode==777&&data!=null)
         {
             Intent intent =
                     new Intent(Intent.ACTION_VIEW,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//,location);
@@ -227,7 +236,13 @@ public class Main extends FragmentActivity implements Asynchtask {
     }
     private HashMap<String, String> getData()
     {
-        HashMap<String, String> datos = new HashMap<String, String>();
+        Validate v=new Validate(findViewById(R.id.crud));
+        v.setIds(R.id.nombre,R.id.descripcion);
+        v.setTitles("nombre","descripcion");
+        HashMap<String, String> datos;
+        if(v.run())
+            datos=v.datos;
+        else return null;
 
         String _apuntes="";
         for(String apunte:apuntes)
@@ -266,14 +281,16 @@ public class Main extends FragmentActivity implements Asynchtask {
             return;
         }
         HashMap<String, String> data_tmp = getData();
-        String url_tmp = DB.MODELS[ON_DISPLAY];
-        if (button.getText().toString().contains(getString(R.string.update)))
-        {
-            data_tmp.put("id", getIdItemSeleted());
-            url_tmp += "/edit";
+        if(data_tmp!=null){
+            String url_tmp = DB.MODELS[ON_DISPLAY];
+            if (button.getText().toString().contains(getString(R.string.update)))
+            {
+                data_tmp.put("id", getIdItemSeleted());
+                url_tmp += "/edit";
+            }
+            Server.setDataToSend(data_tmp);
+            Server.send(url_tmp, this, this);
         }
-        Server.setDataToSend(data_tmp);
-        Server.send(url_tmp, this, this);
     }
     private String set(String value, int id)
     {
@@ -282,7 +299,9 @@ public class Main extends FragmentActivity implements Asynchtask {
         String data = "";
         try
         {
-            data = LOCAL_DB.get(Base.itemSeleted).getString(value);
+           /*/ if(Base.itemSeleted>=LOCAL_DB.size())
+                LOG.save(""+Base.itemSeleted,"test.txt");
+            else */data = LOCAL_DB.get(Base.itemSeleted).getString(value);
         } catch (JSONException e) {}
         if (id == 0)
             return data;
@@ -308,11 +327,8 @@ public class Main extends FragmentActivity implements Asynchtask {
                 else button.setText(getString(R.string.edit));
                 break;
         }
-        DB.model(DB.MODELS[APUNTES]);
-        LOCAL_DB = DB.find("asignatura", ID_ASIGNATURA);
         set("nombre", R.id.nombre);
         set("descripcion", R.id.descripcion);
-
         String fotos[] = set("apunte",0).split(",");
         for(String s:fotos)
             if(!s.isEmpty())
@@ -321,11 +337,21 @@ public class Main extends FragmentActivity implements Asynchtask {
                 adding=true;
                 apuntes.add(s);
             }
-    };
+    }
     @Override
     public void processFinish(String result)
     {
-        Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+        if(!result.isEmpty())
+            if(!result.equals("Sin conexion a internet")){
+                String msj="";
+                try{
+                    JSONObject mData= new JSONObject(result);
+                    msj=mData.getString("menssage");
+                    DB.insert(APUNTES,mData.getJSONObject("data"));
+                }catch (JSONException e){}
+                Toast.makeText(this, msj, Toast.LENGTH_LONG).show();
+            }
+
         if (Base.action == Base.Actions.Add)
             finish();
         else if (Base.action == Base.Actions.Edit)
@@ -340,12 +366,12 @@ public class Main extends FragmentActivity implements Asynchtask {
     @Override
     public boolean onKeyDown( int arg1, KeyEvent arg2)
     {
-        if(arg1==KeyEvent.KEYCODE_BACK)
+        /*if(arg1==KeyEvent.KEYCODE_BACK)
             if(!fullScream)
             {
                 fullScream();
                 return true;
-            }
+            }*/
         return super.onKeyDown(arg1,arg2);
     }
 }

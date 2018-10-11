@@ -47,7 +47,9 @@ import controllers.Adapter.ITEM_TYPE;
 import controllers.Adapter.Item;
 import crud.AsignaturaActivity;
 import crud.Base;
+import webservice.LOG;
 
+import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
 import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
 public class Asignaturas implements OnItemClickListener 
@@ -191,7 +193,7 @@ public class Asignaturas implements OnItemClickListener
 		DB.model(DB.MODELS[ON_DISPLAY]);
 		ArrayList<JSONObject> tmp = DB.find("", "");
 		if(!tmp.isEmpty())
-		try 
+		try
 		{
 			base_data.clear();
 			for (JSONObject v : tmp) {
@@ -273,24 +275,48 @@ public class Asignaturas implements OnItemClickListener
 	private void delete() 
 	{
 		String id = DB.Asignaturas.LIST_ID_ASIGNATURAS[Base.itemSeleted];
-		HashMap<String, String> data_tmp = new HashMap<String, String>();
+		HashMap<String, String> data_tmp = new HashMap<>();
 		data_tmp.put("id", id);
 		Server.setDataToSend(data_tmp);
 		Asynchtask recep = new Asynchtask()
 		{
 			@Override
 			public void processFinish(String result) 
-			{	
-				if(result.contains("Eliminad"))
-					base_data.remove(base_data.getItem(Base.itemSeleted));
-				Toast.makeText(home, result, Toast.LENGTH_SHORT).show();
-				DB.update(home);
+			{
+				JSONObject mData;
+				String msj="";
+				try{
+					mData= new JSONObject(result);
+					msj=mData.getString("menssage");
+					JSONObject tmp=mData.getJSONObject("data");
+
+					if(msj.contains("Eliminad")) {
+
+						DB.model(DB.MODELS[ON_DISPLAY]);
+						if(DB.remove(tmp)) {
+							for(String model:DB.MODELS)
+								if(!model.equals(DB.MODELS[ASIGNATURAS]))
+									delete(model,tmp.getString("id"));
+							DB.Asignaturas.set_list();
+							View view=home.findViewById(R.id.FrameLayout1);
+							todas(view);
+						}else Toast.makeText(home,"No se removio",Toast.LENGTH_LONG).show();
+						DB.model(DB.MODELS[ON_DISPLAY]);
+						DB.update();
+					}
+				}catch (JSONException e){}
+				Toast.makeText(home, msj, Toast.LENGTH_LONG).show();
 			}
 		};
 		String url_tmp = DB.MODELS[ON_DISPLAY]  + "/delete";
 		Server.send(url_tmp, home, recep);
 	}
-
+	private void delete(String model,String id) throws JSONException {
+		DB.model(model);
+		ArrayList <JSONObject>data=DB.find("asignatura",id);
+		for(JSONObject obj:data)
+			DB.remove(obj);
+	}
 	public class CollectionPagerAdapter extends FragmentStatePagerAdapter
 	{
 		public CollectionPagerAdapter(FragmentManager fm)
@@ -448,16 +474,24 @@ public class Asignaturas implements OnItemClickListener
 		data.put("de", de);
 		data.put("a", a);
 		Server.setDataToSend(data);
-		Asynchtask recep = new Asynchtask()
-		{
-			@Override
-			public void processFinish(String result) 
-			{				
-				Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
-				HomeActivity.UPDATE=true;
-				DB.update();
-			}
-		};
+
+        Asynchtask  recep = new Asynchtask()
+        {
+            @Override
+            public void processFinish(String result)
+            {
+                JSONObject mData;
+                String msj="";
+                try{
+                    mData= new JSONObject(result);
+                    msj=mData.getString("menssage");
+                    DB.insert(mData);
+                }catch (JSONException e){}
+                Toast.makeText(activity, msj, Toast.LENGTH_LONG).show();
+                //HomeActivity.UPDATE=true;
+                //DB.update();
+            }
+        };
 		Server.send("actualizar", activity, recep);		
 	}
 	public static void agregar(FragmentActivity activity,String descarga)
@@ -474,16 +508,24 @@ public class Asignaturas implements OnItemClickListener
 		data.put("usuario", User.get("id"));
 		data.put("asignatura", descargar);
 		Server.setDataToSend(data);
-		Asynchtask recep = new Asynchtask()
-		{
-			@Override
-			public void processFinish(String result) 
-			{				
-				Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
-				HomeActivity.UPDATE=true;
-				DB.update();
-			}
-		};
+
+        Asynchtask  recep = new Asynchtask()
+        {
+            @Override
+            public void processFinish(String result)
+            {
+                JSONObject mData;
+                String msj="";
+                try{
+                    mData= new JSONObject(result);
+                    msj=mData.getString("menssage");
+                    DB.insert(mData);
+                }catch (JSONException e){LOG.save(e.getMessage(),"down.txt");}
+                Toast.makeText(activity, msj, Toast.LENGTH_LONG).show();
+                HomeActivity.UPDATE=true;
+                DB.update();
+            }
+        };
 		Server.send("descargar", activity, recep);		
 	}
 

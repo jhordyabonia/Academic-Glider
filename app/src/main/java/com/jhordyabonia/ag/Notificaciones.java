@@ -40,6 +40,10 @@ public class Notificaciones  implements AdapterView.OnItemClickListener{
             add(item);
         }catch (JSONException e){}
     }
+
+    public static boolean add(String asignatura,int type,String item,String data)
+    {return add(asignatura,DB.MODELS[type],item,data);}
+
     public static boolean add(String asignatura,String type,String item,String data)
     {
         try {

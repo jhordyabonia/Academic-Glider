@@ -52,6 +52,8 @@ public  class  ImageAdapter extends BaseAdapter
         } else {
             imageView = (ImageView) convertView;
         }
+
+        imageView.setBackgroundResource(R.drawable.bg_img);
         if(position==0) {
             imageView.setImageResource(R.drawable.ic_menu_name);
         }else{

@@ -34,6 +34,7 @@ import controllers.Adapter.Item;
 import crud.Base;
 
 import static com.jhordyabonia.ag.HomeActivity.ALERTAS;
+import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
 public class Alertas extends Controller
 {
@@ -56,7 +57,7 @@ public class Alertas extends Controller
   
   public static void fijar_alarmas(Context t,boolean cancel)
   {
-	  DB.model("alertas");
+	  DB.model(DB.MODELS[ALERTAS]);
 	  ArrayList<JSONObject> alarmas=DB.find("alerta", "1");
 
 	  try
@@ -67,7 +68,7 @@ public class Alertas extends Controller
 			  //if(result.contains("Vencida"))
 			//	  Toast.makeText(t,result, Toast.LENGTH_SHORT).show();
 
-			  Notificaciones.add("","Alerta","",result);
+			  Notificaciones.add("",DB.MODELS[ALERTAS],"",result);
 		  }
 	  }
 	  catch (NumberFormatException e) {} 
@@ -114,7 +115,7 @@ public class Alertas extends Controller
 	manager.set(AlarmManager.RTC_WAKEUP,d.getTime(), pIntent); 
 	return  "Establecida para:\n"+d.toString();	
   }
-  private void establecerAlarma(JSONObject a,Context t)
+  private void establecerAlarma(JSONObject a)
   {  
 	try 
 	{
@@ -126,7 +127,7 @@ public class Alertas extends Controller
 		  eliminar_alama(getActivity(),ALARM_REQUEST_CODE);
 		  return;
 	  }
-	  String dd = fijar_alarma(a,t);
+	  String dd = fijar_alarma(a,getActivity());
 	  //Toast.makeText(t,dd, Toast.LENGTH_SHORT).show();
 		Notificaciones.add("","Alerta",a.getString("id"),dd);
 	} 
@@ -137,7 +138,7 @@ public class Alertas extends Controller
 	{
 		final JSONObject item = LOCAL_DB.get(Base.itemSeleted);
 		final String id = item.getString("id");
-		HashMap<String, String> data_tmp = new HashMap<String, String>();
+		HashMap<String, String> data_tmp = new HashMap();
 		data_tmp.put("id", id);
 		if(active)
 			data_tmp.put("alerta", "1");
@@ -148,22 +149,30 @@ public class Alertas extends Controller
 			@Override
 			public void processFinish(String result) 
 			{
-				if(result.contains("Error"))
-				{
-					//Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
-					Notificaciones.add("","Alerta",id,result);
-				}else if(result.contains("activada"))
-				{
-					//Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
-					HomeActivity home = (HomeActivity)getActivity();
-					establecerAlarma(item,home);
-					Notificaciones.add("","Alerta",id,result);
-					
-					if(home!=null)
-						DB.update(home);
-					else DB.update();
-				}else
-				Toast.makeText(getActivity(), R.string.network_err, Toast.LENGTH_SHORT).show();
+				try {
+					JSONObject mData = new JSONObject(result);
+					String msj = mData.getString("menssage");
+					JSONObject tmp = mData.getJSONObject("data");
+					item.put("alerta",tmp.get("alerta"));
+					DB.insert(ON_DISPLAY,item);
+					if(msj.contains("Error"))
+					{
+						Toast.makeText(getActivity(), msj, Toast.LENGTH_SHORT).show();
+						Notificaciones.add("",ALERTAS,id,result);
+					}else if(msj.contains("activada"))
+					{
+						Toast.makeText(getActivity(), msj, Toast.LENGTH_SHORT).show();
+						establecerAlarma(item);
+						Notificaciones.add("",ALERTAS,id,result);
+
+						HomeActivity home = (HomeActivity)getActivity();
+						if(home!=null)
+							DB.update(home);
+						else DB.update();
+					}else
+						Toast.makeText(getActivity(), R.string.network_err, Toast.LENGTH_SHORT).show();
+
+				}catch (JSONException e){}
 			}
 		};
 		Server.send("alertas/alerta", getActivity(), recep);
@@ -200,14 +209,20 @@ public class Alertas extends Controller
 	@Override
 	protected void delete()
 	{
-		try 
-		{alarma(false);} 
-		catch (JSONException e) {}
+		try
+		{
+			JSONObject item = LOCAL_DB.get(Base.itemSeleted);
+			item.put("alerta","1");
+			establecerAlarma(item);
+		}catch (JSONException e) {}
 		super.delete();
 	}
 	@Override
 	public void show() 
-	{		
+	{
+		if(base_data!=null)
+			Toast.makeText(this.getContext(),"Updating...",Toast.LENGTH_LONG).show();
+
 		DB.model(DB.MODELS[ALERTAS]);
 		LOCAL_DB = DB.find("asignatura", HomeActivity.idAsignaturaActual());
 
@@ -221,7 +236,7 @@ public class Alertas extends Controller
 			{
 				base_data.add(new Item(v.getString("nombre")
 						 ,v.getString("fecha")+" "+ v.getString("hora")
-						 ,v.getString("alerta").equals("1")));
+						,v.getString("alerta").equals("1")));
 			}
 		} catch (JSONException e) {}
 	}

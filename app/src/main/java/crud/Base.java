@@ -27,6 +27,7 @@ import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
 
 import controllers.Horarios;
+import webservice.LOG;
 
 import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
 import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
@@ -57,10 +58,10 @@ public abstract class Base extends Activity implements Asynchtask {
 
 		DB.model(DB.MODELS[on_display]);
 		if (ON_DISPLAY== HomeActivity.HORARIOS)
-		{	
+		{
 			if(Horarios.ASIGNATURA!=null)
 				LOCAL_DB = DB.find("asignatura", Horarios.ASIGNATURA);
-			else 
+			else
 				LOCAL_DB = DB.find("dia", Horarios.DIA);
 		}else if (ON_DISPLAY!= HomeActivity.ASIGNATURAS)
 			LOCAL_DB = DB.find("asignatura", HomeActivity.idAsignaturaActual());
@@ -69,10 +70,9 @@ public abstract class Base extends Activity implements Asynchtask {
 
 		DatePicker _fecha= findViewById(R.id.fecha);
 		_fecha.setCalendarViewShown(false);
-		
+
 		fill();
 	}
-
 	private void show(boolean show) 
 	{
 		setEnabled(R.id.alerta, show);
@@ -192,15 +192,17 @@ public abstract class Base extends Activity implements Asynchtask {
 			show(true);
 			return;
 		}
-		HashMap<String, String> data_tmp = getData();
 		String url_tmp = DB.MODELS[ON_DISPLAY];
-		if (button.getText().toString().contains(getString(R.string.update)))
-		{
-			data_tmp.put("id", getIdItemSeleted());
-			url_tmp += "/edit";
+		HashMap<String, String> data_tmp = getData();
+		if(data_tmp!=null){
+			if (button.getText().toString().contains(getString(R.string.update)))
+			{
+				data_tmp.put("id", getIdItemSeleted());
+				url_tmp += "/edit";
+			}
+			Server.setDataToSend(data_tmp);
+			Server.send(url_tmp, this, this);
 		}
-		Server.setDataToSend(data_tmp);
-		Server.send(url_tmp, this, this);
 	}
 
 	@Override
@@ -209,10 +211,19 @@ public abstract class Base extends Activity implements Asynchtask {
 		if(!result.isEmpty())
 			if(!result.equals("Sin conexion a internet"))
 			{
-				String data[]=result.split("::");
-				Toast.makeText(this, data[0], Toast.LENGTH_LONG).show();
+				JSONObject mData,tmp;
+				String msj="",id="";
+				try{
+					mData= new JSONObject(result);
+					msj=mData.getString("menssage");
+					tmp=mData.getJSONObject("data");
+					id=tmp.getString("id");
+					DB.insert(ON_DISPLAY,tmp);
+				}catch (JSONException e){LOG.save(e.getMessage(),"error.txt");}
+
+				Toast.makeText(this, msj, Toast.LENGTH_LONG).show();
 				Intent intent=new Intent(DATA,Uri.parse("content://result_uri"));
-				intent.putExtra(DATA, data[1]);
+				intent.putExtra(DATA, id);
 				setResult(Activity.RESULT_OK,intent);
 			}
 		if (action == Actions.Add)
@@ -224,7 +235,7 @@ public abstract class Base extends Activity implements Asynchtask {
 				button.setText(R.string.edit);
 			show(false);
 		}
-		HomeActivity.UPDATE=true;				
+		HomeActivity.UPDATE=true;
 	}
 
 	protected void fill() 
@@ -255,8 +266,9 @@ public abstract class Base extends Activity implements Asynchtask {
 			parent.startActivity(new Intent(parent, AlertaActivity.class));
 			break;
 		case HomeActivity.APUNTES:
-			parent.startActivity(new Intent(parent, Main.class));
-			//parent.startActivity(new Intent(parent, ApunteActivity.class));
+			if(HomeActivity.DROP_MODE)
+			    parent.startActivity(new Intent(parent, Main.class));
+			else parent.startActivity(new Intent(parent, ApunteActivity.class));
 			break;
 		case HomeActivity.LECTURAS:
 			parent.startActivity(new Intent(parent, LecturaActivity.class));
@@ -276,5 +288,4 @@ public abstract class Base extends Activity implements Asynchtask {
 	}
 
 	protected abstract HashMap<String, String> getData();
-
 }
