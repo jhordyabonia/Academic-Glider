@@ -55,7 +55,7 @@
                 android:ems="10"
                 android:hint="@string/name"
                 android:inputType="textPersonName"
-                android:textColor="#fff" />
+                android:textColor="#c0c0c0"/>
 
         </TableRow>
 		<TableRow
@@ -76,7 +76,7 @@
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
 	            android:ems="10"
-	            android:textColor="#ffffff"
+	            android:textColor="#c0c0c0"
 	            android:textColorHint="#9e9e3a" />
 		</TableRow>
 		<TableRow
@@ -101,7 +101,7 @@
             android:ems="10"
             android:hint="@string/university"
             android:inputType="textPersonName"
-            android:textColor="#fff"
+            android:textColor="#c0c0c0"
             android:visibility="gone" />
 		</TableRow>
         <TableRow
@@ -125,7 +125,7 @@
                 android:ems="10"
                 android:hint="@string/cel"
                 android:inputType="phone"
-                android:textColor="#ffffff" >
+                android:textColor="#c0c0c0" >
 
                 <requestFocus />
             </EditText>
@@ -152,7 +152,7 @@
                 android:ems="10"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
-                android:textColor="#ffffff" />
+                android:textColor="#c0c0c0" />
 
         </TableRow>
 
@@ -177,7 +177,7 @@
                 android:ems="10"
                 android:hint="@string/pass"
                 android:inputType="textPassword"
-                android:textColor="#ffffff" />
+                android:textColor="#c0c0c0" />
 
         </TableRow>
 
@@ -202,32 +202,21 @@
                 android:ems="10"
                 android:hint="@string/pass2"
                 android:inputType="textPassword"
-                android:textColor="#ffffff" />
+                android:textColor="#c0c0c0" />
 
         </TableRow>
 
-        <TableRow
-            android:id="@+id/tableRow5"
+
+        <CheckBox
+            android:id="@+id/drop_mode"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:checked="true"
+            android:gravity="center"
+            android:text="@string/classic_nav"
+            android:textColor="#c0c0c0" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:gravity="center"
-                android:text="@string/classic_nav"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#9e9e3a"
-                android:textSize="20dp" />
-
-            <CheckBox
-                android:id="@+id/drop_mode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
-        </TableRow>
         <Button
             android:id="@+id/registrarme"
             android:layout_width="match_parent"
@@ -235,7 +224,7 @@
             android:layout_marginTop="20dp"
             android:background="#333"
             android:text="@string/signup"
-            android:textColor="#ffffff" />
+            android:textColor="#c0c0c0" />
     </LinearLayout>
 
 </ScrollView>

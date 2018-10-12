@@ -27,6 +27,8 @@ import com.jhordyabonia.ag.R;
 
 import java.util.ArrayList;
 
+import models.DB;
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
@@ -237,10 +239,10 @@ public class NavigationDrawerFragment extends Fragment {
     }
     public boolean back()
     {
-        Log.i("NavDrawerFragment.back","mCurrentSelectedPosition:"+mCurrentSelectedPosition
-        +" display_now:"+display_now);
         if(mCurrentSelectedPosition==-1){
-            selectItem(2,false);
+            if(DB.COMUNIDAD)
+                selectItem(6,false);
+            else selectItem(2,false);
             return true;
         }else if(--display_now>=0){
             if(display_now<HISTORY.size())

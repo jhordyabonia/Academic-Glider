@@ -104,20 +104,18 @@ public class CompartirAsignatura extends DialogFragment {
                             @Override
                             public void processFinish(String result)
                             {
-                                if( activity instanceof ChatService.Inbox ) {
-                                    try {
-                                        JSONObject chat_tmp = new JSONObject();
-                                        JSONArray msjs_tmp = new JSONArray();
-                                        JSONObject msj_tmp = new JSONObject(result);
-                                        msjs_tmp.put(msj_tmp);
-                                        chat_tmp.put("id", msj_tmp.getInt("chat"));
-                                        chat_tmp.put("mensajes",msjs_tmp);
-                                        DBChat.insert(chat_tmp);
+                                try {
+                                    JSONObject chat_tmp = new JSONObject();
+                                    JSONArray msjs_tmp = new JSONArray();
+                                    JSONObject msj_tmp = new JSONObject(result);
+                                    msjs_tmp.put(msj_tmp);
+                                    chat_tmp.put("id", msj_tmp.getInt("chat"));
+                                    chat_tmp.put("mensajes",msjs_tmp);
+                                    DBChat.insert(chat_tmp);
+                                    if( activity instanceof ChatService.Inbox )
                                         ((ChatService.Inbox) activity).add_msj(msj_tmp, true);
-                                    }catch (JSONException e){
-                                    //    Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
-                                    }
-                                }else Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
+                                    else Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
+                                }catch (JSONException e){}
                             }
                         };
                         Server.send("compartir", activity, recep);

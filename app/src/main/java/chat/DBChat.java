@@ -165,8 +165,11 @@ public class DBChat
 			Server.send("fecha", a, recep);
 		}else
 		{
-			long local=Calendar.getInstance().getTimeInMillis();
-			LOCAL_HOUR=local-fechaInMillis(in);
+			long local=Calendar.getInstance().getTimeInMillis(),remote=0;
+			try{
+				fechaInMillis(in);
+			}catch (ArrayIndexOutOfBoundsException e){}
+			LOCAL_HOUR=local-remote;
 		}
 	}
 	private static long fechaInMillis(String in)
