@@ -68,6 +68,23 @@ public class Validate {
                     return false;
                 }
             }
+            if (t.equals("creditos")) {
+                int credits =0;
+                try {
+                    credits = Integer.parseInt(d.trim());
+                } catch (NumberFormatException ee) {
+                    setError(ids[y], C.getString(R.string.creditsShort));
+                    return false;
+                }
+                if (credits<1 && credits>20) {
+                    setError(ids[y], C.getString(R.string.creditsShort));
+                    return false;
+                }
+            }
+            if (t.equals("codigo")) if (d.trim().length() < 5) {
+                setError(ids[y], C.getString(R.string.codeShort));
+                return false;
+            }
             if (t.equals("descripcion")) if (d.trim().length() < 10) {
                 setError(ids[y], C.getString(R.string.descriptionShort));
                 return false;

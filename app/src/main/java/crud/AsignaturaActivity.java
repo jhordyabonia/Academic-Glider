@@ -37,8 +37,8 @@ public class AsignaturaActivity extends Base {
 	@Override
 	protected HashMap<String, String> getData() {
 		Validate v=new Validate(findViewById(R.id.crud));
-		v.setIds(R.id.nombre,R.id.creditos,R.id.nota);
-		v.setTitles("nombre","creditos","nota");
+		v.setIds(R.id.nombre,R.id.nota,R.id.creditos,R.id.codigo);
+		v.setTitles("nombre","nota","creditos","codigo");
 		HashMap<String, String> datos;
 		if(v.run())
 			datos=v.datos;

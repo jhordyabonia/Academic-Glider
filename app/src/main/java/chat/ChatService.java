@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import webservice.Asynchtask;
+import webservice.LOG;
 
 import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
@@ -29,6 +30,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.Vibrator;
+import android.util.Log;
 import android.widget.Toast;
 
 public class ChatService extends Service implements Asynchtask 
@@ -132,7 +134,6 @@ public class ChatService extends Service implements Asynchtask
 	{
 		if(db.length()<=0)
 			return;
-		
 		int count = 0,last_msj=0;
 		JSONObject chat = db.optJSONObject(count);
 		
@@ -141,7 +142,7 @@ public class ChatService extends Service implements Asynchtask
 			try 
 			{				
 				DBChat.insert(chat);
-				String nombre=chat.getString("nombre");
+				String nombre;
 				String id= chat.getString("nombre")
 						.replace("_"+User.get("celular")+"_","")
 						.replace("_","");
@@ -152,7 +153,7 @@ public class ChatService extends Service implements Asynchtask
 				boolean buffered= CHAT==chat_id;
 				
 				JSONArray msjs=chat.getJSONArray("mensajes");
-				JSONObject msj_t=new JSONObject();
+				JSONObject msj_t;
 				for(int i=0;i<msjs.length();i++)
 				{
 					msj_t=msjs.getJSONObject(i);

@@ -520,7 +520,6 @@ public class Asignaturas implements OnItemClickListener
                     mData= new JSONObject(result);
                     msj=mData.getString("menssage");
                     DB.insert(mData);
-                    //Log.i("")
                 }catch (JSONException e){LOG.save(result,"down.txt");}
                 Toast.makeText(activity, msj, Toast.LENGTH_LONG).show();
                 HomeActivity.UPDATE=true;

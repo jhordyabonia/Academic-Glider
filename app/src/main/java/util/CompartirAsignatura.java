@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import chat.ChatService;
+import chat.DBChat;
 import controllers.Asignaturas;
 import models.DB;
 import webservice.Asynchtask;
@@ -104,9 +106,17 @@ public class CompartirAsignatura extends DialogFragment {
                             {
                                 if( activity instanceof ChatService.Inbox ) {
                                     try {
-                                        JSONObject msj = new JSONObject(result);
-                                        ((ChatService.Inbox) activity).add_msj(msj, true);
-                                    }catch (JSONException e){Toast.makeText(activity, result, Toast.LENGTH_LONG).show();}
+                                        JSONObject chat_tmp = new JSONObject();
+                                        JSONArray msjs_tmp = new JSONArray();
+                                        JSONObject msj_tmp = new JSONObject(result);
+                                        msjs_tmp.put(msj_tmp);
+                                        chat_tmp.put("id", msj_tmp.getInt("chat"));
+                                        chat_tmp.put("mensajes",msjs_tmp);
+                                        DBChat.insert(chat_tmp);
+                                        ((ChatService.Inbox) activity).add_msj(msj_tmp, true);
+                                    }catch (JSONException e){
+                                    //    Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
+                                    }
                                 }else Toast.makeText(activity, result, Toast.LENGTH_LONG).show();
                             }
                         };

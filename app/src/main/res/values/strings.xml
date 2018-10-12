@@ -179,5 +179,6 @@
     <string name="onlyValues0_5">Only one numbers between 0 and 5</string>
     <string name="codeShort">The code must have a minimum of 5 characters</string>
     <string name="noEmpty">It must not be empty</string>
+    <string name="creditsShort">Only numbers between 1 and 20</string>
 
 </resources>
