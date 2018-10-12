@@ -56,6 +56,8 @@ import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
 public class Asignaturas implements OnItemClickListener 
 {
+	public static final String WAITING_CONTENT="WAITING_CONTENT";
+	public static final String RESULT="RESULT";
 	private HomeActivity home;
 	private ListView base;
 	private Adapter base_data;
@@ -101,7 +103,7 @@ public class Asignaturas implements OnItemClickListener
 		try
 		{
 			JSONObject pager=(JSONObject)DB.get("pager");
-			String data="",before_="",after_="",a_buscar_=null;
+			String data,before_,after_,a_buscar_;
 			before_=pager.getString("before");
 			after_=pager.getString("after");
 			data=pager.getString("data");
@@ -191,7 +193,8 @@ public class Asignaturas implements OnItemClickListener
 			}
 		});
 		base.setAdapter(base_data);
-
+		/*try{DB.buffer();}
+		catch (JSONException e ){}*/
 		DB.model(DB.MODELS[ON_DISPLAY]);
 		ArrayList<JSONObject> tmp = DB.find("", "");
 		if(!tmp.isEmpty())
@@ -262,11 +265,16 @@ public class Asignaturas implements OnItemClickListener
 						if(Base.itemSeleted<DB.Asignaturas.LIST_ID_ASIGNATURAS.length) {
 							String tmp = DB.Asignaturas.LIST_ID_ASIGNATURAS[Base.itemSeleted];
 							DB.model(DB.MODELS[ON_DISPLAY]);
+
+							boolean b=DB.COMUNIDAD;
+							DB.COMUNIDAD=false;
 							JSONObject asignatura = DB.getBy("id", tmp);//.get(arg2);
-							DialogFragment existe = existe(true, asignatura);
+							DB.COMUNIDAD=b;
+							DialogFragment existe = existe(asignatura);
 							if (existe != null)
 								existe.show(home.getSupportFragmentManager(), "missiles");
-							else agregar_asignatura(asignatura.getString("id"), home);
+							else agregar_asignatura(tmp, home);
+
 						}else DB.Asignaturas.set_list();
 					} catch (JSONException e) {}					
 					
@@ -375,60 +383,46 @@ public class Asignaturas implements OnItemClickListener
 	public static DialogFragment asignaturas_list(FragmentActivity activity, String titulo, String[] items,
 			final DialogInterface.OnClickListener actions)
 	{return new CompartirAsignatura.List(activity,titulo,items,actions); }
-	public static DialogFragment existe(final boolean alt,JSONObject asignatura) throws JSONException
+	public static DialogFragment existe(JSONObject asignatura) throws JSONException
 	{
-		if(alt)			
-		{
-			DB.local();
-			DB.Asignaturas.set_list();
-		}
+		if(asignatura==null)
+			return null;
+
 		String codigo=asignatura.getString("codigo");
 		String nombre=asignatura.getString("nombre");
+		boolean b=DB.COMUNIDAD;
+		DB.COMUNIDAD=false;
 		ArrayList<JSONObject> asignaturas_tmp = DB.Asignaturas.find("codigo", codigo);
 		if(asignaturas_tmp.isEmpty())
 			asignaturas_tmp = DB.Asignaturas.find("nombre", nombre);
-		if(alt)			
-		{
-			DB.current();
-			DB.Asignaturas.set_list();
-		}
 
-		String tmp="asignaturas_tmp:"+asignaturas_tmp+" alt:"+alt+" asignatura-id:"+asignatura.getString("id");
-		Log.i("A.sP.click(descargar)",tmp);
+		DB.COMUNIDAD=b;
 		if(!asignaturas_tmp.isEmpty())
-			return  new CompartirAsignatura.AsignaturaExist(asignaturas_tmp,alt,asignatura.getString("id"));
+			return  new CompartirAsignatura.AsignaturaExist(asignaturas_tmp,asignatura.getString("id"));
 
 		return null;			
 	}
-	public static void actualizar(final boolean alt,final FragmentActivity activity,final ArrayList<JSONObject> list_in,final String descargar)
+	public static void actualizar(final FragmentActivity activity,final ArrayList<JSONObject> list_in,final String descargar)
 	{
-		if(alt)			
-		{
-			DB.local();
-			DB.Asignaturas.set_list();
-		}
 		final String[]LIST_ASIGNATURAS=DB.Asignaturas.LIST_ASIGNATURAS;
+		boolean b=DB.COMUNIDAD;
+		DB.COMUNIDAD=false;
 		final ArrayList<JSONObject> todas = DB.find("","");
-		if(alt)			
-		{
-			DB.current();
-			DB.Asignaturas.set_list();
-		}
+		DB.COMUNIDAD=b;
+
 		int count=0;
 		String list_tmp[]=new String [list_in.size()+1];
-		if(!(!alt&&DB.COMUNIDAD))
-		{	
-			if(LIST_ASIGNATURAS.length!=list_in.size())
-				list_tmp[count++]=activity.getString(R.string.see_all);
-			else list_tmp = new String [list_in.size()];
-		}else list_tmp = new String [list_in.size()];
+		list_tmp[count++]=activity.getString(R.string.see_all);
 
 		final String list[]=list_tmp;
 
 		try
 		{
-			for(JSONObject obj:list_in)
-				list[count++]=obj.getString("nombre");
+			for(JSONObject obj:list_in) {
+				String d = obj.getString("nombre");
+				if (d != null)
+					list[count++] = d;
+			}
 		} catch (JSONException e) {}
 
 		DialogInterface.OnClickListener listener
@@ -441,21 +435,19 @@ public class Asignaturas implements OnItemClickListener
 				{
 				   if(HomeActivity.DROP_MODE)
 				   {
-					   if(!alt)
-					   {
+
 						   if(0==which)
 						   {
-							   actualizar(false,activity,todas,descargar);
+							   actualizar(activity,todas,descargar);
 							   return;
 						   }
-					   }
 				   }else
 				   	{
-					   if(!(!alt&&DB.COMUNIDAD))
+					   if(!DB.COMUNIDAD)
 					   {
 						   if(0==which)
 						   {
-							   actualizar(false,activity,todas,descargar);
+							   actualizar(activity,todas,descargar);
 							   return;
 						   }
 					   }
@@ -504,7 +496,8 @@ public class Asignaturas implements OnItemClickListener
 	public static void agregar(FragmentActivity activity,String descarga)
 	{
 		Intent intent=new Intent(activity, AsignaturaActivity.class);
-		intent.putExtra("RESULT", HomeActivity.ASIGNATURAS);
+		intent.putExtra(RESULT, HomeActivity.ASIGNATURAS);
+		intent.putExtra(WAITING_CONTENT, true);
 		Base.action=Base.Actions.Add;
 		int asignatura_fuente=Integer.valueOf(descarga);
 		activity.startActivityForResult(intent,asignatura_fuente);
@@ -523,11 +516,11 @@ public class Asignaturas implements OnItemClickListener
             {
                 JSONObject mData;
                 String msj="";
-                Log.i("A.a_a",result);
                 try{
                     mData= new JSONObject(result);
                     msj=mData.getString("menssage");
                     DB.insert(mData);
+                    //Log.i("")
                 }catch (JSONException e){LOG.save(result,"down.txt");}
                 Toast.makeText(activity, msj, Toast.LENGTH_LONG).show();
                 HomeActivity.UPDATE=true;

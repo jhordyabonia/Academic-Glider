@@ -2,9 +2,11 @@ package crud;
 
 import java.util.HashMap;
 
+import controllers.Asignaturas;
 import models.DB;
 import util.Validate;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.jhordyabonia.ag.R;
@@ -23,6 +25,13 @@ public class AsignaturaActivity extends Base {
 		setVisible(R.id.nota);
 		if(DB.COMUNIDAD)
 			setVisible(R.id.ubicacion);
+
+		Intent mIntent=getIntent();
+		if(mIntent!=null) {
+			if (mIntent.getBooleanExtra(Asignaturas.WAITING_CONTENT, false)){
+				setVisible(R.id.save);
+			}
+		}
 	}
 
 	@Override

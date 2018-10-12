@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.jhordyabonia.ag.R;
@@ -132,28 +133,39 @@ public class CompartirAsignatura extends DialogFragment {
     public static class List extends DialogFragment
     {
         private FragmentActivity activity;
-        private String titulo,items[];
+        private String titulo;
+        ArrayList<String> items= new ArrayList();
         private  DialogInterface.OnClickListener  actions;
         public List(FragmentActivity a,String t, String[] i,DialogInterface.OnClickListener at)
-        {activity=a;titulo=t;items=i;actions=at;}
+        {
+            activity=a;actions=at;titulo=t;
+            for(String ii:i)
+                if(ii!=null)
+                    items.add(ii);
+        }
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState)
         {
+            String _items[]=new String[items.size()];
+
+            for(int i=0;i<items.size();i++)
+                _items[i]=items.get(i);
+
             AlertDialog.Builder builder =
                     new AlertDialog.Builder(activity);
             builder.setTitle(titulo)
                     .setIcon(android.R.drawable.ic_menu_share)
-                    .setItems(items,actions);
+                    .setItems(_items,actions);
+
             return builder.create();
         }
     }
 
     public static class AsignaturaExist extends DialogFragment {
         ArrayList<JSONObject> list_asignaturas_tmp;
-        String descargar="";
-        boolean alt;
-        public AsignaturaExist(ArrayList<JSONObject> l,boolean a,String d)
-        {list_asignaturas_tmp=l;alt=a;descargar=d;}
+        String descargar;
+        public AsignaturaExist(ArrayList<JSONObject> l,String d)
+        {list_asignaturas_tmp=l;descargar=d;}
         public Dialog onCreateDialog(Bundle savedInstanceState)
         {
             DialogInterface.OnClickListener dialogListener
@@ -165,7 +177,7 @@ public class CompartirAsignatura extends DialogFragment {
                     switch(which)
                     {
                         case DialogInterface.BUTTON_NEUTRAL:
-                            Asignaturas.actualizar(alt,getActivity(),list_asignaturas_tmp,descargar);break;
+                            Asignaturas.actualizar(getActivity(),list_asignaturas_tmp,descargar);break;
                         case DialogInterface.BUTTON_NEGATIVE:
                             dialog.dismiss();break;
                         case DialogInterface.BUTTON_POSITIVE:

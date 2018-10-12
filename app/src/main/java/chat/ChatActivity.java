@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -110,7 +111,7 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 							new DialogInterface.OnClickListener()
 							{
 								@Override
-								public void onClick(DialogInterface dialog, int which) 
+								public void onClick(DialogInterface dialog, int which)
 								{
 									Asignaturas.compartir(
 											ChatActivity.this,
@@ -387,7 +388,7 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 			{
 				JSONObject asignatura = asignaturas.get(arg2);
 				if(asignatura==null)return true;
-				DialogFragment existe = Asignaturas.existe(false,asignatura);
+				DialogFragment existe = Asignaturas.existe(asignatura);
 				if(existe!=null)
 					existe.show(getSupportFragmentManager(), "missiles");
 				else Asignaturas.agregar_asignatura(asignatura.getString("id"),this);
@@ -407,7 +408,7 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
-		ImageView dw=(ImageView)arg1.findViewById(R.id.imageView2);
+		ImageView dw=arg1.findViewById(R.id.imageView2);
 		if(dw!=null)
 			Toast.makeText(this, getString(R.string.keep_press_to_download), Toast.LENGTH_LONG).show();
 		else 

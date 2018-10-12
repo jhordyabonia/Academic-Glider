@@ -37,8 +37,6 @@ public abstract class DB
 {
 	public static boolean COMUNIDAD = false;
 	public static boolean LOGGED = false;
-	public static String LOCAL=null;
-	public static String CURRENT=null;
 	public static String TOKEN = "0000000000";
 	public static String DIRECTORY = "Glider";
 	public static String FILE_DB = "db.json";
@@ -47,7 +45,7 @@ public abstract class DB
 	public static int HOY = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)-1;
 	public static String DAYS[] = { "Domingo", "Lunes", "Martes","Miercoles", "Jueves", "Viernes", "Sabado" };
 
-	private static JSONObject db;
+	private static JSONObject db,comunidad;
 	private static String name_model = "";
 
 	public static String[] semana()
@@ -212,27 +210,17 @@ public abstract class DB
 		}catch (Exception ex) {}
 	}
 
-	public static void local()
-	{set(LOCAL);}
-
-	public static void local(String local)
-	{LOCAL=local;}
-	public static void current()
-	{set(CURRENT);}
-
-	public static void current(String current)
-	{CURRENT=current;}
-
 	public static boolean set(String core_raw)
 	{		
 		try 
 		{
-			if(!COMUNIDAD) local(core_raw);
-			else current(core_raw);
-			db = new JSONObject(core_raw);
+			comunidad=new JSONObject(core_raw);
+			if(!COMUNIDAD)
+				db = new JSONObject(core_raw);
+
 			LOGGED=true;
-			return true;
-		} catch (JSONException e) {LOGGED=false;return false;}
+		} catch (JSONException e) {LOGGED=false;}
+		return LOGGED;
 	}
 
 	private static void make() throws JSONException
@@ -245,28 +233,18 @@ public abstract class DB
 	}
 
 	public static void insert(JSONObject data) throws JSONException {
-		boolean COMUNIDAD_ = COMUNIDAD;
-		current(db.toString());
 
-		local();
-		COMUNIDAD = true;
 		for (String model : MODELS){
 			if (!data.isNull(model)) {
 				JSONArray tmp = data.getJSONArray(model);
 				if (tmp != null) {
 					for (int t = 0; t < tmp.length(); t++)
 						insert(model, tmp.getJSONObject(t));
-					Log.i("DB.insert:tmp ",tmp.toString());
 				}
 			}
 		}
-		COMUNIDAD=COMUNIDAD_;
 		save(null, db.toString(), FILE_DB);
-		save(null, data.toString(), "run.json");
-		current();
-		Asignaturas.set_list();
 	}
-
 	public static void insert(int model,JSONObject data) throws JSONException{
 		insert(MODELS[model],data);
 	}
@@ -274,14 +252,18 @@ public abstract class DB
 		JSONObject tmp= new JSONObject();
 		try {
 			model(model);
+
 			tmp = getBy("id", data.get("id"));
+			if(tmp!=null)
+				Log.i("insert: tmp=",tmp.toString());
+			else Log.i("inser: tmp=","null");
+
 			if (tmp == null)
 				db.getJSONArray(name_model).put(data);
 			else db.getJSONArray(name_model).put(tmp.getInt("count"), data);
 
 			Asignaturas.set_list();
-			if (!COMUNIDAD)
-				save(null, db.toString(), FILE_DB);
+			save(null, db.toString(), FILE_DB);
 		}catch (JSONException e)
 		{
 			if (tmp != null)
@@ -324,14 +306,15 @@ public abstract class DB
 	}
 
 	public static Object get(String name) throws JSONException
-	{return db.get(name);}
+	{return COMUNIDAD?comunidad.get(name):db.get(name);}
 
 	public static JSONObject get(int id)
 	{
 		JSONObject out = null;
 		try 
 		{
-			out = db.getJSONArray(name_model).optJSONObject(id);
+			out = COMUNIDAD?comunidad.getJSONArray(name_model).optJSONObject(id)
+						:db.getJSONArray(name_model).optJSONObject(id);
 		} catch (JSONException e) {}
 		return out;
 	}
@@ -362,7 +345,7 @@ public abstract class DB
 
 	public static ArrayList<JSONObject> find(String by, Object where_is)
 	{
-		ArrayList<JSONObject> out = new ArrayList<JSONObject>();
+		ArrayList<JSONObject> out = new ArrayList();
 
 		int count = 0;
 		JSONObject tmp = get(count);
