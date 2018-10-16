@@ -1,7 +1,9 @@
 package controllers;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
+import chat.DBChat;
 import models.DB;
 
 import org.json.JSONException;
@@ -9,6 +11,7 @@ import org.json.JSONObject;
 
 import webservice.Asynchtask;
 
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -82,8 +85,16 @@ public class Calificables extends Controller {
 		int year=Integer.valueOf(fecha_[2])-(monthOfYear<0?1:0);
 		monthOfYear=monthOfYear<0?12:monthOfYear;
 		String fecha=dayOfMonth+"-"+monthOfYear+"-"+year;
+
+		Calendar c=Calendar.getInstance();
+		String hora= c.get(Calendar.HOUR_OF_DAY)+":"+
+				c.get(Calendar.MINUTE);
+
 		DB.model("horarios");
-		String hora=DB.getBy("asignatura", calificable.getString("asignatura")).getString("hora");
+		JSONObject horario=DB.getBy("asignatura", calificable.getString("asignatura"));
+		if(horario!=null)
+			 hora=horario.getString("hora");
+
 		datos.put("nombre", calificable.getString("nombre"));
 		datos.put("fecha", fecha);
 		datos.put("hora", hora);
@@ -94,9 +105,14 @@ public class Calificables extends Controller {
 			@Override
 			public void processFinish(String result)
 			{
-				Toast.makeText(home, result, Toast.LENGTH_LONG).show();
-				if (!result.contains("Error "))
-					DB.update(home);
+				try {
+					JSONObject tmp = new JSONObject(result);
+					Toast.makeText(home, tmp.getString("menssage"), Toast.LENGTH_LONG).show();
+					DB.insert(DB.MODELS[HomeActivity.ALERTAS],tmp.getJSONObject("data"));
+					Log.i("ALERT NEW", result);
+
+					//throw new JSONException("delivery");
+				}catch (JSONException e){}
 			}
 		};
 		Server.send("alertas", home, reponse);

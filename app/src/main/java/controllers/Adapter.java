@@ -37,7 +37,7 @@ public class Adapter extends ArrayAdapter{
 		type=t;
 		locale=l;
 		locale.clear();
-		add(new Item("  ",c.getString(R.string.empty),false));
+		add(new Item());
 	}
  
 	public void add(Item a)
@@ -55,6 +55,9 @@ public class Adapter extends ArrayAdapter{
 		else root = inflater.inflate(R.layout.item,null);
 
 		Item tmp = locale.get(position);
+		if(tmp.empty)
+			return inflater.inflate(R.layout.empty,null);
+
 		switch(type)
 		{
 			case asignatura:
@@ -149,32 +152,37 @@ public class Adapter extends ArrayAdapter{
         public String nombre;
         public String nota;
         public String creditos;
-        public boolean active= true;
+        public boolean active= true,empty=true;
 
-        public Item(String n,String cr) 
+		public Item() {	}
+
+		public Item(String n, String cr)
         {            
-            this.nombre = DB.titulo(n,70);
+            this.nombre = DB.titulo(n,"",70);
             this.nota = DB.titulo(cr,"",104);
+            this.empty=false;
         }
         public Item( String n, String nt,boolean t) {            
-            this.nombre = DB.titulo(n,70);
+            this.nombre = DB.titulo(n,"",70);
             this.nota = DB.titulo(nt,"",104);
             this.active = t;
+			this.empty=false;
         }
         public Item(String c, String n, String nt, String cr) {
         	this.codigo = c.toUpperCase();
-            this.nombre = DB.titulo(n.toUpperCase(),30);
+            this.nombre = DB.titulo(n.toUpperCase(),"",30);
             this.nota = DB.titulo(nt,"",20);
             this.creditos = cr;
+			this.empty=false;
         }
-
 		public Item(String c, String n, String nt, String cr, String des,String img) {
 			this.codigo = c.toUpperCase();
-			this.nombre = DB.titulo(n.toUpperCase(),104);
+			this.nombre = DB.titulo(n.toUpperCase(),"",104);
 			this.nota = DB.titulo(nt,"",20);
 			this.creditos = cr;
 			this.descripcion=DB.titulo(des,"",110);
 			this.image=img;
+			this.empty=false;
 		}
     }  
 }

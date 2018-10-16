@@ -81,6 +81,7 @@
     <string name="forgiven_pass">Forgot your password? </string>
     <string name="signup">Sing Up </string>
     <string name="description_label">Group description&#8230;  </string>
+    <string name="description">Description&#8230;  </string>
     <string name="request">Applications: </string>
     <string name="members">Members: </string>
     <string name="account_recover">Recover account </string>

@@ -267,11 +267,11 @@ public class HomeActivity extends FragmentActivity
     	
     	if(ON_DISPLAY<HORARIOS)
     		menu.findItem(R.id.chat)
-					.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-    	/*else
+					.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+    	else
 			menu.findItem(R.id.chat)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_WITH_TEXT
-						|MenuItem.SHOW_AS_ACTION_ALWAYS);*/
+						|MenuItem.SHOW_AS_ACTION_ALWAYS);
 
 		if(ON_DISPLAY==NOTIFICATION)
 			menu.findItem(R.id.actions_notifications).setVisible(false);

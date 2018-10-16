@@ -120,7 +120,7 @@
             android:layout_weight="0.67"
             android:ems="10"
             android:gravity="top"
-            android:hint="@string/description_label"
+            android:hint="@string/description"
             android:inputType="textMultiLine"
             android:visibility="gone" />
 
