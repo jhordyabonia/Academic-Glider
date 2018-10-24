@@ -22,7 +22,7 @@
         android:layout_gravity="bottom|right"
         android:layout_margin="20dp"
         android:padding="2dp"
-        android:src="@drawable/ic_tab_add" />
+        android:src="@drawable/ic_stat_name" />
 
     <TextView
         android:id="@+id/textView1"

@@ -8,6 +8,7 @@ import models.DB.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import util.Style;
 import webservice.Asynchtask;
 
 import chat.ChatService.Inbox;
@@ -55,7 +56,8 @@ public class ListChatActivity extends FragmentActivity implements Inbox, ListCha
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-				
+		Style.bar(this);
+
 		if(!DB.LOGGED)
 		{			
 			String result= DB.load(DB.FILE_DB);

@@ -171,4 +171,5 @@
     <string name="codeShort">El código debe tener mínimo 5 caracteres</string>
     <string name="noEmpty">No debe estar vacío</string>
     <string name="creditsShort">Solo números entre 1 y 20</string>
+    <string name="theme">Select theme</string>
 </resources>

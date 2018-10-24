@@ -130,7 +130,6 @@
     <string name="network_date">Se muestran, fecha y hora del servidor</string>
 
 
-
     <string name="info_FAQ">Frequent questions</string>
     <string name="info_see">See Tabulated Subjects</string>
     <string name="info_into_diplay">On the home screen, "My Glider" Touch the tab "SUBJECTS"</string>
@@ -181,5 +180,6 @@
     <string name="codeShort">The code must have a minimum of 5 characters</string>
     <string name="noEmpty">It must not be empty</string>
     <string name="creditsShort">Only numbers between 1 and 20</string>
+    <string name="theme">Select theme</string>
 
 </resources>

@@ -25,7 +25,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".HomeActivity"
             android:label="@string/app_name">
@@ -38,16 +37,32 @@
         <activity
             android:name="chat.ChatActivity"
             android:icon="@drawable/ic_chat_menu" />
-        <activity android:name="chat.ListChatActivity"/>
+        <activity android:name="chat.ListChatActivity" />
         <activity android:name="chat.ProfileActivity" />
-        <activity android:name="crud.AlertaActivity" />
-        <activity android:name="crud.AsignaturaActivity" />
-        <activity android:name="crud.CalificableActivity" />
-        <activity android:name="crud.LecturaActivity" />
-        <activity android:name="crud.HorarioActivity" />
-        <activity android:name="crud.ApunteActivity" />
-        <activity android:name="crud.Main" />
-        <activity android:name=".InformacionActivity" />
+        <activity
+            android:name="crud.AlertaActivity"
+            android:icon="@drawable/ic_atras" />
+        <activity
+            android:name="crud.AsignaturaActivity"
+            android:icon="@drawable/ic_atras" />
+        <activity
+            android:name="crud.CalificableActivity"
+            android:icon="@drawable/ic_atras" />
+        <activity
+            android:name="crud.LecturaActivity"
+            android:icon="@drawable/ic_atras" />
+        <activity
+            android:name="crud.HorarioActivity"
+            android:icon="@drawable/ic_atras" />
+        <activity
+            android:name="crud.ApunteActivity"
+            android:icon="@drawable/ic_atras" />
+        <activity
+            android:name="crud.Main"
+            android:icon="@drawable/ic_atras" />
+        <activity
+            android:name=".InformacionActivity"
+            android:icon="@drawable/ic_atras" />
         <activity android:name=".RecuperarCuentaActivity" />
         <activity android:name=".NotificacionesActivity" />
 
@@ -60,6 +75,13 @@
 
         <receiver android:name="util.Alarma" />
 
+        <activity android:name=".TestA">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

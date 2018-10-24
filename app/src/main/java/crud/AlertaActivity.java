@@ -2,7 +2,14 @@ package crud;
 
 import java.util.HashMap;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.widget.ImageView;
+
 import com.jhordyabonia.ag.HomeActivity;
 import com.jhordyabonia.ag.R;
 

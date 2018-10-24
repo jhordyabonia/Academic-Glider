@@ -18,9 +18,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:layout_margin="20dp"
-        android:padding="2dp"
-        android:src="@drawable/ic_tab_add" />
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="20dp"
+        android:padding="7dp"
+        android:background="@drawable/bg_rounded"
+        android:src="@drawable/ic_stat_name" />
 
     <TableRow
         android:id="@+id/pager"

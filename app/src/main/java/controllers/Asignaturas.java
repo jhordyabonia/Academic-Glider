@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import util.CompartirAsignatura;
+import util.Style;
 import util.UploadService;
 import webservice.Asynchtask;
 import android.app.Activity;
@@ -61,7 +62,7 @@ public class Asignaturas implements OnItemClickListener
 	private HomeActivity home;
 	private ListView base;
 	private Adapter base_data;
-	ViewPager mViewPager;
+	private ViewPager mViewPager;
 
 	public Asignaturas(HomeActivity fa)
 	{	home = fa;}
@@ -70,8 +71,7 @@ public class Asignaturas implements OnItemClickListener
 	{mViewPager=vPager;}
 	public void show(int display)
 	{
-		//home.setContentView(R.layout.fragment_collection_object);
-		//home.invalidateOptionsMenu();
+		Style.set(mViewPager);
 		CollectionPagerAdapter mCollectionPagerAdapter =
 				new CollectionPagerAdapter
 				(home.getSupportFragmentManager());
@@ -147,10 +147,10 @@ public class Asignaturas implements OnItemClickListener
 	}
 	public void todas(View view)
 	{
+		Style.set(view);
 		Base.itemSeleted = 0;
 		ON_DISPLAY=HomeActivity.ASIGNATURAS;
 		ImageView imageView =  view.findViewById(R.id.add);
-
 		base =  view.findViewById(R.id.list);
 
 		if(DB.COMUNIDAD)
@@ -166,7 +166,7 @@ public class Asignaturas implements OnItemClickListener
 		}
 		else
 		{
-			imageView.setImageResource(R.drawable.ic_tab_add);
+			imageView.setImageResource(R.drawable.ic_stat_name);
 			imageView.setOnClickListener(new OnClickListener()
 				{
 					public void onClick(View arg0)

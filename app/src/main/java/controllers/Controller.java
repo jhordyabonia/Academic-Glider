@@ -8,6 +8,7 @@ import models.DB;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import util.Style;
 import webservice.Asynchtask;
 
 import android.app.Activity;
@@ -57,7 +58,7 @@ public abstract class Controller extends Fragment implements OnItemClickListener
 		if(DB.COMUNIDAD)
 			imageView.setVisibility(View.GONE);
 
-		imageView.setImageResource(R.drawable.ic_tab_add);
+		imageView.setImageResource(R.drawable.ic_stat_name);
 		imageView.setOnClickListener(new OnClickListener()
 			{
 				public void onClick(View arg0)
@@ -77,33 +78,32 @@ public abstract class Controller extends Fragment implements OnItemClickListener
 				Base.itemSeleted = index_item;
 				CLICK_BLOQUEADO=true;
 				if(!DB.COMUNIDAD)
-					if(!LOCAL_DB.isEmpty())
+					if(v.findViewById(R.id.empty)==null)
 						showPopup(v);
 				return false;
 			}
 		});
+		Style.set(rootView);
 		show();
 		return rootView;
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> av, View v, int index_item, long arg3)
+	final public void onItemClick(AdapterView<?> av, View v, int index_item, long arg3)
 	{
 		if(CLICK_BLOQUEADO)
 		{
 			CLICK_BLOQUEADO=false;
 			return;
 		}
-		TextView tv = v.findViewById(R.id.textView4);
-		if(tv!=null)
-			if(LOCAL_DB.isEmpty())
-			//if(tv.getText().toString().equals(v.getContext().getString(R.string.empty)))
-				return;
+
+		if(v.findViewById(R.id.empty)!=null)
+			return;
 		Base.itemSeleted = index_item;
 		Base.crud(getActivity(), Base.Actions.Edit);
 	}
 
-	public void showPopup(View v) 
+	public void showPopup(View v)
 	{
 		PopupMenu popup = new PopupMenu(getActivity(), v);
 		MenuInflater inflater = popup.getMenuInflater();
@@ -120,7 +120,7 @@ public abstract class Controller extends Fragment implements OnItemClickListener
 		});
 	}
 
-	protected void delete() 
+	protected void delete()
 	{
 		String id = "";
 		try 

@@ -1,7 +1,10 @@
 package chat;
 
 import java.util.HashMap;
+import java.util.Random;
 
+import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
+import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 import static models.DB.LOGGED;
 import static models.DB.User;
 
@@ -9,9 +12,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import crud.AlertaActivity;
+import crud.ApunteActivity;
+import crud.AsignaturaActivity;
+import crud.Base;
+import crud.CalificableActivity;
+import crud.HorarioActivity;
+import crud.LecturaActivity;
+import crud.Main;
+import models.DB;
 import webservice.Asynchtask;
-import webservice.LOG;
 
+import com.jhordyabonia.ag.HomeActivity;
+import com.jhordyabonia.ag.Notificaciones;
 import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
 
@@ -30,10 +43,9 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.Vibrator;
-import android.util.Log;
 import android.widget.Toast;
 
-public class ChatService extends Service implements Asynchtask 
+public class ChatService extends Service implements Asynchtask ,Notificaciones.Notifications
 {	
 	public  static final String MESSENGER = "messenger";
 	private  static final String MENSAJE_NUEVO = "mensaje_nuevo";
@@ -139,45 +151,47 @@ public class ChatService extends Service implements Asynchtask
 		
 		while (chat != null)
 		{
-			try 
-			{				
-				DBChat.insert(chat);
-				String nombre;
-				String id= chat.getString("nombre")
-						.replace("_"+User.get("celular")+"_","")
-						.replace("_","");
-				nombre=DBChat.get_contact("nombre","cel_",id);
-				if(nombre.isEmpty())
-					nombre=id;
-				int chat_id=chat.getInt("id");
-				boolean buffered= CHAT==chat_id;
-				
-				JSONArray msjs=chat.getJSONArray("mensajes");
-				JSONObject msj_t;
-				for(int i=0;i<msjs.length();i++)
-				{
-					msj_t=msjs.getJSONObject(i);
-					last_msj=msj_t.getInt("id");
-					if(DBChat.LAST_MSJ==last_msj)
-						continue;
-					if(CHAT==0)
-						buffer(msj_t.toString());
-					if(buffered)
-						buffer(msj_t.toString());
-					else if(msj_t.getString("tipo").equals("asignatura"))
-						notificar(nombre,"Nueva asignatura",chat_id);
-					else if(msj_t.getString("tipo").equals("inicio"))
-						notificar(nombre,"Usuario agregado",chat_id);
-					else
-						notificar(nombre,msj_t.getString("dato"),chat_id);					
+			try {
+				if (chat.getInt("id") == -1) {
+					DB.update(this,chat);
+				} else {
+					DBChat.insert(chat);
+					String nombre;
+					String id = chat.getString("nombre")
+							.replace("_" + User.get("celular") + "_", "")
+							.replace("_", "");
+					nombre = DBChat.get_contact("nombre", "cel_", id);
+					if (nombre.isEmpty())
+						nombre = id;
+					int chat_id = chat.getInt("id");
+					boolean buffered = CHAT == chat_id;
+
+					JSONArray msjs = chat.getJSONArray("mensajes");
+					JSONObject msj_t;
+					for (int i = 0; i < msjs.length(); i++) {
+						msj_t = msjs.getJSONObject(i);
+						last_msj = msj_t.getInt("id");
+						if (DBChat.LAST_MSJ == last_msj)
+							continue;
+						if (CHAT == 0)
+							buffer(msj_t.toString());
+						if (buffered)
+							buffer(msj_t.toString());
+						else if (msj_t.getString("tipo").equals(DB.MODELS[ASIGNATURAS]))
+							notificar(nombre, "Nueva asignatura", chat_id);
+						else if (msj_t.getString("tipo").equals("inicio"))
+							notificar(nombre, "Usuario agregado", chat_id);
+						else
+							notificar(nombre, msj_t.getString("dato"), chat_id);
+					}
+					DBChat.LAST_MSJ = DBChat.LAST_MSJ < last_msj ? last_msj : DBChat.LAST_MSJ;
 				}
-				DBChat.LAST_MSJ=DBChat.LAST_MSJ<last_msj?last_msj:DBChat.LAST_MSJ;	
-			} catch (JSONException e){}
+			}catch(JSONException e){}
 			chat = db.optJSONObject(++count);
 		}
 	}
 	@SuppressLint("NewApi") 
-	private void notificar(String usuario,String dato, int id) throws JSONException 
+	public int notificar(String usuario,String dato, int id) throws JSONException
 	{		
 		Vibrator v= (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		v.vibrate(250);
@@ -202,7 +216,66 @@ public class ChatService extends Service implements Asynchtask
 		    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		
 		// mId allows you to update the notification later on.
-		mNotificationManager.notify(id, mBuilder.build());	
+		mNotificationManager.notify(id, mBuilder.build());
+		return id;
+	}
+	@SuppressLint("NewApi")
+	public int update(String title,String dato, String tipo)
+	{
+		Vibrator v= (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		v.vibrate(250);
+		Notification.Builder mBuilder =
+				new Notification.Builder(this)
+						.setSmallIcon(R.drawable.home)
+						.setContentTitle(title)
+						.setContentText(dato);
+		// Creates an explicit intent for an Activity in your app
+
+		Intent intent=null;
+		switch (tipo){
+			case "alertas":
+				intent= (new Intent(this, AlertaActivity.class));
+				break;
+			case "apuntes":
+				if(HomeActivity.DROP_MODE)
+					intent= (new Intent(this, Main.class));
+				else intent= (new Intent(this, ApunteActivity.class));
+				break;
+			case "lecturas":
+				intent= (new Intent(this, LecturaActivity.class));
+				break;
+			case "calificables":
+				intent= (new Intent(this, CalificableActivity.class));
+				break;
+			case "horarios":
+				if(!DB.COMUNIDAD)
+					if(DB.Asignaturas.LIST_ASIGNATURAS.length>1)
+						intent= (new Intent(this, HorarioActivity.class));
+				break;
+			case "asignaturas":
+				intent= (new Intent(this, AsignaturaActivity.class));
+				break;
+				default:
+					intent= (new Intent(this, Notificaciones.class));
+		}
+
+		Random r=new Random();
+		int id=r.nextInt();
+		intent.putExtra(Notificaciones.FILE,id);
+		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+		// Adds the back stack for the Intent (but not the Intent itself)
+		stackBuilder.addParentStack(HomeActivity.class);
+		// Adds the Intent that starts the Activity to the top of the stack
+		stackBuilder.addNextIntent(intent);
+		PendingIntent resultPendingIntent =
+				stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+		mBuilder.setContentIntent(resultPendingIntent);
+		NotificationManager mNotificationManager =
+				(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+		// mId allows you to update the notification later on.
+		mNotificationManager.notify(id, mBuilder.build());
+		return id;
 	}
 	private void buffer(String nuevo)
 	{

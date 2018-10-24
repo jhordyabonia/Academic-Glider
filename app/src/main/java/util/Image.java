@@ -1,8 +1,10 @@
 package util;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,11 +32,12 @@ import models.DB;
 import webservice.LOG;
 
 public class Image extends Fragment {
-    private static int HEIGHT=1836/3,WIDTH=3264/3;
+    private static int HEIGHT = 1836 / 3, WIDTH = 3264 / 3;
     private boolean camera;
     private View root;
     private ApunteActivity base;
     private Loader loader;
+
     public Image(boolean camera, ApunteActivity b) {
         base = b;
         zoom = false;
@@ -50,7 +53,7 @@ public class Image extends Fragment {
         ImageView image = root.findViewById(R.id.image);
         ImageView imageFull = root.findViewById(R.id.imageFull);
 
-        loader = new Loader(image,imageFull);
+        loader = new Loader(image, imageFull);
         if (camera && !DB.COMUNIDAD) {
             root.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
             image.setImageResource(R.drawable.ic_menu_name);
@@ -92,46 +95,49 @@ public class Image extends Fragment {
             zoom = !zoom;
     }
 
-    public static String save(InputStream data, String file)
-    {
+    public static String save(InputStream data, String file) {
 
         if (!DB.memory())
             return "";
-        try
-        {
+        try {
             File ruta = new File(DB.root, DB.DIRECTORY);
 
-            File f =  new File(ruta,file);
+            File f = new File(ruta, file);
             Bitmap imagen = BitmapFactory.decodeStream(data);
-            try
-            {
+            try {
                 f.createNewFile();
                 FileOutputStream ostream = new FileOutputStream(f);
                 imagen.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
                 ostream.close();
-            }catch (Exception e){}
+            } catch (Exception e) {
+            }
             return f.getAbsolutePath();
-        } catch (Exception ex){}
+        } catch (Exception ex) {
+        }
         return "";
     }
 
     public static class Loader extends AsyncTask<String, Void, Bitmap> {
 
         private WeakReference imageViewReference[];
-        private String mURL =Server.URL_SERVER.replace("pu", "uploads/fotos/");
-        public Loader(ImageView... imageView) {
+        private String mURL = Server.URL_SERVER.replace("pu", "uploads/fotos/");
+        private String name;
+        public Loader(View... imageView) {
             make(imageView);
-        }public Loader(String url,ImageView... imageView) {
-            make(imageView);
-            mURL=url;
         }
-        public void make(ImageView... imageView)
-        {
-            imageViewReference= new WeakReference[imageView.length];
-            int counter=0;
-            for (ImageView ima:imageView)
+
+        public Loader(String url, View... imageView) {
+            make(imageView);
+            mURL = url;
+        }
+
+        public void make(View... imageView) {
+            imageViewReference = new WeakReference[imageView.length];
+            int counter = 0;
+            for (View ima : imageView)
                 imageViewReference[counter++] = new WeakReference<>(ima);
         }
+
         public static int calculateInSampleSize(
                 BitmapFactory.Options options, int reqWidth, int reqHeight) {
             // Raw height and width of image
@@ -154,59 +160,61 @@ public class Image extends Fragment {
 
             return inSampleSize;
         }
+
         @Override
         protected synchronized Bitmap doInBackground(String... fotos) {
             Bitmap imagen = null;
             try {
 
-                String name=fotos[0];
-                if(name.contains("http"))
-                    name=mURL+".jpg";
+                name = fotos[0];
+                if (name.contains("http"))
+                    name = mURL + ".jpg";
 
                 File ruta = new File(DB.root, DB.DIRECTORY + "//" + name);
                 final BitmapFactory.Options options = new BitmapFactory.Options();
                 //buca la imagen local
                 if (ruta.exists()) {
                     //Lectura de dimenciones solamenete
-                    name=ruta.getAbsolutePath();
+                    name = ruta.getAbsolutePath();
                     options.inJustDecodeBounds = true;
-                    BitmapFactory.decodeFile(name,options);
-                    options.inSampleSize = calculateInSampleSize(options,WIDTH,HEIGHT);
+                    BitmapFactory.decodeFile(name, options);
+                    options.inSampleSize = calculateInSampleSize(options, WIDTH, HEIGHT);
                     ///Lectura de la img
                     options.inJustDecodeBounds = false;
-                    imagen = BitmapFactory.decodeFile(name,options);
+                    imagen = BitmapFactory.decodeFile(name, options);
                 }
                 //Si no hay imagen la descarga
                 if (imagen == null) {
                     URL imageUrl;
-                    if(mURL.contains("http"))
+                    if (mURL.contains("http"))
                         imageUrl = new URL(mURL + fotos[0]);
                     else imageUrl = new URL(fotos[0]);
                     HttpURLConnection urlConnection = (HttpURLConnection) imageUrl.openConnection();
                     InputStream inputStream = urlConnection.getInputStream();
                     //guardado de la img
-                    name=save(inputStream, name);
+                    name = save(inputStream, name);
                     //Lectura de dimenciones solamenete
                     options.inJustDecodeBounds = true;
-                    BitmapFactory.decodeFile(name,options);
-                    options.inSampleSize = calculateInSampleSize(options,WIDTH,HEIGHT);
+                    BitmapFactory.decodeFile(name, options);
+                    options.inSampleSize = calculateInSampleSize(options, WIDTH, HEIGHT);
                     ///Lectura de la img
                     options.inJustDecodeBounds = false;
-                    imagen = BitmapFactory.decodeFile(name,options);
+                    imagen = BitmapFactory.decodeFile(name, options);
                 }
-            } catch (IOException e) {}
+            } catch (IOException e) {
+            }
             return imagen;
         }
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-
-            for (WeakReference imageView:imageViewReference) {
-                ImageView image = (ImageView) imageView.get();
-                if(image!=null)
-                   image.setImageBitmap(bitmap);
+            for (WeakReference imageView : imageViewReference) {
+                Object v=imageView.get();
+                if (v instanceof ImageView) {
+                    ImageView image = (ImageView) v;
+                    image.setImageBitmap(bitmap);
+                }
             }
-
         }
     }
 }

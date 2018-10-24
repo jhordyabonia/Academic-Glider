@@ -184,5 +184,9 @@ public class Adapter extends ArrayAdapter{
 			this.image=img;
 			this.empty=false;
 		}
-    }  
+		@Override
+		public String toString() {
+			return nombre;
+		}
+	}
 }

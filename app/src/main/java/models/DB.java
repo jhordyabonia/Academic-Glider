@@ -1,5 +1,19 @@
 package models;
 
+import android.app.Activity;
+import android.os.Environment;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.jhordyabonia.ag.HomeActivity;
+import com.jhordyabonia.ag.Notificaciones.Notifications;
+import com.jhordyabonia.ag.R;
+import com.jhordyabonia.ag.Server;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,30 +24,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONException;
-
-import chat.DBChat;
+import controllers.Alertas;
 import webservice.Asynchtask;
 
-import com.jhordyabonia.ag.HomeActivity;
-import com.jhordyabonia.ag.R;
-import com.jhordyabonia.ag.Server;
-
-import controllers.Alertas;
-import webservice.LOG;
-
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.os.Environment;
-import android.util.Log;
-import android.widget.Toast;
-
 import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
-import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
-public abstract class DB 
+public abstract class DB
 {
 	public static boolean COMUNIDAD = false;
 	public static boolean LOGGED = false;
@@ -83,7 +79,7 @@ public abstract class DB
 	}
 
 	public static void update()
-	{update(null,null);}
+	{update(null,new HashMap<String, String>());}
 
 	public static void update(final HomeActivity home)
 	{update(home,null);}
@@ -252,7 +248,6 @@ public abstract class DB
 		JSONObject tmp= new JSONObject();
 		try {
 			model(model);
-
 			tmp = getBy("id", data.get("id"));
 			if(tmp!=null)
 				Log.i("insert: tmp=",tmp.toString());
@@ -271,7 +266,25 @@ public abstract class DB
 			throw e;
 		}
 	}
+    public static void update(Notifications notifications, JSONObject data) throws JSONException{
 
+		JSONArray msjs = data.getJSONArray("mensajes");
+		JSONObject msj_t;
+        for (int i = 0; i < msjs.length(); i++) {
+            msj_t = msjs.getJSONObject(i);
+
+            String tipo=msj_t.getString("tipo");
+			try {
+				JSONObject data_=msj_t.getJSONObject("dato");
+				if(!data_.isNull("nombre"))
+					notifications.update(tipo,data_.getString("nombre"),tipo);
+				else
+					notifications.update(tipo,"Horarios",tipo);
+				insert(tipo, data_);
+			}catch (JSONException e)
+			{save(null,e.getMessage()+"\n>>>\n"+msj_t,"mFile.json");}
+        }
+    }
 	public static void model(String name)
 	{
 		name_model = name;
@@ -386,6 +399,18 @@ public abstract class DB
 				out = db.getJSONObject("usuario").getString(key);
 			} catch (JSONException e) {}
 			return out;
+		}
+		private static void set(String key,JSONObject remote) throws JSONException
+		{
+			if(!remote.isNull(key))
+				db.getJSONObject("usuario").put(key,remote.get(key));
+		}
+		public static void set(JSONObject  in) throws JSONException {
+			String keys[] = {"nombre", "password", "celular", "correo", "universidad"};
+			if(db==null)
+				throw new JSONException("Data base local null");
+			else for (String key : keys)
+				set(key, in);
 		}
 	}
 

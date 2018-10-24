@@ -8,6 +8,7 @@ import models.DB;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import util.Style;
 import webservice.Asynchtask;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -53,6 +54,7 @@ public class Horarios implements OnItemClickListener
 	{
 		home.setContentView(R.layout.lienzo);
 		View view=home.findViewById(R.id.FrameLayout1);
+		Style.set(view);
 		show(view);
 	}
 	public void show(final View v)
@@ -60,7 +62,7 @@ public class Horarios implements OnItemClickListener
 		ImageView imageView = v.findViewById(R.id.add);
 		if(DB.Asignaturas.LIST_ASIGNATURAS.length<=0||DB.COMUNIDAD)
 			imageView.setVisibility(View.GONE);
-		imageView.setImageResource(R.drawable.ic_tab_add);
+		imageView.setImageResource(R.drawable.ic_stat_name);
 		imageView.setOnClickListener(new OnClickListener()
 			{
 				public void onClick(View arg0)

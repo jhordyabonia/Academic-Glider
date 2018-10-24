@@ -21,7 +21,7 @@
     </style>
     <style name="ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:logo">@drawable/bg</item>
-        <item name="android:background">#000000</item>
+        <item name="android:background">@color/colorBlack</item>
         <item name="android:titleTextStyle">@style/TitleText</item>
     </style>
      <style name="TitleText" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
@@ -31,6 +31,6 @@
 		<item name="android:textColor">#FFFFFF</item>  
     </style>    
     <style name="TabBar" parent="@android:style/Widget.Holo.Light.ActionBar.TabBar" >
-		<item name="android:background">#000000</item> 
+		<item name="android:background">@color/colorBlack</item>
     </style>
 </resources>

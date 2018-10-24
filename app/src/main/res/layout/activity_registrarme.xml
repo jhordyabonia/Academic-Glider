@@ -1,19 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000">
+
+        <ImageView
+            android:id="@+id/bg_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.6"
+        android:background="#000"></FrameLayout>
+
+<ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000"
+    android:background="@android:color/transparent"
     android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:orientation="vertical"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:paddingTop="10dp" >
+        android:paddingTop="20dp" >
 
         <TextView
             android:id="@+id/textView2"
@@ -46,8 +68,17 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@android:drawable/ic_menu_report_image" />
+                android:src="@android:drawable/ic_menu_report_image"
+                android:visibility="gone"/>
 
+            <ImageView
+                android:id="@+id/imageViewx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="3dp"
+                android:scaleType="center"
+                android:src="@drawable/user" />
             <EditText
                 android:id="@+id/nombre"
                 android:layout_width="wrap_content"
@@ -68,15 +99,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="-10dp"
+                android:layout_marginRight="3dp"
                 android:scaleType="center"
-                android:src="@drawable/ic_universidad" />
+                android:src="@drawable/universidad" />
 	        <Spinner
 	            android:id="@+id/universidad"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
 	            android:ems="10"
-	            android:textColor="#c0c0c0"
+	            android:textColor="#fff"
 	            android:textColorHint="#9e9e3a" />
 		</TableRow>
 		<TableRow
@@ -89,7 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="-10dp"
+                android:layout_marginRight="3dp"
                 android:scaleType="center"
                 android:src="@drawable/ic_universidad2"
             	android:visibility="gone" />
@@ -114,9 +145,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="-10dp"
+                android:layout_marginRight="3dp"
                 android:scaleType="center"
-                android:src="@drawable/ic_user" />
+                android:src="@drawable/cell" />
 
             <EditText
                 android:id="@+id/celular"
@@ -141,9 +172,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="-10dp"
+                android:layout_marginRight="3dp"
                 android:scaleType="center"
-                android:src="@drawable/ic_email" />
+                android:src="@drawable/email" />
 
             <EditText
                 android:id="@+id/email"
@@ -166,9 +197,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="-10dp"
+                android:layout_marginRight="3dp"
                 android:scaleType="center"
-                android:src="@drawable/ic_passw" />
+                android:src="@drawable/pass" />
 
             <EditText
                 android:id="@+id/password"
@@ -177,7 +208,7 @@
                 android:ems="10"
                 android:hint="@string/pass"
                 android:inputType="textPassword"
-                android:textColor="#c0c0c0" />
+                android:textColor="#c0c0c0"/>
 
         </TableRow>
 
@@ -191,9 +222,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="-10dp"
+                android:layout_marginRight="3dp"
                 android:scaleType="center"
-                android:src="@drawable/ic_passw2" />
+                android:src="@drawable/pass" />
 
             <EditText
                 android:id="@+id/password2"
@@ -202,7 +233,7 @@
                 android:ems="10"
                 android:hint="@string/pass2"
                 android:inputType="textPassword"
-                android:textColor="#c0c0c0" />
+                android:textColor="#c0c0c0"/>
 
         </TableRow>
 
@@ -228,3 +259,4 @@
     </LinearLayout>
 
 </ScrollView>
+</FrameLayout>

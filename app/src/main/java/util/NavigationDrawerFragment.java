@@ -4,6 +4,8 @@ package util;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -63,6 +65,7 @@ public class NavigationDrawerFragment extends Fragment {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
     private View mFragmentContainerView;
+    private View previousSelectedItem;
 
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
@@ -101,13 +104,15 @@ public class NavigationDrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.drawer_main, container, false);
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
+                view.setSelected(true);
+              //  selectItem(position);
+                selectItem(position,view,true);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
+        mDrawerListView.setAdapter(new ArrayAdapter<>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
@@ -212,9 +217,12 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     public void selectItem(int position) {
-        selectItem(position,true);
+        selectItem(position,null,true);
     }
-    private void selectItem(int position,boolean add) {
+    public void selectItem(int position,boolean add) {
+        selectItem(position,null,add);
+    }
+  private void selectItem(int position,View view,boolean add) {
 
         getActionBar().show();
         mCurrentSelectedPosition = position;
@@ -231,6 +239,19 @@ public class NavigationDrawerFragment extends Fragment {
         if(add)
             if(position>=0)
                 HISTORY.add(++display_now,position);
+
+        if (previousSelectedItem!=null)
+            previousSelectedItem.setBackgroundColor(Color.TRANSPARENT);
+
+        if(view==null)
+            if(mDrawerListView!=null)
+                view=mDrawerListView.getSelectedView();
+        previousSelectedItem=view;
+        try {
+            if (Style.STYLE != R.color.colorBlack)
+                view.setBackgroundColor(getResources().getColor(Style.STYLE));
+            else view.setBackgroundColor(getResources().getColor(R.color.colorMarine));
+        }catch (Exception e){Log.e("ERROR",e.getMessage());}
     }
     public void clearHistory()
     {

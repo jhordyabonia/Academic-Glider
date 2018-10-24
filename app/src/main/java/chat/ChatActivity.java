@@ -33,6 +33,7 @@ import android.widget.ListView;
 
 import models.DB;
 import models.DB.User;
+import util.Style;
 import webservice.Asynchtask;
 
 import chat.ChatAdapter.Mensaje;
@@ -47,6 +48,7 @@ import com.jhordyabonia.ag.Server;
 import crud.Base;
 
 import static chat.DBChat.ON_CHAT;
+import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
 
 public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClickListener,OnItemLongClickListener
 {
@@ -64,7 +66,8 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
+		Style.bar(this);
+
 		if(!DB.LOGGED)
 		{
 			String result= DB.load(DB.FILE_DB);
@@ -287,7 +290,7 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 	@Override
 	public void add_msj(JSONObject msj_t,boolean move) throws JSONException
 	{
-		if(msj_t.getString("tipo").equals("asignatura"))
+		if(msj_t.getString("tipo").equals(DB.MODELS[ASIGNATURAS]))
 		{		
 			JSONObject asignatura= new JSONObject(msj_t.getString("dato"));
 			if(msj_t.getString("usuario")

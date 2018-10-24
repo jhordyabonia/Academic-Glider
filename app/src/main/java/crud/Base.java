@@ -8,8 +8,10 @@ import org.json.JSONObject;
 
 import models.DB;
 
+import util.Style;
 import webservice.Asynchtask;
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,10 +21,12 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.jhordyabonia.ag.HomeActivity;
+import com.jhordyabonia.ag.Notificaciones;
 import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
 
@@ -43,6 +47,9 @@ public abstract class Base extends Activity implements Asynchtask {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		//getActionBar().setIcon(R.drawable.ic_atras);
+		Style.bar(this);
 		setContentView(R.layout.crud);
 		findViewById(R.id.save)
 			.setOnClickListener(new OnClickListener() {
@@ -51,6 +58,17 @@ public abstract class Base extends Activity implements Asynchtask {
 						send(v);
 					}
 				});
+
+		Intent mIntent=getIntent();
+		if(mIntent!=null) {
+			int noti=mIntent.getIntExtra(Notificaciones.FILE,0);
+			if(noti!=0) {
+				action=Actions.Edit;
+				((NotificationManager)
+						getSystemService(Context.NOTIFICATION_SERVICE))
+						.cancel(noti);
+			}
+		}
 
 		int on_display=ON_DISPLAY;
 		if(ON_DISPLAY>=100)
@@ -257,34 +275,39 @@ public abstract class Base extends Activity implements Asynchtask {
 			button.setVisibility(View.GONE);
 	}
 
-	public static void crud(Context parent, Actions a)
+	public static Intent crud(Context parent, Actions a)
 	{
 		action = a;
+		Intent  intent=null;
 		switch (ON_DISPLAY)
 		{
 		case HomeActivity.ALERTAS:
-			parent.startActivity(new Intent(parent, AlertaActivity.class));
+			intent= (new Intent(parent, AlertaActivity.class));
 			break;
 		case HomeActivity.APUNTES:
 			if(HomeActivity.DROP_MODE)
-			    parent.startActivity(new Intent(parent, Main.class));
-			else parent.startActivity(new Intent(parent, ApunteActivity.class));
+				intent= (new Intent(parent, Main.class));
+			else intent= (new Intent(parent, ApunteActivity.class));
 			break;
 		case HomeActivity.LECTURAS:
-			parent.startActivity(new Intent(parent, LecturaActivity.class));
+			intent= (new Intent(parent, LecturaActivity.class));
 			break;
 		case HomeActivity.CALIFICABLES:
-			parent.startActivity(new Intent(parent, CalificableActivity.class));
+			intent= (new Intent(parent, CalificableActivity.class));
 			break;
 		case HomeActivity.HORARIOS:			
 			if(!DB.COMUNIDAD)
 			  if(DB.Asignaturas.LIST_ASIGNATURAS.length>1)
-				parent.startActivity(new Intent(parent, HorarioActivity.class));
+				  intent= (new Intent(parent, HorarioActivity.class));
 			break;
 		case HomeActivity.ASIGNATURAS:
-			parent.startActivity(new Intent(parent, AsignaturaActivity.class));
+			intent= (new Intent(parent, AsignaturaActivity.class));
 			break;
 		}
+		if(parent!=null)
+			parent.startActivity(intent);
+
+		return intent;
 	}
 
 	protected abstract HashMap<String, String> getData();

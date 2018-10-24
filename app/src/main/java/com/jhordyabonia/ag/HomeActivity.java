@@ -11,6 +11,7 @@ import controllers.Horarios;
 import crud.Base;
 import util.ListDias;
 import util.NavigationDrawerFragment;
+import util.Style;
 import webservice.LOG;
 
 import android.app.ActionBar;
@@ -20,6 +21,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
@@ -163,6 +165,11 @@ public class HomeActivity extends FragmentActivity
 	{
 		super.onCreate(savedInstanceState);
 
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		Style.STYLE = sp.getInt(Style._STYLE,R.color.colorMarine);
+
+		Style.bar(this);
+
 		start(DB.load(DB.FILE_DB));
 		actionBar=getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -277,6 +284,11 @@ public class HomeActivity extends FragmentActivity
 			menu.findItem(R.id.actions_notifications).setVisible(false);
 		else
 			menu.findItem(R.id.actions_notifications).setVisible(true);
+
+		if(ON_DISPLAY==CHATS)
+			menu.findItem(R.id.chat).setVisible(false);
+		else
+			menu.findItem(R.id.chat).setVisible(true);
 
     	if(DROP_MODE){
 

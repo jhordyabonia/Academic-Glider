@@ -29,6 +29,7 @@ import java.util.HashMap;
 import models.DB;
 
 import static chat.DBChat.ON_CHAT;
+import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
 import static com.jhordyabonia.ag.HomeActivity.CONTACTOS;
 import static com.jhordyabonia.ag.HomeActivity.CHATS;
 import static com.jhordyabonia.ag.HomeActivity.GRUPOS;
@@ -148,7 +149,7 @@ public class  ListChat  implements AdapterView.OnItemClickListener,AdapterView.O
                     int last_msj=msj_tmp.getInt("id");
                     DBChat.LAST_MSJ=DBChat.LAST_MSJ<last_msj?last_msj:DBChat.LAST_MSJ;
                     dato=msj_tmp.getString("dato");
-                    if(msj_tmp.getString("tipo").equals("asignatura"))
+                    if(msj_tmp.getString("tipo").equals(DB.MODELS[ASIGNATURAS]))
                         dato=main.getString(R.string.asignaturas)+"...";
                 }else continue;
                 int icon=VIEW==GRUPOS?R.drawable.ic_dialogo_nuevo_grupo:R.drawable.ic_dialogo_add_togroup;

@@ -10,7 +10,7 @@ import webservice.Client;
 import android.app.Activity;
 
 public final class Server {
-	public static String URL_SERVER = "http://123seller.azurewebsites.net/pu/";
+	public static String URL_SERVER = "http://10.0.0.55/server1/pu/";
 	static
 	{
 		String url=DB.load("server.js");

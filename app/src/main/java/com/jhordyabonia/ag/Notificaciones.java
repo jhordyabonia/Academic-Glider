@@ -18,6 +18,11 @@ import models.DB;
 import webservice.LOG;
 
 public class Notificaciones  implements AdapterView.OnItemClickListener{
+
+    public interface Notifications{
+        int notificar(String usuario,String dato, int id) throws JSONException;
+        int update(String title,String dato, String tipo);
+    }
     public static final String FILE="com.jhordy.ag.notificaciones";
     private static JSONArray db_notificaciones;
     private View display=null;

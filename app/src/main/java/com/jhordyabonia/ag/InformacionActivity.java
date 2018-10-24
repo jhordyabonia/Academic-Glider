@@ -1,6 +1,7 @@
 package com.jhordyabonia.ag;
 
 import util.InformacionFragment;
+import util.Style;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ public class InformacionActivity extends FragmentActivity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		Style.bar(this);
 		setContentView(R.layout.informacion_main);
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()

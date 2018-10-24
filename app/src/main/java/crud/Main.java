@@ -32,6 +32,7 @@ import java.util.HashMap;
 
 import models.DB;
 import util.ImageAdapter;
+import util.Style;
 import util.Validate;
 import webservice.Asynchtask;
 import webservice.LOG;
@@ -56,6 +57,7 @@ public class Main extends FragmentActivity implements Asynchtask {
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Style.bar(this);
 
         DB.model(DB.MODELS[APUNTES]);
         ID_ASIGNATURA=HomeActivity.idAsignaturaActual();

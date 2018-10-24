@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import util.InformacionFragment;
+import util.Style;
 
 import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
@@ -15,6 +16,8 @@ public class NotificacionesActivity extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Style.bar(this);
+
         setContentView(R.layout.lienzo);
         Notificaciones noti= new Notificaciones();
 

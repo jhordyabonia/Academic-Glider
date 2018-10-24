@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import util.Style;
 import webservice.Asynchtask;
 
 import models.DB;
@@ -57,6 +58,7 @@ public class ProfileActivity extends FragmentActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Style.bar(this);
 
 		setContentView(R.layout.activity_profile);
 		
