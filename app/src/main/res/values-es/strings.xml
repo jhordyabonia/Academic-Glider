@@ -118,7 +118,7 @@
     <string name="title_activity_profil">ProfilActivity </string>
     <string name="title_activity_recuperar_cuenta">Recuperar Cuenta </string>
     <string name="action_settings">Nueva </string>
-    <string name="classic_nav">Navegacion clasica </string>
+    <string name="classic_nav">Navegacion clasica: </string>
 
 
     <string name="info_FAQ">Preguntas Frecuentes </string>
@@ -171,5 +171,8 @@
     <string name="codeShort">El código debe tener mínimo 5 caracteres</string>
     <string name="noEmpty">No debe estar vacío</string>
     <string name="creditsShort">Solo números entre 1 y 20</string>
-    <string name="theme">Select theme</string>
+    <string name="theme">Esquema de colores:</string>
+    <string name="vibrate">Vibracion:</string>
+    <string name="sound">Sonidos:</string>
+    <string name="settings">Ajustes</string>
 </resources>

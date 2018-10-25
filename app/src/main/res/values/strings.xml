@@ -181,5 +181,9 @@
     <string name="noEmpty">It must not be empty</string>
     <string name="creditsShort">Only numbers between 1 and 20</string>
     <string name="theme">Select theme</string>
+    <string name="vibrate">Vibration:</string>
+    <string name="sound">Sounds:</string>
+    <string name="settings">Settings</string>
+
 
 </resources>

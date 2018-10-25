@@ -126,6 +126,7 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.community),
                         getString(R.string.account),
                         getString(R.string.info_title),
+                        getString(R.string.settings),
                         getString(R.string.exit),
                 }));
         //mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
@@ -222,7 +223,7 @@ public class NavigationDrawerFragment extends Fragment {
     public void selectItem(int position,boolean add) {
         selectItem(position,null,add);
     }
-  private void selectItem(int position,View view,boolean add) {
+    private void selectItem(int position,View view,boolean add) {
 
         getActionBar().show();
         mCurrentSelectedPosition = position;

@@ -143,6 +143,11 @@ public  class PlaceholderFragment extends Fragment {
                 home.actionBar.setTitle(R.string.info_title);
                 break;
             case 9:
+                rootView = inflater.inflate(R.layout.settings, container, false);
+                new SettingsActivity.Settings(home,rootView);
+                home.actionBar.setTitle(R.string.settings);
+                break;
+            case 10:
                Login.logout(home);
                 break;
             default:

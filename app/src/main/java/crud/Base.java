@@ -21,7 +21,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -29,6 +28,7 @@ import com.jhordyabonia.ag.HomeActivity;
 import com.jhordyabonia.ag.Notificaciones;
 import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
+import com.jhordyabonia.ag.SettingsActivity;
 
 import controllers.Horarios;
 import webservice.LOG;
@@ -285,7 +285,7 @@ public abstract class Base extends Activity implements Asynchtask {
 			intent= (new Intent(parent, AlertaActivity.class));
 			break;
 		case HomeActivity.APUNTES:
-			if(HomeActivity.DROP_MODE)
+			if(SettingsActivity.Settings.DROP_MODE)
 				intent= (new Intent(parent, Main.class));
 			else intent= (new Intent(parent, ApunteActivity.class));
 			break;

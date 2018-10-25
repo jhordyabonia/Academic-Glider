@@ -12,5 +12,6 @@
     <item android:id="@+id/comunidad" android:title="@string/community"></item>
     <item android:id="@+id/contactos" android:title="@string/contacts"></item>
     <item android:id="@+id/informacion" android:title="@string/info_title"></item>
+    <item android:id="@+id/settings" android:title="@string/settings"></item>
     <item android:id="@+id/salir" android:title="@string/exit"></item>
 </menu>

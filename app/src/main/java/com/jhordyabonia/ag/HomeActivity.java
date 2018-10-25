@@ -1,19 +1,5 @@
 package com.jhordyabonia.ag;
 
-import chat.ChatService;
-import chat.DBChat;
-import chat.ListChat;
-import util.Buscador;
-import models.DB;
-import controllers.Alertas;
-import controllers.Asignaturas;
-import controllers.Horarios;
-import crud.Base;
-import util.ListDias;
-import util.NavigationDrawerFragment;
-import util.Style;
-import webservice.LOG;
-
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentManager;
@@ -21,9 +7,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -39,18 +23,32 @@ import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONObject;
 
+import chat.ChatService;
+import chat.DBChat;
+import chat.ListChat;
+import controllers.Asignaturas;
+import controllers.Horarios;
+import crud.Base;
+import models.DB;
+import util.Buscador;
+import util.ListDias;
+import util.NavigationDrawerFragment;
+import util.Style;
+
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static chat.DBChat.ON_CHAT;
-import static chat.DBChat.get;
+import static chat.DBChat.find;
 import static com.jhordyabonia.ag.PlaceholderFragment.newInstance;
+import static com.jhordyabonia.ag.SettingsActivity.Settings.DROP_MODE;
+import static com.jhordyabonia.ag.SettingsActivity.Settings._DROP_MODE;
+
 
 public class HomeActivity extends FragmentActivity
 		implements NavigationDrawerFragment.NavigationDrawerCallbacks, ListChat.ChatMain, ChatService.Inbox {
 
 	private NavigationDrawerFragment mNavigationDrawerFragment=null;
-	public static boolean DROP_MODE=false;
-	public static String _DROP_MODE="dromp_mode";
 
-	private FirebaseAnalytics mFirebaseAnalytics;
+    private FirebaseAnalytics mFirebaseAnalytics;
     public static final int CONTACTOS = ON_CHAT+2;
     public static final int CHATS = ON_CHAT+1;
     public static final int GRUPOS = ON_CHAT;
@@ -124,25 +122,18 @@ public class HomeActivity extends FragmentActivity
 				.replace(R.id.container, newInstance(position))
 				.commit();
 	}
-	//new navegation
-	public void setDropMode(boolean m) {
+	/*/new navegation
+	private void setDropMode() {
+		//if(!DB.LOGGED)
+		//	DROP_MODE=false;
 
-		SharedPreferences sp =   getSharedPreferences(_DROP_MODE, Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = sp.edit();
-
-		editor.putBoolean(_DROP_MODE, m);
-		editor.apply();
-		if(!DB.LOGGED)
-			DROP_MODE=false;
-		else DROP_MODE=m;
 		if(mNavigationDrawerFragment!=null)
 			mNavigationDrawerFragment.clearHistory();
-	}
-	public void dropMode(boolean m)
+	}*/
+	public void dropMode()
 	{
 		if(!DB.LOGGED)
 			DROP_MODE=false;
-		else DROP_MODE=m;
 
 		if(DROP_MODE) {
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -161,14 +152,12 @@ public class HomeActivity extends FragmentActivity
 
 	}
 	@Override
-	public void onCreate(Bundle savedInstanceState) 
+	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences sp = getDefaultSharedPreferences(this);
 		Style.STYLE = sp.getInt(Style._STYLE,R.color.colorMarine);
-
-		Style.bar(this);
 
 		start(DB.load(DB.FILE_DB));
 		actionBar=getActionBar();
@@ -218,10 +207,9 @@ public class HomeActivity extends FragmentActivity
 	@Override
 	public void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		SharedPreferences sp = getSharedPreferences(_DROP_MODE, Context.MODE_PRIVATE);
-		DROP_MODE = sp.getBoolean(_DROP_MODE, true);
-		dropMode(DROP_MODE);
-
+		SharedPreferences sp = getDefaultSharedPreferences(this);
+		DROP_MODE=  sp.getBoolean(_DROP_MODE, true);
+		dropMode();
 		make(true);
 	}
 
@@ -229,17 +217,24 @@ public class HomeActivity extends FragmentActivity
 	public void onResume()
 	{
 		super.onResume();
+		Style.bar(this);
 		Base.itemSeleted=0;
 
-		if(!DB.LOGGED)
+		if(!DB.LOGGED) {
 			new Login(this);
+		}
 		else
 		{
-			if(UPDATE)
+			Style.set(findViewById(R.id.list));
+			Style.set(findViewById(R.id.pager));
+			Style.set(findViewById(R.id.FrameLayout1));
+			if(UPDATE) {
 				DB.update(this);
+			}
 			UPDATE=false;
-			if(DROP_MODE)
+			if(DROP_MODE) {
 				ChatService.updater(this,0);
+			}
 		}
 	}
 	@Override
@@ -255,7 +250,7 @@ public class HomeActivity extends FragmentActivity
 		super.onDestroy();
 	}
 	@Override
-    public boolean onCreateOptionsMenu(Menu menu) 
+    public boolean onCreateOptionsMenu(Menu menu)
     { getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -271,7 +266,7 @@ public class HomeActivity extends FragmentActivity
     		menu.findItem(R.id.actions_horarios).setVisible(true);
     	else
     		menu.findItem(R.id.actions_horarios).setVisible(false);
-    	
+
     	if(ON_DISPLAY<HORARIOS)
     		menu.findItem(R.id.chat)
 					.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -297,34 +292,34 @@ public class HomeActivity extends FragmentActivity
 			menu.findItem(R.id.contactos).setVisible(false);
 			menu.findItem(R.id.informacion).setVisible(false);
 			menu.findItem(R.id.salir).setVisible(false);
-			//menu.findItem(R.id.chat ).setVisible(false);
+			menu.findItem(R.id.settings ).setVisible(false);
 		}
-    	
+
     	return show_menu;
     }
-    public boolean onOptionsItemSelected(MenuItem item) 
+    public boolean onOptionsItemSelected(MenuItem item)
     {
 		Intent intent;
-        switch (item.getItemId()) 
-        {           
+        switch (item.getItemId())
+        {
         	case android.R.id.home:
         		if(!DROP_MODE)
         			back(KeyEvent.KEYCODE_BACK);
         		else mNavigationDrawerFragment.open();
         		return true;
 			case R.id.actions_notifications:
-				if(!HomeActivity.DROP_MODE)
+				if(!DROP_MODE)
 					startActivity(new Intent(this,NotificacionesActivity.class));
 				else mNavigationDrawerFragment.selectItem(0);
 				return true;
 			case R.id.cuenta:
-				if(!HomeActivity.DROP_MODE){
+				if(!DROP_MODE){
 					(new Cuenta(this)).fill();
 				}else mNavigationDrawerFragment.selectItem(7);
 				return true;
             case R.id.comunidad:
             	DB.COMUNIDAD=!DB.COMUNIDAD;
-        		DB.update(this);	
+        		DB.update(this);
                 return true;
             case R.id.contactos:
             	intent=new Intent(this,chat.ListChatActivity.class);
@@ -332,20 +327,25 @@ public class HomeActivity extends FragmentActivity
             	startActivity(intent);
             	return true;
             case R.id.chat:
-				if(!HomeActivity.DROP_MODE){
+				if(!DROP_MODE){
 					intent=new Intent(this,chat.ListChatActivity.class);
 					intent.putExtra("ON_DISPLAY", CHATS);
 					startActivity(intent);
 				}else mNavigationDrawerFragment.selectItem(4);
             	return true;
             case R.id.informacion:
-				if(!HomeActivity.DROP_MODE){
+				if(!DROP_MODE){
 						startActivity(new Intent(this,InformacionActivity.class));
 				}else mNavigationDrawerFragment.selectItem(8);
             	return true;
+			case R.id.settings:
+				if(!DROP_MODE){
+					startActivity(new Intent(this, SettingsActivity.class));
+				}else mNavigationDrawerFragment.selectItem(9);
+				return true;
             case R.id.actions_horarios:
             	list_dias.show(getSupportFragmentManager(), "missiles");
-            	return true;	
+            	return true;
             case R.id.salir:
 				Login.logout(this);
 	            return true;
@@ -373,11 +373,11 @@ public class HomeActivity extends FragmentActivity
 	public void make(boolean reMake)
 	{
 		if(reMake)
-		{			
+		{
 			horario = new Horarios(this);
 			asignaturas = new Asignaturas(this);
 		}else actionBar.removeAllTabs();
-		
+
 		show_menu=false;
 		actionBar.addTab(tabHorario);
 		actionBar.addTab(tabAsignaturas);
@@ -408,11 +408,11 @@ public class HomeActivity extends FragmentActivity
 			}else
 			{
 				if(mNavigationDrawerFragment==null)
-					dropMode(true);
+					dropMode();
 				else mNavigationDrawerFragment.selectItem(classicToDrop_mode(ON_DISPLAY));
 			}
 		}
-		actionBar.show(); 
+		actionBar.show();
 		invalidateOptionsMenu();
 	}
 	public int classicToDrop_mode(int i){
@@ -477,21 +477,21 @@ public class HomeActivity extends FragmentActivity
 	}
 	public void buscar()
 	{list_comunidad.show(getSupportFragmentManager(), "missiles");}
-	private ActionBar.TabListener tabListener = new ActionBar.TabListener() 
+	private ActionBar.TabListener tabListener = new ActionBar.TabListener()
 	{
 		@Override
-		public void onTabReselected(Tab tab, FragmentTransaction ft) 
+		public void onTabReselected(Tab tab, FragmentTransaction ft)
 		{
 			 if(tab.equals(tabHorario))
-				list_dias.show(getSupportFragmentManager(), "missiles");	
+				list_dias.show(getSupportFragmentManager(), "missiles");
 		}
 		@Override
 		public void onTabUnselected(Tab tab, FragmentTransaction ft){}
 		@Override
-		public void onTabSelected(Tab tab, FragmentTransaction ft) 
-		{	
+		public void onTabSelected(Tab tab, FragmentTransaction ft)
+		{
 			if(show_menu)
-			if (tab.equals(tabHorario)) 
+			if (tab.equals(tabHorario))
 			{
 				ON_DISPLAY = HORARIOS;
 				horario.show();
@@ -501,7 +501,7 @@ public class HomeActivity extends FragmentActivity
 				setContentView(R.layout.lienzo);
 				View view=findViewById(R.id.FrameLayout1);
 				asignaturas.todas(view);
-			} 
+			}
 			invalidateOptionsMenu();
 		}
 	};
@@ -532,7 +532,7 @@ public class HomeActivity extends FragmentActivity
 		}else if(ON_DISPLAY==ASIGNATURAS||ON_DISPLAY==HORARIOS
 				||ON_DISPLAY==LOGIN)
 			return false;
-		else 
+		else
 		{
 			if(DB.COMUNIDAD)
 				actionBar.setTitle(getString(R.string.community));
@@ -550,12 +550,12 @@ public class HomeActivity extends FragmentActivity
 	}
 
 	@Override
-	public boolean onKeyDown( int arg1, KeyEvent arg2) 
+	public boolean onKeyDown( int arg1, KeyEvent arg2)
 	{
 		if(DROP_MODE)
         {
         	if(mNavigationDrawerFragment==null)
-        		dropMode(true);
+        		dropMode();
 
         	if(DB.LOGGED) {
 				if (arg1 == KeyEvent.KEYCODE_BACK)

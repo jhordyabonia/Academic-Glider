@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:textSize="15dp"
+            android:text="@string/theme" />
+
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginBottom="50dp"
+            android:columnWidth="50dp"
+            android:gravity="center"
+            android:horizontalSpacing="2dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="spacingWidth"
+            android:verticalSpacing="2dp"
+            android:visibility="visible" />
+
+        <CheckBox
+            android:id="@+id/sound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:checked="true"
+            android:ellipsize="middle"
+            android:gravity="left"
+            android:text="@string/sound"
+            android:button="@null"
+            android:paddingBottom="5dp"
+            android:drawableRight="?android:attr/listChoiceIndicatorMultiple" />
+        <CheckBox
+            android:id="@+id/vibrate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:checked="true"
+            android:ellipsize="middle"
+            android:gravity="left"
+            android:text="@string/vibrate"
+            android:button="@null"
+            android:paddingBottom="5dp"
+            android:drawableRight="?android:attr/listChoiceIndicatorMultiple" />
+        <CheckBox
+            android:id="@+id/drop_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:checked="true"
+            android:ellipsize="middle"
+            android:gravity="left"
+            android:text="@string/classic_nav"
+            android:button="@null"
+            android:paddingBottom="5dp"
+            android:drawableRight="?android:attr/listChoiceIndicatorMultiple" />
+
+    </LinearLayout>
+
+</FrameLayout>

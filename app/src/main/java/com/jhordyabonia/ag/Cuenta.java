@@ -18,17 +18,15 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.jhordyabonia.ag.HomeActivity.DROP_MODE;
+import static com.jhordyabonia.ag.SettingsActivity.Settings.DROP_MODE;
 
 public class Cuenta implements Asynchtask,OnItemSelectedListener
 {
@@ -60,17 +58,6 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 	public void setLienzo(View l)
 	{
 		lienzo=l;
-
-		final CheckBox drop=lienzo.findViewById(R.id.drop_mode);
-		drop.setOnClickListener(new OnClickListener()
-									{
-										@Override
-										public void onClick(View v)
-										{home.setDropMode(drop.isChecked());	}
-									}
-				                );
-		drop.setVisibility(DB.LOGGED?View.VISIBLE:View.GONE);
-		drop.setChecked(DROP_MODE);
 
 		lienzo.findViewById(R.id.registrarme)
 				.setOnClickListener(new OnClickListener()

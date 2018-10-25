@@ -11,22 +11,16 @@ import org.json.JSONObject;
 
 import util.CompartirAsignatura;
 import util.Style;
-import util.UploadService;
 import webservice.Asynchtask;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.Loader;
-import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,9 +36,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jhordyabonia.ag.HomeActivity;
-import com.jhordyabonia.ag.PlaceholderFragment;
 import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
+import com.jhordyabonia.ag.SettingsActivity;
 
 import controllers.Adapter.ITEM_TYPE;
 import controllers.Adapter.Item;
@@ -433,7 +427,7 @@ public class Asignaturas implements OnItemClickListener
 			{
 				if(LIST_ASIGNATURAS.length!=list.length)
 				{
-				   if(HomeActivity.DROP_MODE)
+				   if(SettingsActivity.Settings.DROP_MODE)
 				   {
 
 						   if(0==which)

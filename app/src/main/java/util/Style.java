@@ -13,13 +13,10 @@ public class Style {
     public static int STYLE=R.color.colorGreen;
     public static String _STYLE="style";
     public static void bar(Activity activity) {
-        //if(HomeActivity.DROP_MODE)
             activity.getActionBar().setBackgroundDrawable(
                     new ColorDrawable(activity.getResources().getColor(STYLE)));
     }
     public static void set(View v){
-       // if(!HomeActivity.DROP_MODE)
-       //     return;
 
         View vTmp = v.findViewById(R.id.pager_title_strip);
         if (vTmp != null)

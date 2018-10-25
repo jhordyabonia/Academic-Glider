@@ -237,17 +237,6 @@
 
         </TableRow>
 
-
-        <CheckBox
-            android:id="@+id/drop_mode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:checked="true"
-            android:gravity="center"
-            android:text="@string/classic_nav"
-            android:textColor="#c0c0c0" />
-
         <Button
             android:id="@+id/registrarme"
             android:layout_width="match_parent"

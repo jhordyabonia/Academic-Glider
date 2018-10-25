@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Random;
 
 import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
-import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 import static models.DB.LOGGED;
 import static models.DB.User;
 
@@ -15,7 +14,6 @@ import org.json.JSONObject;
 import crud.AlertaActivity;
 import crud.ApunteActivity;
 import crud.AsignaturaActivity;
-import crud.Base;
 import crud.CalificableActivity;
 import crud.HorarioActivity;
 import crud.LecturaActivity;
@@ -27,6 +25,7 @@ import com.jhordyabonia.ag.HomeActivity;
 import com.jhordyabonia.ag.Notificaciones;
 import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
+import com.jhordyabonia.ag.SettingsActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -237,7 +236,7 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 				intent= (new Intent(this, AlertaActivity.class));
 				break;
 			case "apuntes":
-				if(HomeActivity.DROP_MODE)
+				if(SettingsActivity.Settings.DROP_MODE)
 					intent= (new Intent(this, Main.class));
 				else intent= (new Intent(this, ApunteActivity.class));
 				break;

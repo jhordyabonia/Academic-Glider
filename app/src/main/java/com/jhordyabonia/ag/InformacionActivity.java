@@ -15,7 +15,7 @@ public class InformacionActivity extends FragmentActivity
 	{
 		super.onCreate(savedInstanceState);
 		Style.bar(this);
-		setContentView(R.layout.informacion_main);
+		setContentView(R.layout.activity_empty);
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction()
 				.replace(R.id.container, new InformacionFragment())
