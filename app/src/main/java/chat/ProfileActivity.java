@@ -71,20 +71,21 @@ public class ProfileActivity extends FragmentActivity
 			nombre=mIntent.getStringExtra("NOMBRE");
 			actionBar=getActionBar();
 			actionBar.setTitle(nombre);
-			descripcion_view=(TextView)findViewById(R.id.profile_descripcion);
+			descripcion_view=findViewById(R.id.profile_descripcion);
 			descripcion_view.setText(DB.titulo(descripcion,getString(R.string.no_description),140));
 		}
 				
-		ListView  list=(ListView)findViewById(R.id.profile_members);
+		ListView  list=findViewById(R.id.profile_members);
 		datos_integrantes=new ChatAdapter(this,new  ArrayList<Mensaje>(),false);
 		if(wonner.equals(DB.User.get("id")))
 			list.setOnItemClickListener(this);
 		list.setAdapter(datos_integrantes);		
 
-		ListView  list2=(ListView)findViewById(R.id.list_asignaturas);
+		ListView  list2=findViewById(R.id.list_asignaturas);
 		datos_asignaturas =new ChatAdapter(this,new  ArrayList<Mensaje>(),false);
 		list2.setOnItemClickListener(listenerAsignaturas);
-		list2.setAdapter(datos_asignaturas);	
+		list2.setAdapter(datos_asignaturas);
+		getActionBar().setHomeButtonEnabled(true);
 		load();
 	}
 	@Override
@@ -106,6 +107,10 @@ public class ProfileActivity extends FragmentActivity
         {  
         	case R.id.edit:
         		editChat.show(getSupportFragmentManager(), "missiles");
+        		break;
+       		case android.R.id.home:
+				finish();
+				break;
         }
 		return true;
     }
@@ -164,7 +169,7 @@ public class ProfileActivity extends FragmentActivity
 		@Override
 		public void onClick(View arg0) 
 		{
-			TextView t=(TextView)findViewById(R.id.mostrar_asignaturas);
+			TextView t=findViewById(R.id.mostrar_asignaturas);
 			if(t.getText().toString().equals("-"))
 			{
 				findViewById(R.id.list_asignaturas)

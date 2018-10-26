@@ -10,12 +10,17 @@ import models.DB;
 
 import util.Style;
 import webservice.Asynchtask;
+
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v4.widget.DrawerLayout;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -89,7 +94,16 @@ public abstract class Base extends Activity implements Asynchtask {
 		DatePicker _fecha= findViewById(R.id.fecha);
 		_fecha.setCalendarViewShown(false);
 
+		getActionBar().setHomeButtonEnabled(true);
 		fill();
+	}
+	@Override
+	public final boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				finish();
+		}
+		return super.onOptionsItemSelected(item);
 	}
 	private void show(boolean show) 
 	{

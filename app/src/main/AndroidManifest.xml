@@ -33,39 +33,52 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="chat.ListChatActivity" />
-        <activity android:name="chat.ProfileActivity" />
-        <activity android:name=".RecuperarCuentaActivity" />
-        <activity android:name=".NotificacionesActivity" />
-        <activity android:name=".SettingsActivity"/>
+        <activity
+            android:name=".NotificacionesActivity"
+            android:icon="@drawable/ic_atras"
+            android:theme="@style/AppBaseTheme" />
+        <activity
+            android:name=".SettingsActivity"
+            android:icon="@drawable/ic_atras"
+            android:theme="@style/AppBaseTheme"/>
+        <activity
+            android:name="crud.AlertaActivity"
+            android:icon="@drawable/ic_atras"
+            android:theme="@style/AppBaseTheme"/>
+        <activity
+            android:name="crud.AsignaturaActivity"
+            android:icon="@drawable/ic_atras"
+            android:theme="@style/AppBaseTheme" />
+        <activity
+            android:name="crud.CalificableActivity"
+            android:icon="@drawable/ic_atras"
+            android:theme="@style/AppBaseTheme" />
+        <activity
+            android:name="crud.LecturaActivity"
+            android:icon="@drawable/ic_atras"
+            android:theme="@style/AppBaseTheme"/>
+        <activity
+            android:name="crud.HorarioActivity"
+            android:icon="@drawable/ic_atras"
+            android:theme="@style/AppBaseTheme"/>
+        <activity
+            android:name="crud.ApunteActivity"
+            android:icon="@drawable/ic_atras"
+            android:theme="@style/AppBaseTheme"/>
+        <activity
+            android:name="crud.Main"
+            android:icon="@drawable/ic_atras"
+            android:theme="@style/AppBaseTheme" />
+        <activity
+            android:name=".InformacionActivity"
+            android:icon="@drawable/ic_atras"
+            android:theme="@style/AppBaseTheme" />
         <activity
             android:name="chat.ChatActivity"
             android:icon="@drawable/ic_chat_menu" />
-        <activity
-            android:name="crud.AlertaActivity"
-            android:icon="@drawable/ic_atras" />
-        <activity
-            android:name="crud.AsignaturaActivity"
-            android:icon="@drawable/ic_atras" />
-        <activity
-            android:name="crud.CalificableActivity"
-            android:icon="@drawable/ic_atras" />
-        <activity
-            android:name="crud.LecturaActivity"
-            android:icon="@drawable/ic_atras" />
-        <activity
-            android:name="crud.HorarioActivity"
-            android:icon="@drawable/ic_atras" />
-        <activity
-            android:name="crud.ApunteActivity"
-            android:icon="@drawable/ic_atras" />
-        <activity
-            android:name="crud.Main"
-            android:icon="@drawable/ic_atras" />
-        <activity
-            android:name=".InformacionActivity"
-            android:icon="@drawable/ic_atras" />
-
+        <activity android:name=".RecuperarCuentaActivity" />
+        <activity android:name="chat.ListChatActivity" />
+        <activity android:name="chat.ProfileActivity" />
         <service
             android:name="util.UploadService"
             android:enabled="true" />

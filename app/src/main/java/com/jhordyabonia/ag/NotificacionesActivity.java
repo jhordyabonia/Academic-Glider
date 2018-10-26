@@ -3,6 +3,7 @@ package com.jhordyabonia.ag;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.MenuItem;
 import android.view.View;
 
 import util.InformacionFragment;
@@ -24,5 +25,15 @@ public class NotificacionesActivity extends FragmentActivity
         noti.paint(findViewById(R.id.FrameLayout1));
         ON_DISPLAY=HomeActivity.NOTIFICATION;
         getActionBar().setTitle(R.string.notifications);
+
+        getActionBar().setHomeButtonEnabled(true);
+    }
+    @Override
+    public final boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
