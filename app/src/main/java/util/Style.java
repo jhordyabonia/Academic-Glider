@@ -22,6 +22,10 @@ public class Style {
         if (vTmp != null)
             vTmp.setBackgroundResource(STYLE);
 
+        vTmp = v.findViewById(R.id.paginator);
+        if (vTmp != null)
+            vTmp.setBackgroundResource(STYLE);
+
         ImageView src= v.findViewById(R.id.add);
         if(src!=null){
             Drawable background = src.getBackground();

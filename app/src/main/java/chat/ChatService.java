@@ -196,7 +196,7 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 		v.vibrate(250);
 		Notification.Builder mBuilder =
 		        new Notification.Builder(this)
-	     .setSmallIcon(R.drawable.ic_chat)
+	     .setSmallIcon(R.drawable.twotone_speaker_notes_white_18)
 	     .setContentTitle(usuario)
 	     .setContentText(dato);
 		// Creates an explicit intent for an Activity in your app

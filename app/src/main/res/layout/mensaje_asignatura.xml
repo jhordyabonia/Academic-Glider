@@ -73,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
-                    android:src="@android:drawable/ic_input_get" />
+                    android:src="@drawable/twotone_collections_bookmark_white_48" />
 
                 <TextView
                     android:id="@+id/textView1"

@@ -83,7 +83,7 @@
 	        android:layout_gravity="center"
 	        android:layout_marginRight="-10dp"
 	        android:scaleType="center"
-	        android:src="@drawable/ic_email" />
+	        android:src="@drawable/email" />
 
     <EditText
         android:id="@+id/email"

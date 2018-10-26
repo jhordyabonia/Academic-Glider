@@ -90,7 +90,7 @@ public class Asignaturas implements OnItemClickListener
 	{
 		if(!show)
 		{
-			view.findViewById(R.id.pager)
+			view.findViewById(R.id.paginator)
 			.setVisibility(View.GONE);
 			return;
 		}
@@ -135,7 +135,7 @@ public class Asignaturas implements OnItemClickListener
 			view.findViewById(R.id.atras)
 			.setOnClickListener(listener);
 			//habilitando paginador
-			view.findViewById(R.id.pager)
+			view.findViewById(R.id.paginator)
 			.setVisibility(View.VISIBLE);
 		} catch (JSONException e) {}		
 	}
@@ -150,7 +150,7 @@ public class Asignaturas implements OnItemClickListener
 		if(DB.COMUNIDAD)
 		{	
 			imageView.setVisibility(View.VISIBLE);
-			imageView.setImageResource(R.drawable.ic_buscar);
+			imageView.setImageResource(R.drawable.twotone_zoom_out_white_24);
 			imageView.setOnClickListener(new OnClickListener()
 				{
 					public void onClick(View arg0)

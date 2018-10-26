@@ -46,7 +46,7 @@ public class ChatAdapter extends ArrayAdapter
 		((TextView)r.findViewById(R.id.textView3))
 		.setText(tmp.hora);
 		if(tmp.icon_info==-1)
-			tmp.icon_info=R.drawable.ic_info_group;
+			tmp.icon_info=R.drawable.twotone_info_white_18;
 		((ImageView)r.findViewById(R.id.imageView2))
 		.setImageResource(tmp.icon_info);
 		return r;

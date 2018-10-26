@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="myglider">My Glider </string>
-    <string name="notifications">Notificaciones </string>
+    <string name="notifications">Inicio </string>
     <string name="asignaturas">Asignaturas </string>
     <string name="apuntes">Apuntes </string>
     <string name="calificables">Calificables </string>
@@ -47,7 +47,7 @@
     <string name="all">Todas </string>
     <string name="subject_already">La signatura ya existe </string>
     <string name="subject_already_long">En tu tabulado hay una asignatura, con el mismo nombre o codigo </string>
-    <string name="fail_load_caht">Error durante la carga del chat </string>
+    <string name="fail_load_caht">Error durante carga de la conversacion </string>
     <string name="keep_press_to_copy">Mantén presionado, para copiar </string>
     <string name="keep_press_to_download">Mantén presionado, para copiar </string>
     <string name="text_copy">Texto copiado </string>
@@ -66,7 +66,7 @@
     <string name="add_contact">Agregar compañeros </string>
     <string name="edit_group">Editar grupo </string>
     <string name="groups">Grupos </string>
-    <string name="chats">Chats </string>
+    <string name="chats">Conversaciones </string>
     <string name="contacts">Compañeros </string>
     <string name="msj_share1">Hola, descarga Academic Glider para tu Smartphone </string>
     <string name="msj_share2">Descargalo de  </string>
@@ -100,7 +100,7 @@
     <string name="info_title">Información </string>
     <string name="text_help">Mantén presionado un item para más opciones </string>
     <string name="profil">Perfil </string>
-    <string name="delete_chat">Borrar chat </string>
+    <string name="delete_chat">Borrar conversacion </string>
     <string name="exit">Salir </string>
     <string name="account">Cuenta </string>
 
@@ -113,8 +113,8 @@
         <item >Alertas</item >
     </string-array>
 
-    <string name="title_activity_list_chat">AGlider Chat </string>
-    <string name="title_activity_list_chat_beta">AGlider Chat (Beta) </string>
+    <string name="title_activity_list_chat">AGlider Conversaciones </string>
+    <string name="title_activity_list_chat_beta">AGlider Conversaciones (Beta) </string>
     <string name="title_activity_profil">ProfilActivity </string>
     <string name="title_activity_recuperar_cuenta">Recuperar Cuenta </string>
     <string name="action_settings">Nueva </string>

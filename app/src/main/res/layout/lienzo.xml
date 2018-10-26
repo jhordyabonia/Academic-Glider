@@ -25,12 +25,13 @@
         android:src="@drawable/ic_stat_name" />
 
     <TableRow
-        android:id="@+id/pager"
+        android:id="@+id/paginator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|left"
-        android:layout_margin="20dp"
-        android:background="@drawable/bg"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/bg_rounded"
         android:padding="2dp" 
         android:visibility="gone" >
 

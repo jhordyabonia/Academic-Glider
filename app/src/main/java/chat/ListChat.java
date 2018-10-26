@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import models.DB;
+import util.Style;
 
 import static chat.DBChat.ON_CHAT;
 import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
@@ -110,8 +111,10 @@ public class  ListChat  implements AdapterView.OnItemClickListener,AdapterView.O
                 root.findViewById(R.id.textView1).setVisibility(View.GONE);
             }else load();
         }catch (JSONException e) {
-            DBChat.getContactCheker(main).execute();}
+            DBChat.getContactCheker(main).execute();
+        }
 
+        Style.set(root);
         return root;
     }
     public void load() throws JSONException

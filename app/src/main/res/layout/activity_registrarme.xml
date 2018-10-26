@@ -78,10 +78,10 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="3dp"
                 android:scaleType="center"
-                android:src="@drawable/user" />
+                android:src="@drawable/twotone_face_white_18" />
             <EditText
                 android:id="@+id/nombre"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/name"
@@ -122,7 +122,7 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="3dp"
                 android:scaleType="center"
-                android:src="@drawable/ic_universidad2"
+                android:src="@drawable/twotone_account_balance_white_18"
             	android:visibility="gone" />
 		
         <EditText

@@ -226,7 +226,7 @@ public class HomeActivity extends FragmentActivity
 		else
 		{
 			Style.set(findViewById(R.id.list));
-			Style.set(findViewById(R.id.pager));
+			//Style.set(findViewById(R.id.paginator));
 			Style.set(findViewById(R.id.FrameLayout1));
 			if(UPDATE) {
 				DB.update(this);
@@ -329,9 +329,9 @@ public class HomeActivity extends FragmentActivity
             case R.id.chat:
 				if(!DROP_MODE){
 					intent=new Intent(this,chat.ListChatActivity.class);
-					intent.putExtra("ON_DISPLAY", CHATS);
+					intent.putExtra("ON_DISPLAY", GRUPOS);
 					startActivity(intent);
-				}else mNavigationDrawerFragment.selectItem(4);
+				}else mNavigationDrawerFragment.selectItem(5);
             	return true;
             case R.id.informacion:
 				if(!DROP_MODE){
@@ -559,8 +559,13 @@ public class HomeActivity extends FragmentActivity
 
         	if(DB.LOGGED) {
 				if (arg1 == KeyEvent.KEYCODE_BACK)
-					if (mNavigationDrawerFragment.back())
+					if(mNavigationDrawerFragment.current()==-1) {
+						mNavigationDrawerFragment.previews();
 						return true;
+					}else if (ON_DISPLAY!=NOTIFICATION) {
+						mNavigationDrawerFragment.selectItem(0);
+						return true;
+					}
 			}
         }else  if(back(arg1)) return true;
 

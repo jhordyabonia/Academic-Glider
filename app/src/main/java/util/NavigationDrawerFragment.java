@@ -1,18 +1,18 @@
 package util;
 
 
-import android.app.Activity;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
-import android.content.res.ColorStateList;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,14 +22,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.jhordyabonia.ag.R;
 
 import java.util.ArrayList;
 
-import models.DB;
+import controllers.Adapter;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -67,7 +68,7 @@ public class NavigationDrawerFragment extends Fragment {
     private View mFragmentContainerView;
     private View previousSelectedItem;
 
-    private int mCurrentSelectedPosition = 0;
+    private int mCurrentSelectedPosition = 0,previews;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
@@ -112,10 +113,25 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position,view,true);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<>(
+       /* mDrawerListView.setAdapter(new ArrayAdapter<>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
+                new String[]{
+                        getString(R.string.notifications),
+                        getString(R.string.horarios),
+                        getString(R.string.asignaturas),
+                        getString(R.string.contacts),
+                        getString(R.string.chats),
+                        getString(R.string.groups),
+                        getString(R.string.community),
+                        getString(R.string.account),
+                        getString(R.string.info_title),
+                        getString(R.string.settings),
+                        getString(R.string.exit),
+                }));*/
+
+        mDrawerListView.setAdapter(new AdapterMenu(getActionBar().getThemedContext(),
                 new String[]{
                         getString(R.string.notifications),
                         getString(R.string.horarios),
@@ -216,16 +232,19 @@ public class NavigationDrawerFragment extends Fragment {
              mDrawerLayout.closeDrawer(mFragmentContainerView);
         else mDrawerLayout.openDrawer(mFragmentContainerView);
     }
-
+    public int current(){
+        return mCurrentSelectedPosition;
+    }
+    public void previews(){
+        selectItem(previews);
+    }
     public void selectItem(int position) {
         selectItem(position,null,true);
-    }
-    public void selectItem(int position,boolean add) {
-        selectItem(position,null,add);
     }
     private void selectItem(int position,View view,boolean add) {
 
         getActionBar().show();
+        previews=mCurrentSelectedPosition;
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
@@ -249,33 +268,12 @@ public class NavigationDrawerFragment extends Fragment {
                 view=mDrawerListView.getSelectedView();
         previousSelectedItem=view;
         try {
+            View pg=view.findViewById(R.id.title);
             if (Style.STYLE != R.color.colorBlack)
-                view.setBackgroundColor(getResources().getColor(Style.STYLE));
-            else view.setBackgroundColor(getResources().getColor(R.color.colorMarine));
+                pg.setBackgroundColor(getResources().getColor(Style.STYLE));
+            else pg.setBackgroundColor(getResources().getColor(R.color.colorMarine));
         }catch (Exception e){Log.e("ERROR",e.getMessage());}
     }
-    public void clearHistory()
-    {
-        HISTORY.clear();
-        display_now=-1;
-    }
-    public boolean back()
-    {
-        if(mCurrentSelectedPosition==-1){
-            if(DB.COMUNIDAD)
-                selectItem(6,false);
-            else selectItem(2,false);
-            return true;
-        }else if(--display_now>=0){
-            if(display_now<HISTORY.size())
-                selectItem(HISTORY.get(display_now),false);
-            return true;
-        }else {
-            clearHistory();
-            return false;
-        }
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -348,5 +346,62 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
+    }
+
+    public static class AdapterMenu extends ArrayAdapter {
+
+        private Context context;
+        private String[] locale;
+
+        public AdapterMenu(Context c,String... l){
+            super(c,R.layout.item,l);
+            context=c;
+            locale=l;
+        }
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = LayoutInflater.from(context);
+
+            View root = inflater.inflate(R.layout.base_menu,null);
+            switch (position){
+                case 0:
+                    ((ImageView)root.findViewById(R.id.logo))
+                            .setImageResource(R.drawable.twotone_home_white_48); break;
+                case 1:
+                ((ImageView)root.findViewById(R.id.logo))
+                        .setImageResource(R.drawable.twotone_today_white_48); break;
+                case 2:
+                ((ImageView)root.findViewById(R.id.logo))
+                        .setImageResource(R.drawable.twotone_collections_bookmark_white_48); break;
+                case 3:
+                    ((ImageView)root.findViewById(R.id.logo))
+                            .setImageResource(R.drawable.twotone_supervisor_account_white_48); break;
+                case 4:
+                    ((ImageView)root.findViewById(R.id.logo))
+                            .setImageResource(R.drawable.twotone_speaker_notes_white_48); break;
+                case 5:
+                    ((ImageView)root.findViewById(R.id.logo))
+                            .setImageResource(R.drawable.twotone_question_answer_white_48); break;
+                case 6:
+                    ((ImageView)root.findViewById(R.id.logo))
+                            .setImageResource(R.drawable.twotone_group_work_white_48); break;
+                case 7:
+                    ((ImageView)root.findViewById(R.id.logo))
+                            .setImageResource(R.drawable.user); break;
+                case 8:
+                    ((ImageView)root.findViewById(R.id.logo))
+                            .setImageResource(R.drawable.twotone_info_white_48); break;
+                case 9:
+                ((ImageView)root.findViewById(R.id.logo))
+                        .setImageResource(R.drawable.twotone_settings_white_48); break;
+                default:
+                ((ImageView)root.findViewById(R.id.logo))
+                        .setImageResource(android.R.drawable.ic_menu_close_clear_cancel); break;
+
+            }
+            ((TextView)root.findViewById(R.id.title))
+                    .setText(locale[position]);
+
+            return root;
+        }
     }
 }

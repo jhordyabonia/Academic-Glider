@@ -79,7 +79,7 @@
 	        android:layout_gravity="center"
 	        android:layout_marginRight="-10dp"
 	        android:scaleType="center"
-	        android:src="@drawable/ic_passw" />
+	        android:src="@drawable/pass" />
 
     <EditText
         android:id="@+id/password"
