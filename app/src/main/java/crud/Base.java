@@ -42,6 +42,8 @@ import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
 import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
 public abstract class Base extends Activity implements Asynchtask {
+	public static final int FILE_SELECTED = 756;
+
 	public enum Actions {Add, Edit};
 
 	public static Actions action;
@@ -102,9 +104,25 @@ public abstract class Base extends Activity implements Asynchtask {
 		switch (item.getItemId()) {
 			case android.R.id.home:
 				finish();
+				break;
+			case R.id.attach:
+				Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+				intent.setType("*/*");
+				Intent choose = Intent.createChooser(intent, getString(R.string.select_image));
+				startActivityForResult(choose, FILE_SELECTED);
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data){
+		if(resultCode == RESULT_OK && requestCode == FILE_SELECTED){
+			//Uri imageUri = data.getData();
+			//foto_gallery.setImageURI(imageUri);
+		}
+	}
+
 	private void show(boolean show) 
 	{
 		setEnabled(R.id.alerta, show);

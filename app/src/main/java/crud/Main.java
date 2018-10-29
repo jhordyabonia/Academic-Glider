@@ -1,13 +1,20 @@
 package crud;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -16,6 +23,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -27,6 +35,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -119,6 +132,28 @@ public class Main extends FragmentActivity implements Asynchtask {
             list.setSelection(DB.Asignaturas
                     .getIndex(set("asignatura", 0)) - 1);
         }
+
+        getActionBar().setHomeButtonEnabled(true);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.attach, menu);
+        return true;
+    }
+    @Override
+    public final boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.attach:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                Intent choose = Intent.createChooser(intent, getString(R.string.select_image));
+                startActivityForResult(choose, Base.FILE_SELECTED);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
     protected void setFecha(String fecha)
     {
@@ -199,21 +234,72 @@ public class Main extends FragmentActivity implements Asynchtask {
             Toast.makeText(this, getString(R.string.camera_err),
                     Toast.LENGTH_LONG).show();
     }
+    public String getRealPathFromURI(Uri contentUri) {
+        Cursor cursor = null;
+        int column_index;
+        String ruta = null;
+
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = getContentResolver().query(contentUri,  proj, null, null, null);
+
+            if (cursor != null){
+
+                column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                ruta = cursor.getString(column_index);
+            }
+            return ruta;
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if (requestCode == CAPTURE_APUNTE && resultCode == RESULT_OK)
-        {
+        if (requestCode == CAPTURE_APUNTE && resultCode == RESULT_OK){
             collection.addItem(name);
             adding=true;
             apuntes.add(name);
-        }else if(requestCode==777&&data!=null)
-        {
+        }else if(requestCode==777&&data!=null){
             Intent intent =
                     new Intent(Intent.ACTION_VIEW,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);//,location);
             intent.setData(Uri.parse(data.getData().getPath()));
             intent.setType("image/*");
             startActivity(intent);
+        }else if(resultCode == RESULT_OK && requestCode == Base.FILE_SELECTED && data!=null){
+            Uri selectedImage = data.getData();
+
+            if (selectedImage.getPath() != null) {
+                try {
+
+                    FileOutputStream out =new FileOutputStream(createImageFile());
+                    InputStream in = getContentResolver().openInputStream(
+                            selectedImage);
+
+                    byte[] buffer = new byte[1024];
+                    int c;
+
+                    while( (c = in.read(buffer) ) != -1)
+                        out.write(buffer, 0, c);
+
+                    out.flush();
+                    in.close();
+                    out.close();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            collection.addItem(name);
+            adding=true;
+            apuntes.add(name);
         }
     }
     protected void setEnabled(int id, boolean v)

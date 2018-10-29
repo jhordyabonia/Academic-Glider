@@ -23,6 +23,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
@@ -149,6 +151,26 @@ public class ApunteActivity extends FragmentActivity implements Asynchtask
 			}
 		}
 	};
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.attach, menu);
+		return true;
+	}
+	@Override
+	public final boolean onOptionsItemSelected(MenuItem item) {
+	switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+			break;
+		case R.id.attach:
+			Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+			intent.setType("image/*");
+			Intent choose = Intent.createChooser(intent, getString(R.string.select_image));
+			startActivityForResult(choose, Base.FILE_SELECTED);
+			break;
+	}
+	return super.onOptionsItemSelected(item);
+}
 	public void fullScream()
 	{
 		if(!zoom)

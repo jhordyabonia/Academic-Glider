@@ -175,4 +175,10 @@
     <string name="vibrate">Vibracion:</string>
     <string name="sound">Sonidos:</string>
     <string name="settings">Ajustes</string>
+    <string name="attach">Adjuntar</string>
+    <string name="select_image">Seleccionar Imagen</string>
+    <string name="haveError">Hubu un error…</string>
+
+
+
 </resources>

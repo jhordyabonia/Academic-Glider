@@ -3,6 +3,7 @@ package crud;
 import java.util.HashMap;
 
 import android.os.Bundle;
+import android.view.Menu;
 
 import com.jhordyabonia.ag.HomeActivity;
 import com.jhordyabonia.ag.R;
@@ -40,5 +41,11 @@ public class LecturaActivity extends Base {
 		super.fill();
 		set("nombre", R.id.nombre);
 		set("descripcion", R.id.descripcion);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.attach, menu);
+		return true;
 	}
 }

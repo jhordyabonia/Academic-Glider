@@ -18,6 +18,8 @@ public class Style {
     }
     public static void set(View v){
 
+        if(v==null)return;
+
         View vTmp = v.findViewById(R.id.pager_title_strip);
         if (vTmp != null)
             vTmp.setBackgroundResource(STYLE);
