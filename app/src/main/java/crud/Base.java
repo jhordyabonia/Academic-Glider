@@ -1,5 +1,10 @@
 package crud;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
@@ -26,6 +32,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -115,11 +122,57 @@ public abstract class Base extends Activity implements Asynchtask {
 		return super.onOptionsItemSelected(item);
 	}
 
+	//TODO launch camera
+	private File createFile(String type)
+	{
+		// Create an image file name
+		File ruta_sd = Environment.getExternalStorageDirectory(); File
+			ruta=new File(ruta_sd.getAbsolutePath(),DB.DIRECTORY);
+
+		if(!ruta.exists())
+			ruta.mkdir();
+		String count= ""+System.currentTimeMillis();
+		count=count.substring(count.length()-4);
+		String name = DB.User.get("id")+"_"
+				+ HomeActivity.idAsignaturaActual()
+				+"_"+DB.fecha()+"_"+count+type;
+
+		return new File(ruta,name);
+	}
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
-		if(resultCode == RESULT_OK && requestCode == FILE_SELECTED){
-			//Uri imageUri = data.getData();
-			//foto_gallery.setImageURI(imageUri);
+
+		if(resultCode == RESULT_OK && requestCode == Base.FILE_SELECTED && data!=null) {
+			Uri selectedImage = data.getData();
+			String path=selectedImage.getPath();
+			if (path != null) {
+				try {
+					String type=path.substring(path.lastIndexOf("."),path.length());
+					Toast.makeText(this,type,Toast.LENGTH_LONG).show();
+					File file=createFile(type);
+					String name=file.getName();
+					FileOutputStream out = new FileOutputStream(file);
+					InputStream in = getContentResolver().openInputStream(
+							selectedImage);
+
+					byte[] buffer = new byte[1024];
+					int c;
+
+					while ((c = in.read(buffer)) != -1)
+						out.write(buffer, 0, c);
+
+					out.flush();
+					in.close();
+					out.close();
+					TextView attach=findViewById(R.id.attach_view);
+					attach.setText(attach.getText().toString()+"\n"+name);
+					attach.setVisibility(View.VISIBLE);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

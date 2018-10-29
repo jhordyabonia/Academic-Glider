@@ -112,6 +112,15 @@
             android:inputType="number"
             android:visibility="gone" />
 
+        <TextView
+            android:id="@+id/attach_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="@string/attach"
+            android:visibility="gone"
+            android:autoLink="web"/>
+
         <EditText
             android:id="@+id/descripcion"
             android:layout_width="match_parent"
