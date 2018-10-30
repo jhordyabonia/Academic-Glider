@@ -52,12 +52,7 @@ public class SettingsActivity extends FragmentActivity {
 
         public static boolean DROP_MODE=false,SOUND=true,VIBRATE=true;
         public static String _DROP_MODE="dromp_mode",_SOUND="sound",_VIBRATE="vibrate";
-        private Activity home;
-        private View before=null,rootView;
-        private SharedPreferences sp;
-        private SharedPreferences.Editor editor;
-        private CheckBox drop,sound,vibrate;
-        private int colors[] = {
+        public static int colors[] = {
                 R.color.colorPrimary,
                 R.color.colorBase,
                 R.color.colorDark,
@@ -71,6 +66,11 @@ public class SettingsActivity extends FragmentActivity {
                 R.color.colorViolet,
                 R.color.colorMarine,
         };
+        private Activity home;
+        private View before=null,rootView;
+        private SharedPreferences sp;
+        private SharedPreferences.Editor editor;
+        private CheckBox drop,sound,vibrate;
         private void read() {
             STYLE = sp.getInt(Style._STYLE,R.color.colorMarine);
             DROP_MODE= sp.getBoolean(_DROP_MODE,true);

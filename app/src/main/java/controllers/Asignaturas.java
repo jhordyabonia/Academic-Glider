@@ -15,6 +15,7 @@ import webservice.Asynchtask;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -61,31 +62,6 @@ public class Asignaturas implements OnItemClickListener
 	public Asignaturas(HomeActivity fa)
 	{	home = fa;}
 
-	public void setPager(ViewPager vPager)
-	{mViewPager=vPager;}
-	public void show(int display)
-	{
-		Style.set(mViewPager);
-		CollectionPagerAdapter mCollectionPagerAdapter =
-				new CollectionPagerAdapter
-				(home.getSupportFragmentManager());
-		//ViewPager mViewPager =  view.findViewById(R.id.pager);
-		mViewPager.setAdapter(mCollectionPagerAdapter);
-		mViewPager.setOnPageChangeListener
-				(new ViewPager.SimpleOnPageChangeListener() 
-				{
-					@Override
-					public void onPageSelected(int position) 
-					{	
-						ON_DISPLAY = position;
-						Base.itemSeleted = 0;
-					}
-				});
-		if(ON_DISPLAY==HomeActivity.ASIGNATURAS)
-			ON_DISPLAY=display;
-		else if(ON_DISPLAY!=HomeActivity.HORARIOS)
-			mViewPager.setCurrentItem(ON_DISPLAY,true);
-	}
 	public void pager(View view,boolean show)
 	{
 		if(!show)
@@ -247,7 +223,7 @@ public class Asignaturas implements OnItemClickListener
 				case R.id.horarios:
 					home.horarios_asignatura();
 					break;
-				case R.id.compartir:
+				case R.id.share:
 					items_a_compartir.clear();
 					compartir(home,compartir_com,Base.itemSeleted).show(home.getSupportFragmentManager(), "missiles");
 					break;
@@ -323,41 +299,7 @@ public class Asignaturas implements OnItemClickListener
 		for(JSONObject obj:data)
 			DB.remove(obj);
 	}
-	public class CollectionPagerAdapter extends FragmentStatePagerAdapter
-	{
-		public CollectionPagerAdapter(FragmentManager fm)
-		{super(fm);}
 
-		@Override
-		public Fragment getItem(int i) 
-		{
-			Fragment fragment = null;
-
-			DB.model(DB.MODELS[i]);
-			switch (i) 
-			{
-				case HomeActivity.ALERTAS:
-					fragment = new Alertas();
-					break;
-				case HomeActivity.APUNTES:
-					fragment = new Apuntes();
-					break;
-				case HomeActivity.LECTURAS:
-					fragment = new Lecturas();
-					break;
-				case HomeActivity.CALIFICABLES:
-					fragment = new Calificables();
-					break;
-			}
-			return fragment;
-		}
-
-		@Override
-		public int getCount() {return 4;}
-		@Override
-		public CharSequence getPageTitle(int position) 
-		{return HomeActivity.onDisplay(position,home);}
-	}
 	@Override
 	public void onItemClick(AdapterView<?> av, View v, int index_item, long arg3) 
 	{	
@@ -523,11 +465,12 @@ public class Asignaturas implements OnItemClickListener
 		Server.send("descargar", activity, recep);		
 	}
 
-	String compartir_com = "";
-	ArrayList<String> items_a_compartir = new ArrayList<>();
+	public static String compartir_com = "";
+	public static ArrayList<String> items_a_compartir = new ArrayList<>();
 
 	public static DialogFragment compartir(Activity activity,String compartir_com,int index_asignatura)
 	{return new CompartirAsignatura(activity,compartir_com,index_asignatura);}
+
 
 }
 

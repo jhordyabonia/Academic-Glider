@@ -157,9 +157,9 @@ public class  ListChat  implements AdapterView.OnItemClickListener,AdapterView.O
                 }else continue;
                 int icon=VIEW==GRUPOS?R.drawable.ic_dialogo_nuevo_grupo:R.drawable.ic_dialogo_add_togroup;
                 base_data.add(new ChatAdapter.Mensaje("",
-                        DB.titulo(nombre,30),
-                        DB.titulo(DBChat.fecha(tmp.getString("fecha")),"",5,false),
-                        DB.titulo(dato,"",20),icon
+                        DB.titulo(nombre,50),
+                        DB.titulo(DBChat.fecha(tmp.getString("fecha")),"",6,false),
+                        DB.titulo(dato,"",130),icon
                 ));
                if(VIEW==GRUPOS)
                     grupos.add(tmp.getString("id"));

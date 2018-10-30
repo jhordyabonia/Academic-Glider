@@ -51,7 +51,6 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 
 	public  static void updater(Activity launch, int CHAT)
     {
-
 		if(!LOGGED) return;
 
         launch.stopService(new Intent(launch,ChatService.class));
@@ -102,6 +101,9 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 	    if(intent==null)
         {
             Toast.makeText(this,"intent = null",Toast.LENGTH_LONG).show();
+			Intent mIntent = new Intent(this, HomeActivity.class);
+            mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(mIntent);
             return  super.onStartCommand(intent, flags, startId);
         }
 		Bundle extras = intent.getExtras();
@@ -151,8 +153,9 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 		while (chat != null)
 		{
 			try {
+
 				if (chat.getInt("id") == -1) {
-					DB.update(this,chat);
+					DB.update(this, chat);
 				} else {
 					DBChat.insert(chat);
 					String nombre;

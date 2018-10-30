@@ -1,8 +1,13 @@
 package chat;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.zip.Inflater;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +16,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jhordyabonia.ag.R;
+import com.jhordyabonia.ag.SettingsActivity;
+
+import util.Style;
 
 public class ChatAdapter extends ArrayAdapter
 {
 	private boolean portadas=false;
 	private Context context;
 	private ArrayList<Mensaje> items;
+	private int max=SettingsActivity.Settings.colors.length;
+	private Random ram= new Random(max);
 	public ChatAdapter(Context c,ArrayList<Mensaje> i)
 	{	
 		super(c,R.layout.mensaje,i); 
@@ -54,14 +64,38 @@ public class ChatAdapter extends ArrayAdapter
 	public View getView(int position, View convertView, ViewGroup parent) 
 	{
 		LayoutInflater inflater = LayoutInflater.from(context);
-		
 		final View root ;
 
 		Mensaje tmp = items.get(position);
+
 		if(tmp.icon_info!=0)
 			return info(inflater,tmp);
+
 		if(portadas)
 		{
+			View r = inflater.inflate(R.layout.base_group,null);
+
+			((TextView)r.findViewById(R.id.title))
+					.setText(tmp.usuario);
+			((TextView)r.findViewById(R.id.sub_title))
+					.setText(tmp.mensaje);
+			((TextView)r.findViewById(R.id.date))
+					.setText(tmp.hora);
+			TextView logo= r.findViewById(R.id.logo);
+			logo.setText(tmp.usuario.substring(0,1));
+
+			if(logo!=null){
+				int result=ram.nextInt(max);
+				if(result==7)
+					result+=ram.nextBoolean()?1:-1;
+				int color=SettingsActivity.Settings.colors[result];
+				Drawable background = logo.getBackground();
+				GradientDrawable gradientDrawable = (GradientDrawable) background;
+				gradientDrawable.setColor(r.getResources().getColor(color));
+			}
+
+			return r;
+			/*
 			root = inflater.inflate(R.layout.item_chat,null);
 			root.findViewById(R.id.textView1)
 			.setVisibility(View.GONE);
@@ -77,6 +111,7 @@ public class ChatAdapter extends ArrayAdapter
 			((ImageView)root.findViewById(R.id.imageView1))
 			.setImageResource(tmp.icon);
 			return root;
+			*/
 		}
 		if(tmp.dato!=null&&tmp.me)
 			root = inflater.inflate(R.layout.mensaje_asignatura_me,null);
@@ -125,6 +160,7 @@ public class ChatAdapter extends ArrayAdapter
 	    public boolean grupo= true;
 	    public boolean me= true;
 	    public int icon_info=0;
+	    public boolean test=true;
 
 	    public Mensaje(String h,String m) 
 	    {            

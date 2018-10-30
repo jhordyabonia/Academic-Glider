@@ -1,5 +1,6 @@
 package com.jhordyabonia.ag;
 
+import android.content.Intent;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,9 +14,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import controllers.Adapter;
+import controllers.AsignaturasView;
 import crud.Base;
 import models.DB;
-import webservice.LOG;
+
+import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
 public class Notificaciones  implements AdapterView.OnItemClickListener{
 
@@ -23,13 +26,14 @@ public class Notificaciones  implements AdapterView.OnItemClickListener{
         int notificar(String usuario,String dato, int id) throws JSONException;
         int update(String title,String dato, String tipo);
     }
-    public static final String FILE="com.jhordy.ag.notificaciones";
+    public static final String FILE="com.jhordyabonia.ag.notificaciones";
     private static JSONArray db_notificaciones;
+    public static Notificaciones notificaciones;
     private View display=null;
     protected ListView base;
     protected Adapter base_data;
     public Notificaciones()
-    {load();}
+    {load();notificaciones=this;}
     static {load();}
     public static void load()
     {
@@ -39,11 +43,17 @@ public class Notificaciones  implements AdapterView.OnItemClickListener{
     }
     public void onAdd(JSONObject item){
         try {
-            base_data.add(new Adapter.Item(item.getString("type")
-                    , item.getString("asignatura")
-                    + "  " + item.get("data")));
+
+            base_data.add(new Adapter.Item(item.getString("asignatura"),
+                    item.getString("type")+":"+item.getString("data")));
             add(item);
         }catch (JSONException e){}
+    }
+
+    public static void onView(JSONObject  item)
+    {
+        if(notificaciones!=null)
+            notificaciones.onAdd(item);
     }
 
     public static boolean add(String asignatura,int type,String item,String data)
@@ -75,8 +85,13 @@ public class Notificaciones  implements AdapterView.OnItemClickListener{
         }
 
         db_notificaciones.put(item);
+        onView(item);
         save();
         return true;
+    }
+    public static  void _Add(JSONObject item){
+       if(notificaciones!=null)
+           notificaciones.onAdd(item);
     }
     public static void save()
     {
@@ -89,7 +104,7 @@ public class Notificaciones  implements AdapterView.OnItemClickListener{
             else try { tmp.put(db_notificaciones.get(n));}
             catch (JSONException e) {continue;}
         }
-        LOG.save(tmp.toString(),FILE);
+        DB.save(null,tmp.toString(),FILE);
         db_notificaciones=tmp;
     }
     public void paint(View v) {
@@ -152,5 +167,17 @@ public class Notificaciones  implements AdapterView.OnItemClickListener{
                 return;
         Base.itemSeleted = index_item;
         ///QUE HACER TRAS TOCAR LA NOTIFICACION
+        try {
+            JSONObject tmp = db_notificaciones.getJSONObject(index_item);
+            if(tmp!=null){
+/*
+                switch (tmp.getString("type")) {
+                    case "asignatura":ON_DISPLAY=HomeActivity.ASIGNATURAS;
+                        break;
+                }*/
+                if(display!=null)
+                display.getContext().startActivity(new Intent(display.getContext(), AsignaturasView.class));
+            }
+        }catch (JSONException e){}
     }
 }

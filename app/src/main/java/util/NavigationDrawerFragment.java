@@ -268,10 +268,10 @@ public class NavigationDrawerFragment extends Fragment {
                 view=mDrawerListView.getSelectedView();
         previousSelectedItem=view;
         try {
-            View pg=view.findViewById(R.id.title);
+            ///View pg=view.findViewById(R.id.item_menu);
             if (Style.STYLE != R.color.colorBlack)
-                pg.setBackgroundColor(getResources().getColor(Style.STYLE));
-            else pg.setBackgroundColor(getResources().getColor(R.color.colorMarine));
+                view.setBackgroundColor(getResources().getColor(Style.STYLE));
+            else view.setBackgroundColor(getResources().getColor(R.color.colorMarine));
         }catch (Exception e){Log.e("ERROR",e.getMessage());}
     }
     @Override

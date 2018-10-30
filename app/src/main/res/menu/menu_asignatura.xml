@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+<item android:id="@+id/ver"
+    android:icon="@drawable/twotone_visibility_white_18"
+    android:title="@string/see_subjects"
+    android:enabled="true"
+    android:showAsAction="always"></item>
+<item android:id="@+id/share"
+    android:icon="@drawable/twotone_share_white_18"
+    android:title="@string/share"
+    android:checkable="true"
+    android:showAsAction="always"></item>
+
+</menu>

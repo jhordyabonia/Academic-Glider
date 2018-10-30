@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.jhordyabonia.ag.HomeActivity;
+import com.jhordyabonia.ag.Notificaciones;
 import com.jhordyabonia.ag.Notificaciones.Notifications;
 import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
@@ -275,12 +276,18 @@ public abstract class DB
 
             String tipo=msj_t.getString("tipo");
 			try {
-				JSONObject data_=msj_t.getJSONObject("dato");
-				if(!data_.isNull("nombre"))
-					notifications.update(tipo,data_.getString("nombre"),tipo);
-				else
-					notifications.update(tipo,"Horarios",tipo);
-				insert(tipo, data_);
+				JSONObject data_= new JSONObject(msj_t.getString("dato"));
+
+				if(tipo.contains("notificacion")) {
+					Notificaciones.add(data_);
+					notifications.update(data_.getString("asignatura"),data_.getString("data"),data_.getString("type"));
+				}else {
+					if(!data_.isNull("nombre"))
+						notifications.update(data_.getString("nombre"),data_.getString("type"),data_.getString("data"));
+					else
+						notifications.update(tipo,"Horarios",tipo);
+					insert(tipo, data_);
+				}
 			}catch (JSONException e)
 			{save(null,e.getMessage()+"\n>>>\n"+msj_t,"mFile.json");}
         }

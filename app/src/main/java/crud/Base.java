@@ -56,6 +56,7 @@ public abstract class Base extends Activity implements Asynchtask {
 	public static Actions action;
 	public static int itemSeleted;
 	public static String DATA="com.jhordyabonia.crud.Base.DATA";
+	public static String _ITEM_SELECTED="Item_Selected";
 	protected ArrayList<JSONObject> LOCAL_DB;
 
 	@Override
@@ -148,7 +149,6 @@ public abstract class Base extends Activity implements Asynchtask {
 			if (path != null) {
 				try {
 					String type=path.substring(path.lastIndexOf("."),path.length());
-					Toast.makeText(this,type,Toast.LENGTH_LONG).show();
 					File file=createFile(type);
 					String name=file.getName();
 					FileOutputStream out = new FileOutputStream(file);
@@ -167,6 +167,9 @@ public abstract class Base extends Activity implements Asynchtask {
 					TextView attach=findViewById(R.id.attach_view);
 					attach.setText(attach.getText().toString()+"\n"+name);
 					attach.setVisibility(View.VISIBLE);
+				} catch (RuntimeException e) {
+					e.printStackTrace();
+					Toast.makeText(this,"Error",Toast.LENGTH_LONG).show();
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {

@@ -34,6 +34,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="controllers.AsignaturasView"
+            android:icon="@drawable/ic_atras"
+            android:theme="@style/AppBaseTheme" />
+        <activity
             android:name=".NotificacionesActivity"
             android:icon="@drawable/ic_atras"
             android:theme="@style/AppBaseTheme" />

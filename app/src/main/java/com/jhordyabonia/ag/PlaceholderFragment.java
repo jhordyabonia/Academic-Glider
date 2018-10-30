@@ -27,8 +27,8 @@ import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 public  class PlaceholderFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    HomeActivity home;
-    View rootView=null;
+    private HomeActivity home;
+    private View rootView=null;
 
     public static PlaceholderFragment newInstance(int sectionNumber) {
         PlaceholderFragment fragment = new PlaceholderFragment();
@@ -74,14 +74,6 @@ public  class PlaceholderFragment extends Fragment {
             on_display=9;
 
         switch (on_display) {
-            case -1:
-                rootView = inflater.inflate(R.layout.fragment_collection_object, container, false);
-                if(!HomeActivity.idAsignaturaActual().isEmpty()) {
-                   ViewPager mViewPager = rootView.findViewById(R.id.pager);
-                    home.asignaturas.setPager(mViewPager);
-                    home.asignaturas.show(HomeActivity.ALERTAS);
-                }else  home.asignaturas.todas(rootView);
-                break;
             case 0:
                 rootView = inflater.inflate(R.layout.lienzo, container, false);
                 Notificaciones noti= new Notificaciones();

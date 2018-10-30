@@ -27,6 +27,7 @@ import chat.ChatService;
 import chat.DBChat;
 import chat.ListChat;
 import controllers.Asignaturas;
+import controllers.AsignaturasView;
 import controllers.Horarios;
 import crud.Base;
 import models.DB;
@@ -65,7 +66,7 @@ public class HomeActivity extends FragmentActivity
 	public static int ON_DISPLAY = ASIGNATURAS;
 	public static boolean UPDATE = false;
 
-	private static int ASIGNATURA_ACTUAL = 0;
+	public static int ASIGNATURA_ACTUAL = 0;
 	
 	public boolean show_menu=false;
 	
@@ -222,9 +223,7 @@ public class HomeActivity extends FragmentActivity
 
 		if(!DB.LOGGED) {
 			new Login(this);
-		}
-		else
-		{
+		}else{
 			Style.set(findViewById(R.id.list));
 			//Style.set(findViewById(R.id.paginator));
 			Style.set(findViewById(R.id.FrameLayout1));
@@ -400,13 +399,7 @@ public class HomeActivity extends FragmentActivity
 //			if(DB.Asignaturas.LIST_ASIGNATURAS.length>ASIGNATURA_ACTUAL)
 //				actionBar.setTitle(DB.titulo(DB.Asignaturas.LIST_ASIGNATURAS[ASIGNATURA_ACTUAL]));
 
-			if(!DROP_MODE) {
-				setContentView(R.layout.fragment_collection_object);
-				ViewPager mViewPager = findViewById(R.id.pager);
-				asignaturas.setPager(mViewPager);
-				asignaturas.show(ON_DISPLAY);
-			}else
-			{
+			if(DROP_MODE) {
 				if(mNavigationDrawerFragment==null)
 					dropMode();
 				else mNavigationDrawerFragment.selectItem(classicToDrop_mode(ON_DISPLAY));
@@ -446,21 +439,9 @@ public class HomeActivity extends FragmentActivity
 	public void abrirAsignatura()
 	{
 		setAsignaturaActual(Base.itemSeleted);
-		actionBar.setTitle(DB.titulo(DB.Asignaturas.LIST_ASIGNATURAS[ASIGNATURA_ACTUAL],34));
-
-		if(DROP_MODE)
-		{
-			mNavigationDrawerFragment.selectItem(-1);
-			//ON_DISPLAY
-			return;
-		}
-
-		setContentView(R.layout.fragment_collection_object);
-		ViewPager mViewPager =  findViewById(R.id.pager);
-		asignaturas.setPager(mViewPager);
-		asignaturas.show(HomeActivity.ALERTAS);
-
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+		Intent intent = new Intent(this, AsignaturasView.class);
+		intent.putExtra(Base._ITEM_SELECTED,Base.itemSeleted);
+		startActivity(intent);
 	}
 	public void horarios_asignatura()
 	{
