@@ -10,6 +10,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -25,6 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jhordyabonia.ag.R;
 
@@ -39,9 +42,6 @@ import controllers.Adapter;
  */
 public class NavigationDrawerFragment extends Fragment {
 
-
-    public static ArrayList<Integer> HISTORY= new ArrayList<>();
-    private int display_now=-1;
     /**
      * Remember the position of the selected item.
      */
@@ -65,8 +65,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
-    private View mFragmentContainerView;
-    private View previousSelectedItem;
+    private View beforeSelected,mFragmentContainerView;
 
     private int mCurrentSelectedPosition = 0,previews;
     private boolean mFromSavedInstanceState;
@@ -97,7 +96,7 @@ public class NavigationDrawerFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // Indicate that this fragment would like to influence the set of actions in the action bar.
-        //setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -105,33 +104,8 @@ public class NavigationDrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.drawer_main, container, false);
-      mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                view.setSelected(true);
-              //  selectItem(position);
-                selectItem(position,view,true);
-            }
-        });
-       /* mDrawerListView.setAdapter(new ArrayAdapter<>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.notifications),
-                        getString(R.string.horarios),
-                        getString(R.string.asignaturas),
-                        getString(R.string.contacts),
-                        getString(R.string.chats),
-                        getString(R.string.groups),
-                        getString(R.string.community),
-                        getString(R.string.account),
-                        getString(R.string.info_title),
-                        getString(R.string.settings),
-                        getString(R.string.exit),
-                }));*/
 
-        mDrawerListView.setAdapter(new AdapterMenu(getActionBar().getThemedContext(),
+       mDrawerListView.setAdapter(new AdapterMenu(getActionBar().getThemedContext(),
                 new String[]{
                         getString(R.string.notifications),
                         getString(R.string.horarios),
@@ -145,8 +119,15 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.settings),
                         getString(R.string.exit),
                 }));
-        //mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        //HISTORY.add(mCurrentSelectedPosition);
+
+        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                view.setSelected(true);
+                selectItem(position,view);
+            }
+        });
+        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
 
@@ -236,12 +217,10 @@ public class NavigationDrawerFragment extends Fragment {
         return mCurrentSelectedPosition;
     }
     public void previews(){
-        selectItem(previews);
+        selectItem(previews,null);
     }
-    public void selectItem(int position) {
-        selectItem(position,null,true);
-    }
-    private void selectItem(int position,View view,boolean add) {
+    public void selectItem(int position){selectItem(position,null);}
+    private void selectItem(int position, View view) {
 
         getActionBar().show();
         previews=mCurrentSelectedPosition;
@@ -256,23 +235,14 @@ public class NavigationDrawerFragment extends Fragment {
             mCallbacks.onNavigationDrawerItemSelected(position);
         }
 
-        if(add)
-            if(position>=0)
-                HISTORY.add(++display_now,position);
-
-        if (previousSelectedItem!=null)
-            previousSelectedItem.setBackgroundColor(Color.TRANSPARENT);
-
-        if(view==null)
-            if(mDrawerListView!=null)
-                view=mDrawerListView.getSelectedView();
-        previousSelectedItem=view;
-        try {
-            ///View pg=view.findViewById(R.id.item_menu);
+        if(beforeSelected!=null)
+            beforeSelected.setBackgroundColor(Color.TRANSPARENT);
+        if(view!=null) {
             if (Style.STYLE != R.color.colorBlack)
                 view.setBackgroundColor(getResources().getColor(Style.STYLE));
             else view.setBackgroundColor(getResources().getColor(R.color.colorMarine));
-        }catch (Exception e){Log.e("ERROR",e.getMessage());}
+        }
+        beforeSelected=view;
     }
     @Override
     public void onAttach(Activity activity) {
@@ -348,7 +318,7 @@ public class NavigationDrawerFragment extends Fragment {
         void onNavigationDrawerItemSelected(int position);
     }
 
-    public static class AdapterMenu extends ArrayAdapter {
+    public static class AdapterMenu extends ArrayAdapter<String> {
 
         private Context context;
         private String[] locale;
@@ -358,10 +328,19 @@ public class NavigationDrawerFragment extends Fragment {
             context=c;
             locale=l;
         }
+
+        @Nullable
+        @Override
+        public String getItem(int position) {
+            return super.getItem(position);
+        }
+
+        @Nullable
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(context);
 
-            View root = inflater.inflate(R.layout.base_menu,null);
+            View root = inflater.inflate(R.layout.base_menu,parent,false);
             switch (position){
                 case 0:
                     ((ImageView)root.findViewById(R.id.logo))
@@ -400,7 +379,6 @@ public class NavigationDrawerFragment extends Fragment {
             }
             ((TextView)root.findViewById(R.id.title))
                     .setText(locale[position]);
-
             return root;
         }
     }
