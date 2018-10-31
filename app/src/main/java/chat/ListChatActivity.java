@@ -176,7 +176,7 @@ public class ListChatActivity extends FragmentActivity implements Inbox, ListCha
 		else
 		{
 			String msj=getString(R.string.msj_share1) +"\n"+
-					getString(R.string.msj_share2) +Server.URL_SERVER;
+					getString(R.string.msj_share2) +"  "+Server.URL_SERVER;
 			Intent intent = new Intent(Intent.ACTION_SEND);
 			intent.putExtra(Intent.EXTRA_TEXT, msj);
 			intent.setType("text/plain");

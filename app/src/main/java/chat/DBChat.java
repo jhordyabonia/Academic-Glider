@@ -12,12 +12,16 @@ import org.json.JSONObject;
 
 import webservice.Asynchtask;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import com.jhordyabonia.ag.R;
@@ -26,6 +30,7 @@ import com.jhordyabonia.ag.Server;
 public class DBChat 
 {
 	public static final int ON_CHAT=100;
+	private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 7;
 	public static long LOCAL_HOUR = 0;
 	public static int LAST_MSJ = 0;
 	public static boolean FECHA_WS=true;
@@ -44,12 +49,12 @@ public class DBChat
 		try 
 		{
 			//DB Chat
-			String d=DB.load(FILE_CHATS);
+			String d=DB.load(FILE_CHATS,a);
 			if(d.startsWith("[")&&d.endsWith("]"))
 				chats= new JSONArray(d);
 			else chats= new JSONArray();
 			//DB contacts
-			String c=DB.load(DBChat.FILE_CONTACTS);
+			String c=DB.load(DBChat.FILE_CONTACTS,a);
 			if(c.startsWith("[")&&c.endsWith("]"))
 				contactos= new JSONArray(c);
 			else contactos= new JSONArray();

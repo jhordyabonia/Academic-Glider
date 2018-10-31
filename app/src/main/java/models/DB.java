@@ -1,7 +1,11 @@
 package models;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -137,7 +141,7 @@ public abstract class DB
 		if(COMUNIDAD)
 		    Server.send("getAll/no_encrypt", home, recep);
 		else if(home!=null){
-			set(load(FILE_DB));
+			set(load(FILE_DB,home));
 			Asignaturas.set_list();
 			home.make(true);
 		}
@@ -150,6 +154,9 @@ public abstract class DB
 	}
 
 	public static String load(String file)
+	{return  load(file,null);}
+
+	public static String load(String file,Activity a)
 	{
 		if (!memory())
 			return "";
@@ -177,7 +184,6 @@ public abstract class DB
 	{
 		if (!memory())
 			return;
-
 		try 
 		{
 			File ruta = new File(root, DIRECTORY);

@@ -66,7 +66,7 @@ public class Horarios implements OnItemClickListener
 		imageView.setOnClickListener(new OnClickListener()
 			{
 				public void onClick(View arg0)
-				{Base.crud(v.getContext(), Base.Actions.Add);}
+				{Base.crud(home, Base.Actions.Add);}
 			}
 		);
 		base =  v.findViewById(R.id.list);

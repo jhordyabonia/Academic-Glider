@@ -1,6 +1,7 @@
 package util;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -8,6 +9,10 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +30,7 @@ import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 import crud.ApunteActivity;
 import static crud.ApunteActivity.zoom;
@@ -32,6 +38,7 @@ import models.DB;
 import webservice.LOG;
 
 public class Image extends Fragment {
+    public static HashMap<String,Bitmap> MAP=new HashMap<>();
     private static int HEIGHT = 1836 / 3, WIDTH = 3264 / 3;
     private boolean camera;
     private View root;
@@ -120,6 +127,8 @@ public class Image extends Fragment {
     public static class Loader extends AsyncTask<String, Void, Bitmap> {
 
         private WeakReference imageViewReference[];
+        private boolean blur=false;
+        private Context context=null;
         private String mURL = Server.URL_SERVER.replace("pu", "uploads/fotos/");
         private String name;
         public Loader(View... imageView) {
@@ -165,8 +174,10 @@ public class Image extends Fragment {
         protected synchronized Bitmap doInBackground(String... fotos) {
             Bitmap imagen = null;
             try {
-
                 name = fotos[0];
+                if(MAP.containsKey(name))
+                        return MAP.get(name);
+
                 if (name.contains("http"))
                     name = mURL + ".jpg";
 
@@ -201,8 +212,9 @@ public class Image extends Fragment {
                     options.inJustDecodeBounds = false;
                     imagen = BitmapFactory.decodeFile(name, options);
                 }
-            } catch (IOException e) {
-            }
+            } catch (IOException e) {}
+            if(imagen!=null)
+                MAP.put(name,imagen);
             return imagen;
         }
 
@@ -212,9 +224,59 @@ public class Image extends Fragment {
                 Object v=imageView.get();
                 if (v instanceof ImageView) {
                     ImageView image = (ImageView) v;
-                    image.setImageBitmap(bitmap);
+                    if(blur)
+                        image.setImageBitmap(blurRenderScript(bitmap,21));
+                    else image.setImageBitmap(bitmap);
                 }
             }
+        }
+
+        @SuppressLint("NewApi")
+        private Bitmap blurRenderScript(Bitmap smallBitmap, int radius) {
+
+            try {smallBitmap = RGB565toARGB888(smallBitmap);}
+            catch (Exception e) {e.printStackTrace();}
+
+            Bitmap bitmap = Bitmap.createBitmap(
+                    smallBitmap.getWidth(), smallBitmap.getHeight(),
+                    Bitmap.Config.ARGB_8888);
+
+            RenderScript renderScript = RenderScript.create(context);
+
+            Allocation blurInput = Allocation.createFromBitmap(renderScript, smallBitmap);
+            Allocation blurOutput = Allocation.createFromBitmap(renderScript, bitmap);
+
+            ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(renderScript,
+                    Element.U8_4(renderScript));
+            blur.setInput(blurInput);
+            blur.setRadius(radius); // radius must be 0 < r <= 25
+            blur.forEach(blurOutput);
+
+            blurOutput.copyTo(bitmap);
+            renderScript.destroy();
+
+            return bitmap;
+
+        }
+
+        private Bitmap RGB565toARGB888(Bitmap img) {
+            int numPixels = img.getWidth() * img.getHeight();
+            int[] pixels = new int[numPixels];
+
+            //Get JPEG pixels.  Each int is the color values for one pixel.
+            img.getPixels(pixels, 0, img.getWidth(), 0, 0, img.getWidth(), img.getHeight());
+
+            //Create a Bitmap of the appropriate format.
+            Bitmap result = Bitmap.createBitmap(img.getWidth(), img.getHeight(), Bitmap.Config.ARGB_8888);
+
+            //Set RGB pixels.
+            result.setPixels(pixels, 0, result.getWidth(), 0, 0, result.getWidth(), result.getHeight());
+            return result;
+        }
+
+        public void setContext(Context c) {
+            context=c;
+            blur = true;
         }
     }
 }

@@ -229,8 +229,12 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 	private void starter()
 	{
 		String nameU=DB.User.get("universidad").replace(" ","_")+".jpg";
-		Image.Loader loader= new Image.Loader(lienzo.findViewById(R.id.bg_image));
+		Image.Loader loader= new Image.Loader(lienzo.findViewById(R.id.bg_subimage));
+		loader.setContext(home);
 		loader.execute(nameU);
+
+		Image.Loader loader2= new Image.Loader(lienzo.findViewById(R.id.bg_image));
+		loader2.execute(nameU);
 		View bg=lienzo.findViewById(R.id.bg);
 		//bg.setBackgroundResource(R.drawable.bg_0);
 		ObjectAnimator in0 = ObjectAnimator

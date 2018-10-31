@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import webservice.Asynchtask;
 
+import android.app.Activity;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -99,7 +100,7 @@ public class Calificables extends Controller {
 		datos.put("fecha", fecha);
 		datos.put("hora", hora);
 		Server.setDataToSend(datos);
-		final HomeActivity home = (HomeActivity) getActivity();
+		final Activity home =  getActivity();
 		Asynchtask reponse =new Asynchtask()
 		{
 			@Override

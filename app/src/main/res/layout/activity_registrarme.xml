@@ -2,25 +2,33 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#000">
 
     <FrameLayout
         android:id="@+id/bg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="#000">
 
+        <ImageView
+            android:id="@+id/bg_subimage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg"
+            android:scaleType="centerCrop"/>
         <ImageView
             android:id="@+id/bg_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/bg" />
+            android:src="@drawable/bg"
+            android:scaleType="centerInside"/>
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.6"
+        android:alpha="0.1"
         android:background="#000"></FrameLayout>
 
 <ScrollView android:layout_width="match_parent"
@@ -86,7 +94,8 @@
                 android:ems="10"
                 android:hint="@string/name"
                 android:inputType="textPersonName"
-                android:textColor="#c0c0c0"/>
+                android:textColorHint="#c0c0c0"
+                android:textColor="#ffffff"/>
 
         </TableRow>
 		<TableRow
@@ -132,7 +141,8 @@
             android:ems="10"
             android:hint="@string/university"
             android:inputType="textPersonName"
-            android:textColor="#c0c0c0"
+            android:textColorHint="#c0c0c0"
+            android:textColor="#ffffff"
             android:visibility="gone" />
 		</TableRow>
         <TableRow
@@ -156,7 +166,8 @@
                 android:ems="10"
                 android:hint="@string/cel"
                 android:inputType="phone"
-                android:textColor="#c0c0c0" >
+                android:textColorHint="#c0c0c0"
+                android:textColor="#ffffff">
 
                 <requestFocus />
             </EditText>
@@ -183,7 +194,8 @@
                 android:ems="10"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
-                android:textColor="#c0c0c0" />
+                android:textColorHint="#c0c0c0"
+                android:textColor="#ffffff"/>
 
         </TableRow>
 
@@ -199,7 +211,7 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="3dp"
                 android:scaleType="center"
-                android:src="@drawable/pass" />
+                android:src="@drawable/twotone_lock_white_18" />
 
             <EditText
                 android:id="@+id/password"
@@ -208,7 +220,8 @@
                 android:ems="10"
                 android:hint="@string/pass"
                 android:inputType="textPassword"
-                android:textColor="#c0c0c0"/>
+                android:textColorHint="#c0c0c0"
+                android:textColor="#ffffff"/>
 
         </TableRow>
 
@@ -224,7 +237,7 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="3dp"
                 android:scaleType="center"
-                android:src="@drawable/pass" />
+                android:src="@drawable/twotone_lock_white_18" />
 
             <EditText
                 android:id="@+id/password2"
@@ -233,7 +246,8 @@
                 android:ems="10"
                 android:hint="@string/pass2"
                 android:inputType="textPassword"
-                android:textColor="#c0c0c0"/>
+                android:textColorHint="#c0c0c0"
+                android:textColor="#ffffff"/>
 
         </TableRow>
 

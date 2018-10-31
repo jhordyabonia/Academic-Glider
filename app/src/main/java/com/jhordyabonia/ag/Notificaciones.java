@@ -89,10 +89,7 @@ public class Notificaciones  implements AdapterView.OnItemClickListener{
         save();
         return true;
     }
-    public static  void _Add(JSONObject item){
-       if(notificaciones!=null)
-           notificaciones.onAdd(item);
-    }
+
     public static void save()
     {
         JSONArray tmp = new JSONArray();
@@ -170,13 +167,14 @@ public class Notificaciones  implements AdapterView.OnItemClickListener{
         try {
             JSONObject tmp = db_notificaciones.getJSONObject(index_item);
             if(tmp!=null){
-/*
+                /*
                 switch (tmp.getString("type")) {
                     case "asignatura":ON_DISPLAY=HomeActivity.ASIGNATURAS;
                         break;
-                }*/
+                }
                 if(display!=null)
                 display.getContext().startActivity(new Intent(display.getContext(), AsignaturasView.class));
+                */
             }
         }catch (JSONException e){}
     }

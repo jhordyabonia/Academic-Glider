@@ -383,13 +383,13 @@ public abstract class Base extends Activity implements Asynchtask {
 		case HomeActivity.CALIFICABLES:
 			intent= (new Intent(parent, CalificableActivity.class));
 			break;
-		case HomeActivity.HORARIOS:			
-			if(!DB.COMUNIDAD)
-			  if(DB.Asignaturas.LIST_ASIGNATURAS.length>1)
-				  intent= (new Intent(parent, HorarioActivity.class));
-			break;
 		case HomeActivity.ASIGNATURAS:
 			intent= (new Intent(parent, AsignaturaActivity.class));
+			break;
+		case HomeActivity.HORARIOS:
+			if(!DB.COMUNIDAD)
+				if(DB.Asignaturas.LIST_ASIGNATURAS.length>0)
+					intent= (new Intent(parent, HorarioActivity.class));
 			break;
 		}
 		if(parent!=null)

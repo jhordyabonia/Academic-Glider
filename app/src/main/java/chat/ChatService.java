@@ -193,7 +193,7 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 		}
 	}
 	@SuppressLint("NewApi") 
-	public int notificar(String usuario,String dato, int id) throws JSONException
+	public int notificar(String usuario,String dato, int id)
 	{		
 		Vibrator v= (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		v.vibrate(250);

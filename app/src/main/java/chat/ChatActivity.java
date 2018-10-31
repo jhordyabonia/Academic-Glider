@@ -70,7 +70,7 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 
 		if(!DB.LOGGED)
 		{
-			String result= DB.load(DB.FILE_DB);
+			String result= DB.load(DB.FILE_DB,this);
 			if(!result.isEmpty())
 			{
 				DB.set(result);
@@ -290,7 +290,7 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 	@Override
 	public void add_msj(JSONObject msj_t,boolean move) throws JSONException
 	{
-		if(msj_t.getString("tipo").equals(DB.MODELS[ASIGNATURAS]))
+		if(DB.MODELS[ASIGNATURAS].contains(msj_t.getString("tipo")))
 		{		
 			JSONObject asignatura= new JSONObject(msj_t.getString("dato"));
 			if(msj_t.getString("usuario")

@@ -99,7 +99,11 @@ public class AsignaturasView extends FragmentActivity {
         public CharSequence getPageTitle(int position)
         {return HomeActivity.onDisplay(position,home);}
     }
-
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
+        menu.findItem(R.id.share).setVisible(false);
+        return super.onPrepareOptionsMenu(menu);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_asignatura, menu);

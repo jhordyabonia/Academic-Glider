@@ -1,5 +1,6 @@
 package com.jhordyabonia.ag;
 
+import android.Manifest;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentManager;
@@ -7,9 +8,12 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
@@ -47,7 +51,8 @@ import static com.jhordyabonia.ag.SettingsActivity.Settings._DROP_MODE;
 public class HomeActivity extends FragmentActivity
 		implements NavigationDrawerFragment.NavigationDrawerCallbacks, ListChat.ChatMain, ChatService.Inbox {
 
-	private NavigationDrawerFragment mNavigationDrawerFragment=null;
+    private static final int PERMISSIONS_REQUEST = 7;
+    private NavigationDrawerFragment mNavigationDrawerFragment=null;
 
     private FirebaseAnalytics mFirebaseAnalytics;
     public static final int CONTACTOS = ON_CHAT+2;
@@ -152,15 +157,46 @@ public class HomeActivity extends FragmentActivity
 		}else actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 	}
+	private void setMyPermissions()
+    {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                ||ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                ||ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED
+				||ContextCompat.checkSelfPermission(this,
+				Manifest.permission.VIBRATE)
+				!= PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+           /* if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                //none
+            } else */{
+                ActivityCompat.requestPermissions(this,
+                        new String[]{
+                            Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_CONTACTS,
+								Manifest.permission.VIBRATE},
+                        PERMISSIONS_REQUEST);
+            }
+        }
+    }
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+        setMyPermissions();
 
 		SharedPreferences sp = getDefaultSharedPreferences(this);
 		Style.STYLE = sp.getInt(Style._STYLE,R.color.colorMarine);
 
-		start(DB.load(DB.FILE_DB));
+		start(DB.load(DB.FILE_DB,this));
 		actionBar=getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 

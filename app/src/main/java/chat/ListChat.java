@@ -94,7 +94,7 @@ public class  ListChat  implements AdapterView.OnItemClickListener,AdapterView.O
                 contactos.clear();
                 contactos_id.clear();
                 base_data.clear();
-                JSONArray data= new JSONArray(DB.load(DBChat.FILE_CONTACTS));
+                JSONArray data= new JSONArray(DB.load(DBChat.FILE_CONTACTS,main));
                 for(int i=0;i<data.length();i++)
                 {
                     JSONObject tmp = data.getJSONObject(i);
@@ -152,7 +152,7 @@ public class  ListChat  implements AdapterView.OnItemClickListener,AdapterView.O
                     int last_msj=msj_tmp.getInt("id");
                     DBChat.LAST_MSJ=DBChat.LAST_MSJ<last_msj?last_msj:DBChat.LAST_MSJ;
                     dato=msj_tmp.getString("dato");
-                    if(msj_tmp.getString("tipo").equals(DB.MODELS[ASIGNATURAS]))
+                    if(DB.MODELS[ASIGNATURAS].contains(msj_tmp.getString("tipo")))
                         dato=main.getString(R.string.asignaturas)+"...";
                 }else continue;
                 int icon=VIEW==GRUPOS?R.drawable.ic_dialogo_nuevo_grupo:R.drawable.ic_dialogo_add_togroup;
