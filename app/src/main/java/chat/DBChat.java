@@ -252,24 +252,24 @@ public class DBChat
             {
                 Cursor cursor = getContacts(activity.getBaseContext());
                 JSONArray data= new JSONArray();
-                if(cursor.moveToFirst())
-                    do try
-                    {
-                        for(String cel:celular(cursor.getString(0),activity).split(","))
-                        {
-                            String nombre=cursor.getString(1);
-                            if(cel.isEmpty()||data.toString().contains(cel))
-                                continue;
+                if(cursor!=null) {
+					if (cursor.moveToFirst()) {
+						do try {
+							for (String cel : celular(cursor.getString(0), activity).split(",")) {
+								String nombre = cursor.getString(1);
+								if (cel.isEmpty() || data.toString().contains(cel))
+									continue;
 
-                            JSONObject _data=new JSONObject();
-                            _data.put("nombre", nombre.isEmpty()?cel:nombre);
-                            _data.put("cel", cel);
+								JSONObject _data = new JSONObject();
+								_data.put("nombre", nombre.isEmpty() ? cel : nombre);
+								_data.put("cel", cel);
 
-                            data.put(_data);
-                        }
-                    } catch (JSONException e) {}
-                    while(cursor.moveToNext());
-                return data.toString();
+								data.put(_data);
+							}
+						} catch (JSONException e) {}
+						while (cursor.moveToNext());
+					}
+				}return data.toString();
             }
             protected void onPostExecute(String contacts)
             {

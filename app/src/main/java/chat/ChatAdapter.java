@@ -151,7 +151,7 @@ public class ChatAdapter extends ArrayAdapter
 
 	public static class Mensaje
 	{
-		public int icon=R.drawable.ic_user;
+		public int icon=R.drawable.twotone_phone_android_white_18;
 	    public String foto;
 	   	public String usuario;
 	    public String hora;

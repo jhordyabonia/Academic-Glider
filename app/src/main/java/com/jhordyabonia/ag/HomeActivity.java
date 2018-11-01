@@ -170,21 +170,25 @@ public class HomeActivity extends FragmentActivity
                 != PackageManager.PERMISSION_GRANTED
 				||ContextCompat.checkSelfPermission(this,
 				Manifest.permission.VIBRATE)
+				!= PackageManager.PERMISSION_GRANTED
+				||ContextCompat.checkSelfPermission(this,
+				Manifest.permission.SET_ALARM)
+				!= PackageManager.PERMISSION_GRANTED
+				||ContextCompat.checkSelfPermission(this,
+				Manifest.permission.READ_PHONE_STATE)
 				!= PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
-           /* if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                //none
-            } else */{
+
                 ActivityCompat.requestPermissions(this,
                         new String[]{
                             Manifest.permission.READ_EXTERNAL_STORAGE,
                                 Manifest.permission.READ_EXTERNAL_STORAGE,
-                                Manifest.permission.READ_CONTACTS,
+								Manifest.permission.READ_CONTACTS,
+								Manifest.permission.SET_ALARM,
+								Manifest.permission.READ_PHONE_STATE,
 								Manifest.permission.VIBRATE},
                         PERMISSIONS_REQUEST);
-            }
+
         }
     }
 	@Override
@@ -315,7 +319,7 @@ public class HomeActivity extends FragmentActivity
 		else
 			menu.findItem(R.id.actions_notifications).setVisible(true);
 
-		if(ON_DISPLAY==CHATS)
+		if(ON_DISPLAY==GRUPOS)
 			menu.findItem(R.id.chat).setVisible(false);
 		else
 			menu.findItem(R.id.chat).setVisible(true);

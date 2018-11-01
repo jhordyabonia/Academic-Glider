@@ -52,7 +52,7 @@
 	        android:layout_gravity="center"
 	        android:layout_marginRight="-10dp"
 	        android:scaleType="center"
-	        android:src="@drawable/ic_user" />
+	        android:src="@drawable/twotone_phone_android_white_18" />
 
 	    <EditText
 	        android:id="@+id/celular"
@@ -83,7 +83,7 @@
 	        android:layout_gravity="center"
 	        android:layout_marginRight="-10dp"
 	        android:scaleType="center"
-	        android:src="@drawable/email" />
+	        android:src="@drawable/twotone_alternate_email_white_18" />
 
     <EditText
         android:id="@+id/email"

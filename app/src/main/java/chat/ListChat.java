@@ -107,7 +107,7 @@ public class  ListChat  implements AdapterView.OnItemClickListener,AdapterView.O
                 }
                 DBChat.getContactCheker(main).execute();
                 base.setOnItemLongClickListener(null);
-                imageView.setImageResource(R.drawable.ic_add_contact);
+                imageView.setImageResource(R.drawable.twotone_group_add_white_36);
                 root.findViewById(R.id.textView1).setVisibility(View.GONE);
             }else load();
         }catch (JSONException e) {
