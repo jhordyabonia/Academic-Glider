@@ -96,7 +96,7 @@ public class NavigationDrawerFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // Indicate that this fragment would like to influence the set of actions in the action bar.
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
     }
 
     @Override
@@ -370,11 +370,11 @@ public class NavigationDrawerFragment extends Fragment {
                     ((ImageView)root.findViewById(R.id.logo))
                             .setImageResource(R.drawable.twotone_info_white_48); break;
                 case 9:
-                ((ImageView)root.findViewById(R.id.logo))
-                        .setImageResource(R.drawable.twotone_settings_white_48); break;
+                    ((ImageView)root.findViewById(R.id.logo))
+                            .setImageResource(R.drawable.twotone_settings_white_48); break;
                 default:
-                ((ImageView)root.findViewById(R.id.logo))
-                        .setImageResource(android.R.drawable.ic_menu_close_clear_cancel); break;
+                    ((ImageView)root.findViewById(R.id.logo))
+                            .setImageResource(android.R.drawable.ic_menu_close_clear_cancel); break;
 
             }
             ((TextView)root.findViewById(R.id.title))

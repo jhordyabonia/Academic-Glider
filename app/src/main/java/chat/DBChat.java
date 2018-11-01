@@ -325,11 +325,12 @@ public class DBChat
                 new String[] { String.valueOf(id) },
                 null);
          String out="";
-         if(c.moveToFirst())
-             do
-             {
-                 out+=","+c.getString(1);
-             }while(c.moveToNext());
-         return out;
+         if(c!=null) {
+			 if (c.moveToFirst())
+				 do {
+					 out += "," + c.getString(1);
+				 } while (c.moveToNext());
+		 }
+		 return out;
      }
 }

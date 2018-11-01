@@ -5,24 +5,25 @@
     android:layout_height="match_parent"
     android:background="#000">
 
+    <ImageView
+        android:id="@+id/bg_subimage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg"
+        android:scaleType="centerCrop"/>
+
     <FrameLayout
         android:id="@+id/bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000">
+        android:background="@android:color/transparent">
 
-        <ImageView
-            android:id="@+id/bg_subimage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/bg"
-            android:scaleType="centerCrop"/>
         <ImageView
             android:id="@+id/bg_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/bg"
-            android:scaleType="centerInside"/>
+            android:scaleType="centerInside"
+            android:src="@drawable/bg" />
     </FrameLayout>
 
     <FrameLayout
@@ -66,6 +67,53 @@
             android:textSize="40sp" />
 
         <TableRow
+            android:id="@+id/tableRow11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/img_universidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="3dp"
+                android:scaleType="center"
+                android:src="@drawable/twotone_business_white_18" />
+            <Spinner
+                android:id="@+id/universidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:textColor="#fff"
+                android:textColorHint="#9e9e3a" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/tableRow10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/img_universidad2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="3dp"
+                android:scaleType="center"
+                android:src="@drawable/twotone_account_balance_white_18"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/universidad_otra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/university"
+                android:inputType="textPersonName"
+                android:textColorHint="#c0c0c0"
+                android:textColor="#ffffff"
+                android:visibility="gone" />
+        </TableRow>
+        <TableRow
             android:id="@+id/tableRow0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -98,53 +146,6 @@
                 android:textColor="#ffffff"/>
 
         </TableRow>
-		<TableRow
-            android:id="@+id/tableRow11"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <ImageView
-                android:id="@+id/img_universidad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="3dp"
-                android:scaleType="center"
-                android:src="@drawable/universidad" />
-	        <Spinner
-	            android:id="@+id/universidad"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:ems="10"
-	            android:textColor="#fff"
-	            android:textColorHint="#9e9e3a" />
-		</TableRow>
-		<TableRow
-            android:id="@+id/tableRow10"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <ImageView
-                android:id="@+id/img_universidad2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="3dp"
-                android:scaleType="center"
-                android:src="@drawable/twotone_account_balance_white_18"
-            	android:visibility="gone" />
-		
-        <EditText
-            android:id="@+id/universidad_otra"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/university"
-            android:inputType="textPersonName"
-            android:textColorHint="#c0c0c0"
-            android:textColor="#ffffff"
-            android:visibility="gone" />
-		</TableRow>
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_width="match_parent"
@@ -157,7 +158,7 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="3dp"
                 android:scaleType="center"
-                android:src="@drawable/cell" />
+                android:src="@drawable/twotone_phone_android_white_18" />
 
             <EditText
                 android:id="@+id/celular"
@@ -185,7 +186,7 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="3dp"
                 android:scaleType="center"
-                android:src="@drawable/email" />
+                android:src="@drawable/twotone_alternate_email_white_18" />
 
             <EditText
                 android:id="@+id/email"

@@ -87,7 +87,11 @@ public abstract class Controller extends Fragment implements OnItemClickListener
 		show();
 		return rootView;
 	}
-
+	@Override
+	final public void onResume(){
+		super.onResume();
+		show();
+	}
 	@Override
 	final public void onItemClick(AdapterView<?> av, View v, int index_item, long arg3)
 	{
