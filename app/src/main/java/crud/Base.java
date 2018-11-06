@@ -123,7 +123,6 @@ public abstract class Base extends Activity implements Asynchtask {
 		return super.onOptionsItemSelected(item);
 	}
 
-	//TODO launch camera
 	private File createFile(String type)
 	{
 		// Create an image file name
@@ -393,7 +392,8 @@ public abstract class Base extends Activity implements Asynchtask {
 			break;
 		}
 		if(parent!=null)
-			parent.startActivity(intent);
+			if(intent!=null)
+				parent.startActivity(intent);
 
 		return intent;
 	}

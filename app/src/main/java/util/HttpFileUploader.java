@@ -48,7 +48,7 @@ public class HttpFileUploader implements Runnable
             // Deshabilitamos el uso de la copia cacheada.
             conn.setUseCaches(false);
  
-            // Usamos el m�todo post esto podemos cambiarlo.
+            // Usamos el método post esto podemos cambiarlo.
             conn.setRequestMethod("POST");
  
             conn.setRequestProperty("Connection", "Keep-Alive");
