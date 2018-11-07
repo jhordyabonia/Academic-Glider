@@ -25,7 +25,7 @@ public class ChatAdapter extends ArrayAdapter
 	private boolean portadas=false;
 	private Context context;
 	private ArrayList<Mensaje> items;
-	private int max=SettingsActivity.Settings.colors.length;
+	private int max=util.Settings.colors.length;
 	private Random ram= new Random(max);
 	public ChatAdapter(Context c,ArrayList<Mensaje> i)
 	{	
@@ -88,7 +88,7 @@ public class ChatAdapter extends ArrayAdapter
 				int result=ram.nextInt(max);
 				if(result==7)
 					result+=ram.nextBoolean()?1:-1;
-				int color=SettingsActivity.Settings.colors[result];
+				int color=util.Settings.colors[result];
 				Drawable background = logo.getBackground();
 				GradientDrawable gradientDrawable = (GradientDrawable) background;
 				gradientDrawable.setColor(r.getResources().getColor(color));

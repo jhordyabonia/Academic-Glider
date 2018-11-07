@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="15dp"
+    android:layout_marginBottom="@dimen/_15dp"
     android:orientation="horizontal" >
 
     <ImageView
@@ -23,7 +23,7 @@
         android:id="@+id/bg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
+        android:paddingTop="@dimen/_5dp"
         android:src="@drawable/ic_bgchat" />
     
     <LinearLayout
@@ -31,16 +31,16 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="top"
-        android:layout_margin="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_margin="@dimen/_5dp"
+        android:layout_marginBottom="@dimen/_5dp"
+        android:layout_marginRight="@dimen/_5dp"
+        android:layout_marginTop="@dimen/_5dp"
         android:background="@drawable/bg"
         android:orientation="vertical"
-        android:paddingBottom="2dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="2dp" >
+        android:paddingBottom="@dimen/_2dp"
+        android:paddingLeft="@dimen/_5dp"
+        android:paddingRight="@dimen/_5dp"
+        android:paddingTop="@dimen/_2dp" >
 
         <LinearLayout
             android:id="@+id/LinearLayout1"
@@ -62,8 +62,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Mensaje... Lorenipsum in y Lorenipsum the Lorenipsum Lorenipsum :)"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#fff" />
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#fff"
+                android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+                android:background="?android:attr/activatedBackgroundIndicator"
+                android:minHeight="?android:attr/listPreferredItemHeightSmall"/>
 
             <TextView
                 android:id="@+id/textView3"
@@ -71,12 +75,12 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:paddingLeft="3dp"
-                android:paddingRight="3dp"
+                android:paddingLeft="@dimen/_3dp"
+                android:paddingRight="@dimen/_3dp"
                 android:text="fecha/hora"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="#c6c6c6"
-                android:textSize="12dp"
+                android:textSize="@dimen/_12dp"
                 android:textStyle="italic" />
 
         </LinearLayout>

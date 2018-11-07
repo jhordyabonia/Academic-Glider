@@ -239,7 +239,7 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 				intent= (new Intent(this, AlertaActivity.class));
 				break;
 			case "apuntes":
-				if(SettingsActivity.Settings.DROP_MODE)
+				if(util.Settings.DROP_MODE)
 					intent= (new Intent(this, Main.class));
 				else intent= (new Intent(this, ApunteActivity.class));
 				break;

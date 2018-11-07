@@ -36,7 +36,7 @@
                 android:id="@+id/textView1"
                 android:layout_width="85dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="@dimen/_10dp"
                 android:layout_weight="0.0"
                 android:text="@string/code"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -59,9 +59,9 @@
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="85dp"
+                android:layout_width="@dimen/_85dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="@dimen/_10dp"
                 android:text="@string/credit"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 

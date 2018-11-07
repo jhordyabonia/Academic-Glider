@@ -136,7 +136,7 @@ public  class PlaceholderFragment extends Fragment {
                 break;
             case 9:
                 rootView = inflater.inflate(R.layout.settings, container, false);
-                new SettingsActivity.Settings(home,rootView);
+                new util.Settings(home,rootView);
                 home.actionBar.setTitle(R.string.settings);
                 break;
             case 10:

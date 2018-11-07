@@ -1,6 +1,5 @@
 package com.jhordyabonia.ag;
 
-import android.content.Intent;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,11 +13,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import controllers.Adapter;
-import controllers.AsignaturasView;
 import crud.Base;
 import models.DB;
-
-import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
 public class Notificaciones  implements AdapterView.OnItemClickListener{
 

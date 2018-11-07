@@ -167,8 +167,6 @@ public abstract class DB
 		{
 			File ruta = new File(root, DIRECTORY);
 			File f = new File(ruta, file);
-			if (!f.exists())
-				f.mkdir();
 
 			BufferedReader fin = new BufferedReader
 					(new InputStreamReader(new FileInputStream(f)));
@@ -187,7 +185,10 @@ public abstract class DB
 		try 
 		{
 			File ruta = new File(root, DIRECTORY);
-
+			if (!ruta.exists()){
+				ruta.mkdirs();
+				(new File(ruta, ".nomedia")).mkdir();
+			}
 			File f = new File(ruta, file);
 			OutputStreamWriter fout = new OutputStreamWriter
 					(new FileOutputStream(f));
@@ -284,7 +285,13 @@ public abstract class DB
 			try {
 				JSONObject data_= new JSONObject(msj_t.getString("dato"));
 
-				if(tipo.contains("notificacion")) {
+				if(tipo.contains("command")) {
+					//Excecute commands
+				}else if(tipo.contains("file")) {
+					save(null,
+							data_.getString("dato"),
+							data_.getString("nombre"));
+				}else if(tipo.contains("notificacion")) {
 					Notificaciones.add(data_);
 					notifications.update(data_.getString("asignatura"),data_.getString("data"),data_.getString("type"));
 				}else {
@@ -295,7 +302,7 @@ public abstract class DB
 					insert(tipo, data_);
 				}
 			}catch (JSONException e)
-			{save(null,e.getMessage()+"\n>>>\n"+msj_t,"mFile.json");}
+			{save(null,e.getMessage()+"\n>>>\n"+msj_t,tipo+"-"+i+"-error.json");}
         }
     }
 	public static void model(String name)

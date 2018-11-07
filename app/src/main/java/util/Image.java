@@ -14,6 +14,8 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -237,10 +239,19 @@ public class Image extends Fragment {
             try {smallBitmap = RGB565toARGB888(smallBitmap);}
             catch (Exception e) {e.printStackTrace();}
 
-            Bitmap bitmap = Bitmap.createBitmap(
-                    smallBitmap.getWidth(), smallBitmap.getHeight(),
-                    Bitmap.Config.ARGB_8888);
 
+            Bitmap bitmap;
+            if(smallBitmap!=null) {
+                bitmap = Bitmap.createBitmap(
+                        smallBitmap.getWidth(),
+                        smallBitmap.getHeight(),
+                        Bitmap.Config.ARGB_8888);
+            }else {
+                smallBitmap = bitmap = Bitmap.createBitmap(
+                        480,
+                        600,
+                        Bitmap.Config.ARGB_8888);
+            }
             RenderScript renderScript = RenderScript.create(context);
 
             Allocation blurInput = Allocation.createFromBitmap(renderScript, smallBitmap);

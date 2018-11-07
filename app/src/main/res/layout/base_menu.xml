@@ -12,11 +12,11 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="30dp"
+        android:layout_width="@dimen/_30dp"
         android:layout_height="match_parent"
         android:src="@drawable/twotone_home_white_48"
-        android:padding="2dp"
-        android:layout_marginRight="2dp"
+        android:padding="@dimen/_2dp"
+        android:layout_marginRight="@dimen/_2dp"
         android:scaleType="centerInside" />
 
     <TextView

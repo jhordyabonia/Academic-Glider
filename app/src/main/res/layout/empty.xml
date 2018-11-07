@@ -11,7 +11,7 @@
         android:layout_gravity="center"
         android:background="@android:color/transparent"
         android:gravity="center"
-        android:paddingTop="20dp"
+        android:paddingTop="@dimen/_20dp"
         android:text="@string/empty"
         android:textColor="#c0c0c0"
         android:textStyle="italic" />

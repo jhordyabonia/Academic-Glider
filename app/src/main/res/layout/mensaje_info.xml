@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="15dp"
+    android:layout_marginBottom="@dimen/_15dp"
     android:orientation="horizontal" >
     
 <FrameLayout
     android:id="@+id/FrameLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="5dp"
+    android:layout_margin="@dimen/_5dp"
     android:background="@drawable/shadow" >
 
     <LinearLayout
@@ -17,19 +17,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top"
-        android:layout_margin="1dp"
+        android:layout_margin="@dimen/_1dp"
         android:background="@drawable/tile"
         android:orientation="vertical"
-        android:paddingBottom="2dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="2dp"
-        android:paddingTop="2dp" >
+        android:paddingBottom="@dimen/_2dp"
+        android:paddingLeft="@dimen/_5dp"
+        android:paddingRight="@dimen/_2dp"
+        android:paddingTop="@dimen/_2dp" >
 
         <LinearLayout
             android:id="@+id/LinearLayout1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="2dp"
+            android:layout_margin="@dimen/_2dp"
             android:orientation="vertical" >
 
             <TableRow
@@ -42,6 +42,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:maxHeight="@dimen/_35dp"
+                    android:maxWidth="@dimen/_35dp"
                     android:src="@drawable/twotone_info_white_18" />
 
                 <TextView
@@ -52,8 +54,12 @@
                     android:layout_weight="1"
                     android:gravity="fill_horizontal|center"
                     android:text="Mensaje... Lorenipsum in y Lorenipsum the Lorenipsum Lorenipsum"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#6c6c6c" />
+                    android:textColor="#6c6c6c"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+                    android:background="?android:attr/activatedBackgroundIndicator"
+                    android:minHeight="?android:attr/listPreferredItemHeightSmall" />
 
             </TableRow>
 
@@ -69,12 +75,12 @@
                     android:layout_gravity="bottom"
                     android:layout_weight="1"
                     android:gravity="top|right"
-                    android:paddingLeft="3dp"
-                    android:paddingRight="3dp"
+                    android:paddingLeft="@dimen/_3dp"
+                    android:paddingRight="@dimen/_3dp"
                     android:text="fecha/hora"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="#6c6c6c"
-                    android:textSize="12dp"
+                    android:textSize="@dimen/_12dp"
                     android:textStyle="italic" />
 
             </TableRow>

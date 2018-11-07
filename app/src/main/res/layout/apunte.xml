@@ -28,7 +28,7 @@
 	 <ScrollView
 	     android:id="@+id/scrollView1"
 	     android:layout_width="match_parent"
-	     android:layout_height="150dp" >
+	     android:layout_height="@dimen/_150dp" >
 
 	    <EditText
 	        android:id="@+id/descripcion"
@@ -70,12 +70,12 @@
     <LinearLayout
         android:id="@+id/actions_image"
         android:layout_width="match_parent"
-        android:layout_height="42dp"
+        android:layout_height="@dimen/_42dp"
         android:layout_gravity="bottom"
         android:alpha="0.7"
         android:background="#000"
         android:gravity="center"
-        android:padding="5dp" 
+        android:padding="@dimen/_5dp"
         android:visibility="gone">
 
         <ImageView
@@ -91,8 +91,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="@dimen/_10dp"
+            android:layout_marginRight="@dimen/_10dp"
             android:src="@android:drawable/ic_menu_zoom" />
 
         <ImageView

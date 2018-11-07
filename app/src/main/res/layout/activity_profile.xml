@@ -8,14 +8,14 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ProfileActivity" >
+    tools:context="chat.ProfileActivity" >
 
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginBottom="@dimen/_10dp"
+                android:layout_marginTop="@dimen/_10dp"
                 android:text="Descripcion:"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="normal|italic" />
@@ -24,19 +24,19 @@
                 android:id="@+id/FrameLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="@dimen/_10dp"
                 android:background="@drawable/shadow" >
 
                 <TextView
                     android:id="@+id/profile_descripcion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="@dimen/_2dp"
+                    android:layout_marginLeft="@dimen/_1dp"
+                    android:layout_marginRight="@dimen/_1dp"
+                    android:layout_marginTop="@dimen/_1dp"
                     android:background="@drawable/tile"
-                    android:padding="2dp"
+                    android:padding="@dimen/_2dp"
                     android:text="@string/description_label"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
             </FrameLayout>
@@ -45,7 +45,7 @@
                 android:id="@+id/layout_asignatura"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="@dimen/_10dp"
                 android:background="@drawable/shadow"
                 android:visibility="gone" >
 
@@ -53,13 +53,13 @@
                     android:id="@+id/LinearLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="@dimen/_2dp"
+                    android:layout_marginLeft="@dimen/_1dp"
+                    android:layout_marginRight="@dimen/_1dp"
+                    android:layout_marginTop="@dimen/_1dp"
                     android:background="@drawable/tile"
                     android:orientation="vertical"
-                    android:padding="2dp" >
+                    android:padding="@dimen/_2dp" >
 
                     <TableRow
                         android:id="@+id/tableRow1"
@@ -78,7 +78,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
-                            android:layout_marginLeft="50dp"
+                            android:layout_marginLeft="@dimen/_50dp"
                             android:text="0"
                             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -87,7 +87,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginRight="@dimen/_10dp"
                             android:gravity="right"
                             android:text="+"
                             android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -107,7 +107,7 @@
                 android:id="@+id/layout_solicitudes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="@dimen/_10dp"
                 android:background="@drawable/shadow"
                 android:visibility="gone" >
 
@@ -115,12 +115,12 @@
                     android:id="@+id/tableRow2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="@dimen/_2dp"
+                    android:layout_marginLeft="@dimen/_1dp"
+                    android:layout_marginRight="@dimen/_1dp"
+                    android:layout_marginTop="@dimen/_1dp"
                     android:background="@drawable/tile"
-                    android:padding="2dp" >
+                    android:padding="@dimen/_2dp" >
 
                     <TextView
                         android:id="@+id/textView22"
@@ -134,7 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:layout_marginLeft="50dp"
+                        android:layout_marginLeft="@dimen/_50dp"
                         android:text="0"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -143,7 +143,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="@dimen/_10dp"
                         android:gravity="right"
                         android:text="+"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -154,7 +154,7 @@
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="@dimen/_10dp"
                 android:text="@string/members"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="normal|italic" />
@@ -170,12 +170,12 @@
                     android:id="@+id/profile_members"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginLeft="1dp"
-                    android:layout_marginRight="1dp"
-                    android:layout_marginTop="1dp"
+                    android:layout_marginBottom="@dimen/_2dp"
+                    android:layout_marginLeft="@dimen/_1dp"
+                    android:layout_marginRight="@dimen/_1dp"
+                    android:layout_marginTop="@dimen/_1dp"
                     android:background="@drawable/tile"
-                    android:padding="2dp" >
+                    android:padding="@dimen/_2dp" >
                 </ListView>
             </FrameLayout>
 </LinearLayout>

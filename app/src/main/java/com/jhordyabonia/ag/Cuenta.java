@@ -26,7 +26,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.jhordyabonia.ag.SettingsActivity.Settings.DROP_MODE;
+import static util.Settings.DROP_MODE;
 
 public class Cuenta implements Asynchtask,OnItemSelectedListener
 {

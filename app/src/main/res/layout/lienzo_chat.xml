@@ -9,9 +9,9 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/_5dp"
         android:background="#ffffff"
-        android:paddingBottom="10dp" >
+        android:paddingBottom="@dimen/_10dp" >
 
     </ListView>
 
@@ -20,9 +20,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:layout_marginBottom="30dp"
-        android:layout_marginRight="20dp"
-        android:padding="7dp"
+        android:layout_marginBottom="@dimen/_30dp"
+        android:layout_marginRight="@dimen/_20dp"
+        android:padding="@dimen/_7dp"
         android:background="@drawable/bg_rounded"
         android:src="@drawable/ic_stat_name" />
 

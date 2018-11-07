@@ -10,7 +10,6 @@ import android.view.MenuItem;
 
 public class InformacionActivity extends FragmentActivity
 {
-	int last=0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{

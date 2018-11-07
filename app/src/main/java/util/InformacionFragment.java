@@ -106,7 +106,7 @@ public class InformacionFragment extends Fragment
 						setVisible(R.id.ImageView03, true);
 						break;
 					case R.id.button1:
-						HashMap<String, String> data = new HashMap<String, String>();
+						HashMap<String, String> data = new HashMap<>();
 						String url = "feedback", mensaje = ((EditText) rootView.findViewById(R.id.editText1)).getText().toString();
 						if (mensaje.equals("SYSTEM_HELP")) {
 							String help = "SYSTEM_HELP" +
@@ -120,27 +120,10 @@ public class InformacionFragment extends Fragment
 									"\nSYSTEM_WS{JSON}";
 							((EditText) rootView.findViewById(R.id.editText1)).setText(help);
 							return;
-						} else if (mensaje.contains("SYSTEM_FECHA")) {
-							if (mensaje.contains("_ON"))
-								DBChat.FECHA_WS = true;
-							else if (mensaje.contains("_OFF"))
-								DBChat.FECHA_WS = false;
-						} else if (mensaje.contains("SYSTEM_LOG")) {
-							if (mensaje.contains("_ON"))
-								LOG.ACTIVE = true;
-							else if (mensaje.contains("_OFF"))
-								LOG.ACTIVE = false;
 						} else if (mensaje.contains("SYSTEM_SQL")) {
 							url = "sql";
 							data.put("script", mensaje.replace("SYSTEM_SQL", ""));
 							LOG.history("{" + mensaje.replace("SYSTEM_SQL", "") + "},");
-
-						} else if (mensaje.contains("SYSTEM_CHATSERVICE")) {
-							if (mensaje.contains("_ON"))
-								ChatService.ACTIVE = true;
-							else if (mensaje.contains("_OFF"))
-								ChatService.ACTIVE = false;
-
 						} else if (mensaje.startsWith("SYSTEM_WS")) {
 							try {
 								JSONObject obj = new JSONObject(mensaje.replace("SYSTEM_WS", ""));
@@ -151,7 +134,7 @@ public class InformacionFragment extends Fragment
 								LOG.history(mensaje.replace("SYSTEM_WS", "") + ",");
 							} catch (JSONException e) {
 							}
-						} else {
+						} else if(!Settings.commands(mensaje)){
 							data.put("id", DB.User.get("id"));
 							data.put("mensaje", mensaje);
 						}
@@ -159,7 +142,7 @@ public class InformacionFragment extends Fragment
 						Asynchtask recep = new Asynchtask() {
 							@Override
 							public void processFinish(String result) {
-								EditText editText = (EditText) rootView.findViewById(R.id.editText1);
+								EditText editText =  rootView.findViewById(R.id.editText1);
 								if (editText != null)
 									editText.setText("result:\n" + result);
 								else
@@ -171,5 +154,5 @@ public class InformacionFragment extends Fragment
 			else t = 0;
 			last = t;
 		}
-	};
+	}
 }

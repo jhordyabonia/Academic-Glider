@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/actions_horarios" android:icon="@android:drawable/ic_menu_agenda" android:title="@string/horarios" android:visible="false" android:showAsAction="always" android:menuCategory="container"></item>
-    <item android:id="@+id/chat" android:title="@string/chats" android:showAsAction="always|withText" android:icon="@drawable/twotone_question_answer_white_18"></item>
+    <item android:id="@+id/chat" android:title="@string/groups" android:showAsAction="always|withText" android:icon="@drawable/twotone_question_answer_white_18"></item>
     <item
         android:id="@+id/actions_notifications"
         android:icon="@drawable/twotone_home_white_18"

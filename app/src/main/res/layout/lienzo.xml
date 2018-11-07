@@ -8,8 +8,8 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:paddingBottom="10dp" >
+        android:layout_margin="@dimen/_5dp"
+        android:paddingBottom="@dimen/_10dp" >
 
     </ListView>
 
@@ -18,9 +18,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:layout_marginBottom="30dp"
-        android:layout_marginRight="20dp"
-        android:padding="7dp"
+        android:layout_marginBottom="@dimen/_30dp"
+        android:layout_marginRight="@dimen/_20dp"
+        android:padding="@dimen/_7dp"
         android:background="@drawable/bg_rounded"
         android:src="@drawable/ic_stat_name" />
 
@@ -29,10 +29,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|left"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="@dimen/_20dp"
+        android:layout_marginBottom="@dimen/_30dp"
         android:background="@drawable/bg_rounded"
-        android:padding="2dp" 
+        android:padding="@dimen/_2dp"
         android:visibility="gone" >
 
         <ImageView
@@ -45,9 +45,9 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
-            android:paddingTop="10dp"
+            android:paddingLeft="@dimen/_40dp"
+            android:paddingRight="@dimen/_40dp"
+            android:paddingTop="@dimen/_10dp"
             android:text="1/1"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#fff"

@@ -369,7 +369,7 @@ public class Asignaturas implements OnItemClickListener
 			{
 				if(LIST_ASIGNATURAS.length!=list.length)
 				{
-				   if(SettingsActivity.Settings.DROP_MODE)
+				   if(util.Settings.DROP_MODE)
 				   {
 
 						   if(0==which)

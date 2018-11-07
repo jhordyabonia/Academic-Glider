@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/_5dp"
         android:orientation="vertical">
 
         <Spinner
@@ -60,14 +60,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="top"
-                android:layout_marginBottom="50dp"
-                android:columnWidth="110dp"
+                android:layout_marginBottom="@dimen/_50dp"
+                android:columnWidth="@dimen/_110dp"
                 android:gravity="top"
-                android:horizontalSpacing="2dp"
+                android:horizontalSpacing="@dimen/_2dp"
                 android:numColumns="auto_fit"
-                android:paddingLeft="5dp"
+                android:paddingLeft="@dimen/_5dp"
                 android:stretchMode="spacingWidth"
-                android:verticalSpacing="2dp"
+                android:verticalSpacing="@dimen/_2dp"
                 android:visibility="visible" />
 
             <Button

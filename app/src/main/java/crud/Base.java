@@ -372,7 +372,7 @@ public abstract class Base extends Activity implements Asynchtask {
 			intent= (new Intent(parent, AlertaActivity.class));
 			break;
 		case HomeActivity.APUNTES:
-			if(SettingsActivity.Settings.DROP_MODE)
+			if(util.Settings.DROP_MODE)
 				intent= (new Intent(parent, Main.class));
 			else intent= (new Intent(parent, ApunteActivity.class));
 			break;

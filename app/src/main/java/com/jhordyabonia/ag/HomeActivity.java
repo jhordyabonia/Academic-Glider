@@ -14,13 +14,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
@@ -42,10 +40,9 @@ import util.Style;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static chat.DBChat.ON_CHAT;
-import static chat.DBChat.find;
 import static com.jhordyabonia.ag.PlaceholderFragment.newInstance;
-import static com.jhordyabonia.ag.SettingsActivity.Settings.DROP_MODE;
-import static com.jhordyabonia.ag.SettingsActivity.Settings._DROP_MODE;
+import static util.Settings.DROP_MODE;
+import static util.Settings._DROP_MODE;
 
 
 public class HomeActivity extends FragmentActivity
