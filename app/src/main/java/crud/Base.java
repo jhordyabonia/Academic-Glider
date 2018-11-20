@@ -11,6 +11,7 @@ import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import controllers.Controller;
 import models.DB;
 
 import util.Style;
@@ -354,12 +355,17 @@ public abstract class Base extends Activity implements Asynchtask {
 			break;
 		case Edit:
 			show(false);
-			getActionBar().setTitle(getString(R.string.see) +" "+ HomeActivity.onDisplay(this));
-			button.setText(R.string.edit);
+			if(!Controller.editPermission(ON_DISPLAY))
+				button.setVisibility(View.GONE);
+			else{
+				getActionBar().setTitle(getString(R.string.see) +" "+ HomeActivity.onDisplay(this));
+				button.setText(R.string.edit);
+			}
 			break;
 		}
 		if(DB.COMUNIDAD)
 			button.setVisibility(View.GONE);
+
 	}
 
 	public static Intent crud(Context parent, Actions a)

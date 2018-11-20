@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 import android.widget.PopupMenu.OnMenuItemClickListener;
@@ -29,12 +30,17 @@ import controllers.Adapter.Item;
 
 import crud.Base;
 
+import static com.jhordyabonia.ag.HomeActivity.ALERTAS;
 import static com.jhordyabonia.ag.HomeActivity.CALIFICABLES;
 
 public class Calificables extends Controller {
 	@Override
 	public void show() 
 	{
+		ImageView imageView =  rootView.findViewById(R.id.add);
+		if(!addPermission(CALIFICABLES))
+			imageView.setVisibility(View.GONE);
+
 		DB.model(DB.MODELS[CALIFICABLES]);
 		LOCAL_DB = DB.find("asignatura", HomeActivity.idAsignaturaActual());
 		base_data = new Adapter(rootView.getContext(),ITEM_TYPE.calificable,Adapter.calificables);
@@ -56,6 +62,8 @@ public class Calificables extends Controller {
 		PopupMenu popup = new PopupMenu(getActivity(), v);
 		MenuInflater inflater = popup.getMenuInflater();
 		inflater.inflate(R.menu.actions_calificable, popup.getMenu());
+
+		popup.getMenu().findItem(R.id.delete).setEnabled(delPermission(CALIFICABLES));
 		popup.show();
 		popup.setOnMenuItemClickListener
 		(new OnMenuItemClickListener() 

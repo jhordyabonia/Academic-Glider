@@ -6,6 +6,7 @@ import java.util.HashMap;
 import models.DB;
 
 import util.Image;
+import util.Settings;
 import webservice.Asynchtask;
 
 import android.animation.Animator;
@@ -103,6 +104,9 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 			home.getActionBar().removeAllTabs();
 			home.getActionBar().hide();
 		}
+		lienzo.findViewById(R.id.nombre).setEnabled(Settings.PERMISSION(Settings.PERMISSION_CHANGE_USER));
+		lienzo.findViewById(R.id.celular).setEnabled(Settings.PERMISSION(Settings.PERMISSION_CHANGE_CEL));
+		lienzo.findViewById(R.id.universidad).setEnabled(Settings.PERMISSION(Settings.PERMISSION_CHANGE_UNIVERSIDAD));
 		starter();
 	}	
 	@Override

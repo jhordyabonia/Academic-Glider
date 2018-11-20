@@ -40,6 +40,7 @@ import controllers.Adapter.Item;
 import crud.Base;
 
 import static com.jhordyabonia.ag.HomeActivity.ALERTAS;
+import static com.jhordyabonia.ag.HomeActivity.CALIFICABLES;
 import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
 public class Alertas extends Controller
@@ -194,6 +195,8 @@ public class Alertas extends Controller
 		{alerta = LOCAL_DB.get(Base.itemSeleted).getString("alerta").equals("1");}
 		catch (JSONException e) {}
 		popup.getMenu().findItem(R.id.alarma).setChecked(alerta);
+
+		popup.getMenu().findItem(R.id.delete).setEnabled(delPermission(ALERTAS));
 		popup.show();
 		popup.setOnMenuItemClickListener
 		(new OnMenuItemClickListener() 
@@ -226,8 +229,9 @@ public class Alertas extends Controller
 	@Override
 	public void show() 
 	{
-		if(base_data!=null)
-			Toast.makeText(this.getContext(),"Updating...",Toast.LENGTH_LONG).show();
+		ImageView imageView =  rootView.findViewById(R.id.add);
+		if(!addPermission(ALERTAS))
+			imageView.setVisibility(View.GONE);
 
 		DB.model(DB.MODELS[ALERTAS]);
 		LOCAL_DB = DB.find("asignatura", HomeActivity.idAsignaturaActual());

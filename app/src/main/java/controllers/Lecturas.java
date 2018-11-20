@@ -1,21 +1,30 @@
 package controllers;
 
+import android.view.View;
+import android.widget.ImageView;
+
 import models.DB;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jhordyabonia.ag.HomeActivity;
+import com.jhordyabonia.ag.R;
 
 import controllers.Adapter.ITEM_TYPE;
 import controllers.Adapter.Item;
 
+import static com.jhordyabonia.ag.HomeActivity.CALIFICABLES;
 import static com.jhordyabonia.ag.HomeActivity.LECTURAS;
 
 public class Lecturas extends Controller {
 
 	@Override
 	public void show() {
+
+		ImageView imageView =  rootView.findViewById(R.id.add);
+		if(!addPermission(LECTURAS))
+			imageView.setVisibility(View.GONE);
 
 		DB.model(DB.MODELS[LECTURAS]);
 		LOCAL_DB = DB.find("asignatura", HomeActivity.idAsignaturaActual());

@@ -178,6 +178,7 @@
     <string name="attach">Adjuntar</string>
     <string name="select_image">Seleccionar Imagen</string>
     <string name="haveError">Hubu un error…</string>
+    <string name="noPermission">No tienes permiso para esto</string>
 
 
 

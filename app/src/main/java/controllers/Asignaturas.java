@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import util.CompartirAsignatura;
+import util.Settings;
 import util.Style;
 import webservice.Asynchtask;
 import android.app.Activity;
@@ -47,7 +48,9 @@ import crud.AsignaturaActivity;
 import crud.Base;
 import webservice.LOG;
 
+import static com.jhordyabonia.ag.HomeActivity.ALERTAS;
 import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
+import static com.jhordyabonia.ag.HomeActivity.HORARIOS;
 import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
 public class Asignaturas implements OnItemClickListener 
@@ -57,7 +60,6 @@ public class Asignaturas implements OnItemClickListener
 	private HomeActivity home;
 	private ListView base;
 	private Adapter base_data;
-	private ViewPager mViewPager;
 
 	public Asignaturas(HomeActivity fa)
 	{	home = fa;}
@@ -145,6 +147,9 @@ public class Asignaturas implements OnItemClickListener
 			);
 		}
 
+		if(!Controller.addPermission(ASIGNATURAS))
+			imageView.setVisibility(View.GONE);
+
 		pager(view,DB.COMUNIDAD);
 		base_data = new Adapter(view.getContext(),ITEM_TYPE.asignatura,Adapter.asignaturas);
 
@@ -205,10 +210,14 @@ public class Asignaturas implements OnItemClickListener
 	{
 		PopupMenu popup = new PopupMenu(home, v);
 		MenuInflater inflater = popup.getMenuInflater();
-		if(DB.COMUNIDAD)
-			inflater.inflate(R.menu.actions_comunidad,  popup.getMenu());
-		else inflater.inflate(R.menu.actions_asignatura,  popup.getMenu());
-		
+		if(DB.COMUNIDAD) {
+			inflater.inflate(R.menu.actions_comunidad, popup.getMenu());
+			popup.getMenu().findItem(R.id.descargar).setEnabled(Settings.PERMISSION(Settings.PERMISSION_DOWNLOAD_ASIGNATURA));
+		}else{
+			inflater.inflate(R.menu.actions_asignatura,  popup.getMenu());
+			popup.getMenu().findItem(R.id.compartir).setEnabled(Settings.PERMISSION(Settings.PERMISSION_SHARE_ASIGNATURA));
+		}
+		popup.getMenu().findItem(R.id.delete).setEnabled(Controller.delPermission(ASIGNATURAS));
 		popup.show();
 		popup.setOnMenuItemClickListener(new OnMenuItemClickListener()
 		{
@@ -228,7 +237,9 @@ public class Asignaturas implements OnItemClickListener
 					compartir(home,compartir_com,Base.itemSeleted).show(home.getSupportFragmentManager(), "missiles");
 					break;
 				case R.id.delete:
-					delete();break;
+					if(Controller.delPermission(HORARIOS))
+						delete();
+					break;
 				case R.id.descargar:
 					try 
 					{
@@ -246,8 +257,7 @@ public class Asignaturas implements OnItemClickListener
 							else agregar_asignatura(tmp, home);
 
 						}else DB.Asignaturas.set_list();
-					} catch (JSONException e) {}					
-					
+					} catch (JSONException e) {}
 					break;
 				}
 				return false;

@@ -187,6 +187,6 @@
     <string name="attach">Attach</string>
     <string name="select_image">Selecct Image</string>
     <string name="haveError">There was error...</string>
-
+    <string name="noPermission">You do not have permission for this</string>
 
 </resources>

@@ -257,6 +257,8 @@ public class HomeActivity extends FragmentActivity
 		super.onResume();
 		Style.bar(this);
 		Base.itemSeleted=0;
+		if(ON_DISPLAY<ASIGNATURAS)
+			ON_DISPLAY=ASIGNATURAS;
 
 		if(!DB.LOGGED) {
 			new Login(this);

@@ -8,6 +8,7 @@ import models.DB;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import util.Settings;
 import util.Style;
 import webservice.Asynchtask;
 import android.view.MenuInflater;
@@ -32,6 +33,8 @@ import controllers.Adapter.ITEM_TYPE;
 import controllers.Adapter.Item;
 import crud.Base;
 
+import static com.jhordyabonia.ag.HomeActivity.ALERTAS;
+import static com.jhordyabonia.ag.HomeActivity.CALIFICABLES;
 import static com.jhordyabonia.ag.HomeActivity.HORARIOS;
 import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
@@ -69,6 +72,10 @@ public class Horarios implements OnItemClickListener
 				{Base.crud(home, Base.Actions.Add);}
 			}
 		);
+
+		if(!Controller.addPermission(HORARIOS))
+			imageView.setVisibility(View.GONE);
+
 		base =  v.findViewById(R.id.list);
 		base_data = new Adapter(v.getContext(),ITEM_TYPE.horario,Adapter.horarios);
 		base.setAdapter(base_data);
@@ -111,9 +118,11 @@ public class Horarios implements OnItemClickListener
 
 	public void showPopup(View v) 
 	{
+
 		PopupMenu popup = new PopupMenu(home, v);
 		MenuInflater inflater = popup.getMenuInflater();
 		inflater.inflate(R.menu.actions, popup.getMenu());
+		popup.getMenu().findItem(R.id.delete).setEnabled(Controller.delPermission(HORARIOS));
 		popup.show();
 		popup.setOnMenuItemClickListener(new OnMenuItemClickListener()
 		{

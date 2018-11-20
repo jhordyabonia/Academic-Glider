@@ -38,4 +38,6 @@
     <dimen name="_1dp">1dp</dimen>
 
     <dimen name="_100">50dp</dimen>
+    <dimen name="text_hour_chat">10dp</dimen>
+
 </resources>

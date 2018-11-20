@@ -8,6 +8,7 @@ import models.DB;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import util.Settings;
 import util.Style;
 import webservice.Asynchtask;
 
@@ -38,6 +39,7 @@ import com.jhordyabonia.ag.Server;
 
 import crud.Base;
 
+import static com.jhordyabonia.ag.HomeActivity.ALERTAS;
 import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
 public abstract class Controller extends Fragment implements OnItemClickListener
@@ -112,7 +114,9 @@ public abstract class Controller extends Fragment implements OnItemClickListener
 		PopupMenu popup = new PopupMenu(getActivity(), v);
 		MenuInflater inflater = popup.getMenuInflater();
 		inflater.inflate(R.menu.actions, popup.getMenu());
+		popup.getMenu().findItem(R.id.delete).setEnabled(delPermission(ON_DISPLAY));
 		popup.show();
+
 		popup.setOnMenuItemClickListener(new OnMenuItemClickListener() 
 		{
 			@Override
@@ -126,12 +130,17 @@ public abstract class Controller extends Fragment implements OnItemClickListener
 
 	protected void delete()
 	{
+		if(!delPermission(ON_DISPLAY)){
+			Toast.makeText(rootView.getContext(),R.string.noPermission,Toast.LENGTH_LONG).show();
+			return;
+		}
+
 		String id = "";
 		try 
 		{
 			id = LOCAL_DB.get(Base.itemSeleted).getString("id");
 		} catch (JSONException e) {}
-		HashMap<String, String> data_tmp = new HashMap<String, String>();
+		HashMap<String, String> data_tmp = new HashMap<>();
 		data_tmp.put("id", id);
 		Server.setDataToSend(data_tmp);
 		Asynchtask recep = new Asynchtask() 
@@ -166,6 +175,57 @@ public abstract class Controller extends Fragment implements OnItemClickListener
 		};
 		String url_tmp = DB.MODELS[ON_DISPLAY] + "/delete";
 		Server.send(url_tmp, getActivity(), recep);
+	}
+	public static boolean addPermission(int on_diplay){
+		switch (on_diplay) {
+			case HomeActivity.ASIGNATURAS:
+				return util.Settings.PERMISSION(Settings.PERMISSION_ADD_ASIGNATURA);
+			case HomeActivity.HORARIOS:
+				return util.Settings.PERMISSION(Settings.PERMISSION_ADD_HORARIO);
+			case HomeActivity.ALERTAS:
+				return util.Settings.PERMISSION(Settings.PERMISSION_ADD_ALERTA);
+			case HomeActivity.APUNTES:
+				return util.Settings.PERMISSION(Settings.PERMISSION_ADD_APUNTE);
+			case HomeActivity.CALIFICABLES:
+				return util.Settings.PERMISSION(Settings.PERMISSION_ADD_CALIFICABLE);
+			case HomeActivity.LECTURAS:
+				return util.Settings.PERMISSION(Settings.PERMISSION_ADD_LECTURA);
+		}
+		return false;
+	}
+	public static boolean delPermission(int on_diplay){
+		switch (on_diplay) {
+			case HomeActivity.ASIGNATURAS:
+				return util.Settings.PERMISSION(Settings.PERMISSION_DEL_ASIGNATURA);
+			case HomeActivity.HORARIOS:
+				return util.Settings.PERMISSION(Settings.PERMISSION_DEL_HORARIO);
+			case HomeActivity.ALERTAS:
+				return util.Settings.PERMISSION(Settings.PERMISSION_DEL_ALERTA);
+			case HomeActivity.APUNTES:
+				return util.Settings.PERMISSION(Settings.PERMISSION_DEL_APUNTE);
+			case HomeActivity.CALIFICABLES:
+				return util.Settings.PERMISSION(Settings.PERMISSION_DEL_CALIFICABLE);
+			case HomeActivity.LECTURAS:
+				return util.Settings.PERMISSION(Settings.PERMISSION_DEL_LECTURA);
+		}
+		return false;
+	}
+	public static boolean editPermission(int on_diplay){
+		switch (on_diplay) {
+			case HomeActivity.ASIGNATURAS:
+				return util.Settings.PERMISSION(Settings.PERMISSION_EDIT_ASIGNATURA);
+			case HomeActivity.HORARIOS:
+				return util.Settings.PERMISSION(Settings.PERMISSION_EDIT_HORARIO);
+			case HomeActivity.ALERTAS:
+				return util.Settings.PERMISSION(Settings.PERMISSION_EDIT_ALERTA);
+			case HomeActivity.APUNTES:
+				return util.Settings.PERMISSION(Settings.PERMISSION_EDIT_APUNTE);
+			case HomeActivity.CALIFICABLES:
+				return util.Settings.PERMISSION(Settings.PERMISSION_EDIT_CALIFICABLE);
+			case HomeActivity.LECTURAS:
+				return util.Settings.PERMISSION(Settings.PERMISSION_EDIT_LECTURA);
+		}
+		return false;
 	}
 	public abstract void show();
 }

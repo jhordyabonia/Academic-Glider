@@ -285,8 +285,11 @@ public abstract class DB
 			try {
 				JSONObject data_= new JSONObject(msj_t.getString("dato"));
 
+				if(tipo.contains("permissions")) {
+					User.set("permisos",data_);
+				}else
 				if(tipo.contains("command")) {
-					//Excecute commands
+					util.Settings.commands(data_.toString());
 				}else if(tipo.contains("file")) {
 					save(null,
 							data_.getString("dato"),
@@ -304,6 +307,7 @@ public abstract class DB
 			}catch (JSONException e)
 			{save(null,e.getMessage()+"\n>>>\n"+msj_t,tipo+"-"+i+"-error.json");}
         }
+        save(null, db.toString(), FILE_DB);
     }
 	public static void model(String name)
 	{

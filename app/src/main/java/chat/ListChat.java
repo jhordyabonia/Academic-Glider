@@ -26,7 +26,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import controllers.Controller;
 import models.DB;
+import util.Settings;
 import util.Style;
 
 import static chat.DBChat.ON_CHAT;
@@ -115,6 +117,10 @@ public class  ListChat  implements AdapterView.OnItemClickListener,AdapterView.O
         }
 
         Style.set(root);
+
+        if(VIEW==GRUPOS)
+            if(!Settings.PERMISSION(Settings.PERMISSION_ADD_GROUP))
+                imageView.setVisibility(View.GONE);
         return root;
     }
     public void load() throws JSONException

@@ -11,7 +11,7 @@ import com.jhordyabonia.ag.R;
 
 public class Style {
     public static int STYLE=R.color.colorGreen;
-    public static String _STYLE="style";
+    public static final String _STYLE="style";
     public static void bar(Activity activity) {
             activity.getActionBar().setBackgroundDrawable(
                     new ColorDrawable(activity.getResources().getColor(STYLE)));
