@@ -19,6 +19,7 @@ import crud.Base;
 import models.DB;
 import util.Style;
 
+import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
 import static com.jhordyabonia.ag.HomeActivity.ASIGNATURA_ACTUAL;
 import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 import static controllers.Asignaturas.compartir_com;
@@ -26,7 +27,7 @@ import static controllers.Asignaturas.items_a_compartir;
 
 public class AsignaturasView extends FragmentActivity {
 
-    private int selected=0;
+    private int asignatura,selected=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +35,9 @@ public class AsignaturasView extends FragmentActivity {
         Style.bar(this);
         Intent mIntent=getIntent();
         if(mIntent!=null) {
-            int is = mIntent.getIntExtra(Base._ITEM_SELECTED, 0);
-            if (is != 0)
-                Base.itemSeleted = is;
+            asignatura = mIntent.getIntExtra(Base._ITEM_SELECTED, 0);
+            if (asignatura != 0)
+                Base.itemSeleted = asignatura;
         }
         if(DB.Asignaturas.LIST_ASIGNATURAS.length>ASIGNATURA_ACTUAL)
 				getActionBar().setTitle(DB.titulo(DB.Asignaturas.LIST_ASIGNATURAS[ASIGNATURA_ACTUAL]));
@@ -118,12 +119,13 @@ public class AsignaturasView extends FragmentActivity {
                 break;
             case R.id.ver:
                 ON_DISPLAY=HomeActivity.ASIGNATURAS;
-                Base.action=Base.Actions.Edit;
-                startActivity(new Intent(this, AsignaturaActivity.class));
+                Base.itemSeleted=asignatura;
+                Base.crud(this, Base.Actions.Edit);
                 break;
             case R.id.share:
                 items_a_compartir.clear();
-                Asignaturas.compartir(this,compartir_com,Base.itemSeleted).show(getSupportFragmentManager(), "missiles");break;
+                Base.itemSeleted=selected;
+                Asignaturas.compartir(this,compartir_com,asignatura).show(getSupportFragmentManager(), "missiles");break;
         }
         return super.onOptionsItemSelected(item);
     }

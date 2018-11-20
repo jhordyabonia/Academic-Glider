@@ -230,6 +230,8 @@ public abstract class DB
 	private static void make() throws JSONException
 	{
 		try {
+			if(db==null)
+				return;
 			JSONArray r=db.getJSONArray(name_model);
 			if(r==null)
 				throw new JSONException("Model '"+name_model+"' null");

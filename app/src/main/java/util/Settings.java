@@ -137,8 +137,10 @@ public class Settings implements AdapterView.OnItemClickListener, View.OnClickLi
         };
         GridView gridview = rootView.findViewById(R.id.gridview);
         gridview.setAdapter(collection);
-        if(!PERMISSION(PERMISSION_CHANGE_COLOR))
+
+        if(PERMISSION(PERMISSION_CHANGE_COLOR))
          gridview.setOnItemClickListener(this);
+
         sound=rootView.findViewById(R.id.sound);
         sound.setOnClickListener(this);
         sound.setChecked(SOUND);

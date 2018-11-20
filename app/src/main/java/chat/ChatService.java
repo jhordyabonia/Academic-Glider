@@ -19,6 +19,7 @@ import crud.HorarioActivity;
 import crud.LecturaActivity;
 import crud.Main;
 import models.DB;
+import util.Settings;
 import webservice.Asynchtask;
 
 import com.jhordyabonia.ag.HomeActivity;
@@ -196,7 +197,8 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 	public int notificar(String usuario,String dato, int id)
 	{		
 		Vibrator v= (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		v.vibrate(250);
+		if(Settings.VIBRATE)
+			v.vibrate(250);
 		Notification.Builder mBuilder =
 		        new Notification.Builder(this)
 	     .setSmallIcon(R.drawable.twotone_speaker_notes_white_18)
@@ -225,7 +227,8 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 	public int update(String title,String dato, String tipo)
 	{
 		Vibrator v= (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		v.vibrate(250);
+		if(Settings.VIBRATE)
+			v.vibrate(250);
 		Notification.Builder mBuilder =
 				new Notification.Builder(this)
 						.setSmallIcon(R.drawable.twotone_home_white_48)

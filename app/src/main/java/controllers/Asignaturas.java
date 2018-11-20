@@ -216,8 +216,8 @@ public class Asignaturas implements OnItemClickListener
 		}else{
 			inflater.inflate(R.menu.actions_asignatura,  popup.getMenu());
 			popup.getMenu().findItem(R.id.compartir).setEnabled(Settings.PERMISSION(Settings.PERMISSION_SHARE_ASIGNATURA));
+            popup.getMenu().findItem(R.id.delete).setEnabled(Controller.delPermission(ASIGNATURAS));
 		}
-		popup.getMenu().findItem(R.id.delete).setEnabled(Controller.delPermission(ASIGNATURAS));
 		popup.show();
 		popup.setOnMenuItemClickListener(new OnMenuItemClickListener()
 		{
