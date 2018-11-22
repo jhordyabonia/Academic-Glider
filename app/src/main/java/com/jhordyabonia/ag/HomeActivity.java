@@ -19,6 +19,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crash.FirebaseCrash;
@@ -193,7 +194,12 @@ public class HomeActivity extends FragmentActivity
 	{
 		super.onCreate(savedInstanceState);
         setMyPermissions();
-
+        if(ContextCompat.checkSelfPermission(this,
+				Manifest.permission.READ_EXTERNAL_STORAGE)
+				!= PackageManager.PERMISSION_GRANTED) {
+			DB.root = getCacheDir();
+			Toast.makeText(this,R.string.session_tmp,Toast.LENGTH_LONG).show();
+		}
 		SharedPreferences sp = getDefaultSharedPreferences(this);
 		Style.STYLE = sp.getInt(Style._STYLE,R.color.colorMarine);
 

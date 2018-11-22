@@ -102,8 +102,9 @@ public class AsignaturasView extends FragmentActivity {
     }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
+        menu.findItem(R.id.share).setVisible(Controller.addPermission(ASIGNATURAS));
         if(DB.COMUNIDAD)
-            menu.findItem(R.id.share).setVisible(false);
+            menu.findItem(R.id.share).setEnabled(false);
         return super.onPrepareOptionsMenu(menu);
     }
     @Override

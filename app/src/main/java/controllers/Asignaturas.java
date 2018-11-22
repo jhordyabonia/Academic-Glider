@@ -138,6 +138,8 @@ public class Asignaturas implements OnItemClickListener
 		}
 		else
 		{
+			if(!Controller.addPermission(ASIGNATURAS))
+				imageView.setVisibility(View.GONE);
 			imageView.setImageResource(R.drawable.ic_stat_name);
 			imageView.setOnClickListener(new OnClickListener()
 				{
@@ -147,8 +149,6 @@ public class Asignaturas implements OnItemClickListener
 			);
 		}
 
-		if(!Controller.addPermission(ASIGNATURAS))
-			imageView.setVisibility(View.GONE);
 
 		pager(view,DB.COMUNIDAD);
 		base_data = new Adapter(view.getContext(),ITEM_TYPE.asignatura,Adapter.asignaturas);

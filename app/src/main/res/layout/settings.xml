@@ -13,27 +13,28 @@
         android:paddingRight="@dimen/_15dp">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/theme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_15dp"
             android:layout_marginTop="@dimen/_15dp"
             android:textSize="@dimen/_15dp"
-            android:text="@string/theme" />
+            android:text="@string/theme"
+            android:visibility="gone"/>
 
         <GridView
             android:id="@+id/gridview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:layout_marginBottom="@dimen/_50dp"
+            android:layout_marginBottom="@dimen/_42dp"
             android:columnWidth="@dimen/_50dp"
             android:gravity="center"
             android:horizontalSpacing="@dimen/_2dp"
             android:numColumns="auto_fit"
             android:stretchMode="spacingWidth"
             android:verticalSpacing="@dimen/_2dp"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <CheckBox
             android:id="@+id/sound"
@@ -45,7 +46,7 @@
             android:gravity="left"
             android:text="@string/sound"
             android:button="@null"
-            android:paddingBottom="@dimen/_5dp"
+            android:paddingTop="@dimen/_5dp"
             android:drawableRight="?android:attr/listChoiceIndicatorMultiple" />
         <CheckBox
             android:id="@+id/vibrate"
@@ -57,7 +58,7 @@
             android:gravity="left"
             android:text="@string/vibrate"
             android:button="@null"
-            android:paddingBottom="@dimen/_5dp"
+            android:paddingTop="@dimen/_5dp"
             android:drawableRight="?android:attr/listChoiceIndicatorMultiple" />
         <CheckBox
             android:id="@+id/drop_mode"
@@ -69,7 +70,7 @@
             android:gravity="left"
             android:text="@string/classic_nav"
             android:button="@null"
-            android:paddingBottom="@dimen/_5dp"
+            android:paddingTop="@dimen/_5dp"
             android:drawableRight="?android:attr/listChoiceIndicatorMultiple" />
 
     </LinearLayout>

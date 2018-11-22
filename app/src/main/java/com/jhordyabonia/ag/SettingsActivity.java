@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -24,6 +25,15 @@ public class SettingsActivity extends FragmentActivity {
                 .replace(R.id.container, new SettingsView())
                 .commit();
         Style.bar(this);
+    }
+
+    @Override
+    public final boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public static class SettingsView extends Fragment{

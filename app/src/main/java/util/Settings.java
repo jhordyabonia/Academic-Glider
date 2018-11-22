@@ -115,31 +115,33 @@ public class Settings implements AdapterView.OnItemClickListener, View.OnClickLi
         read();
         local=this;
 
-        BaseAdapter collection = new BaseAdapter() {
-            public int getCount() {return colors.length;}
-            public long getItemId(int position) {return 0;}
-            public Object getItem(int position) {return colors[position];}
+        if(PERMISSION(PERMISSION_CHANGE_COLOR)) {
+            BaseAdapter collection = new BaseAdapter() {
+                public int getCount() {return colors.length;}
+                public long getItemId(int position) {return 0;}
+                public Object getItem(int position) {return colors[position];}
 
-            // create a new ImageView for each item referenced by the Adapter
-            public View getView(int position, View convertView, ViewGroup parent) {
-                TextView out = new TextView(rootView.getContext());
-                int _100=(int)home.getResources().getDimension(R.dimen._100);
-                out.setLayoutParams(new ViewGroup.LayoutParams(_100,_100));
-                out.setBackgroundResource(colors[position]);
-                out.setTextColor(Color.WHITE);
-                out.setGravity(Gravity.CENTER);
-                if (STYLE == colors[position]) {
-                    out.setText("X");
-                    before = out;
+                // create a new ImageView for each item referenced by the Adapter
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    TextView out = new TextView(rootView.getContext());
+                    int _100=(int)home.getResources().getDimension(R.dimen._100);
+                    out.setLayoutParams(new ViewGroup.LayoutParams(_100,_100));
+                    out.setBackgroundResource(colors[position]);
+                    out.setTextColor(Color.WHITE);
+                    out.setGravity(Gravity.CENTER);
+                    if (STYLE == colors[position]) {
+                        out.setText("X");
+                        before = out;
+                    }
+                    return out;
                 }
-                return out;
-            }
-        };
-        GridView gridview = rootView.findViewById(R.id.gridview);
-        gridview.setAdapter(collection);
-
-        if(PERMISSION(PERMISSION_CHANGE_COLOR))
-         gridview.setOnItemClickListener(this);
+            };
+            rootView.findViewById(R.id.theme).setVisibility(View.VISIBLE);
+            GridView gridview = rootView.findViewById(R.id.gridview);
+            gridview.setOnItemClickListener(this);
+            gridview.setAdapter(collection);
+            gridview.setVisibility(View.VISIBLE);
+        }
 
         sound=rootView.findViewById(R.id.sound);
         sound.setOnClickListener(this);

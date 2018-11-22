@@ -188,5 +188,6 @@
     <string name="select_image">Selecct Image</string>
     <string name="haveError">There was error...</string>
     <string name="noPermission">You do not have permission for this</string>
+    <string name="session_tmp">You do not have permission to read the memory, it is possible that some functions do not go well</string>
 
 </resources>

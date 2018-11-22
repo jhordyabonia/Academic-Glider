@@ -25,66 +25,57 @@
         android:paddingRight="@dimen/_2dp"
         android:paddingTop="@dimen/_2dp" >
 
-        <LinearLayout
-            android:id="@+id/LinearLayout1"
+        <TableRow
+            android:id="@+id/tableRow1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/_2dp"
-            android:orientation="vertical" >
+            android:layout_height="wrap_content">
 
-            <TableRow
-                android:id="@+id/tableRow1"
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:maxHeight="@dimen/_35dp"
+                android:maxWidth="@dimen/_35dp"
+                android:src="@drawable/twotone_info_white_18" />
+
+            <LinearLayout
+                android:id="@+id/LinearLayout1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:maxHeight="@dimen/_35dp"
-                    android:maxWidth="@dimen/_35dp"
-                    android:src="@drawable/twotone_info_white_18" />
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_2dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="top"
+                    android:layout_gravity="left|center_horizontal"
                     android:layout_weight="1"
-                    android:gravity="fill_horizontal|center"
-                    android:text="Mensaje... Lorenipsum in y Lorenipsum the Lorenipsum Lorenipsum"
-                    android:textColor="#6c6c6c"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-                    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
                     android:background="?android:attr/activatedBackgroundIndicator"
-                    android:minHeight="?android:attr/listPreferredItemHeightSmall" />
-
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                    android:gravity="left|center_horizontal"
+                    android:paddingTop="@dimen/_10dp"
+                    android:text="Mensaje... Lorenipsum in y Lorenipsum the Lorenipsum Lorenipsum"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#6c6c6c" />
 
                 <TextView
                     android:id="@+id/textView3"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_weight="1"
-                    android:gravity="top|right"
+                    android:gravity="bottom|right"
                     android:paddingLeft="@dimen/_3dp"
                     android:paddingRight="@dimen/_3dp"
                     android:text="fecha/hora"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="#6c6c6c"
-                    android:textSize="@dimen/_12dp"
+                    android:textSize="@dimen/_8dp"
                     android:textStyle="italic" />
+            </LinearLayout>
 
-            </TableRow>
-        </LinearLayout>
+        </TableRow>
 
     </LinearLayout>
 </FrameLayout>
