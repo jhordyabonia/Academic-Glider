@@ -66,7 +66,7 @@
     <string name="groups">Groups </string>
     <string name="chats">Conversations </string>
     <string name="contacts">Colleagues </string>
-    <string name="msj_share1">Hi, download Academic Glider for your smartphone </string>
+    <string name="msj_share1">Hi, download Academic Glider for your smartphone here https://play.google.com/store/apps/details?id=com.jhordyabonia.ag</string>
     <string name="msj_share2">Download it from </string>
     <string name="invite">Invite a colleagues through&#8230; </string>
     <string name="no_description">Without description </string>
@@ -166,9 +166,9 @@
         Academic Glider has many benefits:\n\n
         • Simple configuration: Teachers can add students directly or provide them with a code to join them. It is configured in just a few minutes.\n\n
         • Saves time: With a simple workflow and no need to use paper, teachers can create, review and grade tasks quickly from a single place.\n\n
-        • Improved organization: Students can see all their assignments on a specific page, and all class materials (eg, documents, photos and videos) are automatically archived in Google Drive folders.\n\n
+        • Improved organization: Students can see all their assignments on a specific page, and all class materials (eg, documents, photos and videos) are automatically archived.\n\n
         • Improved communication: Teachers can use Academic Glider to send announcements and initiate classroom discussions instantly. Students can share resources with their classmates or answer questions in the news.\n\n
-        • Accessible and secure: Like the rest of the G Suite for Education services, Academic Glider does not contain advertisements, never uses your content or student data for advertising purposes and is offered free of charge.
+        • Accessible and secure:  Academic Glider does not contain advertisements, never uses your content or student data for advertising purposes and is offered free of charge.
     </string>
     <string name="info_23">Message</string>
     <string name="info_24">With the tab "HOURS" selected, touch the tab (add) "+"</string>

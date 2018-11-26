@@ -60,7 +60,7 @@ public class Login
 	}
 	public static void login(final HomeActivity home)
 	{
-		HashMap<String, String> datos=new HashMap<String, String>();
+		HashMap<String, String> datos=new HashMap();
 		final String celular=((EditText) home.findViewById(R.id.celular)).getText().toString();
 		String password=((EditText)home.findViewById(R.id.password)).getText().toString();
 		if(!celular.isEmpty())

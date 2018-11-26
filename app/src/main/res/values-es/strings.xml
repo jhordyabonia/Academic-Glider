@@ -68,7 +68,7 @@
     <string name="groups">Grupos </string>
     <string name="chats">Conversaciones </string>
     <string name="contacts">Compañeros </string>
-    <string name="msj_share1">Hola, descarga Academic Glider para tu Smartphone </string>
+    <string name="msj_share1">Hola, descarga Academic Glider para tu Smartphone aquí https://play.google.com/store/apps/details?id=com.jhordyabonia.ag</string>
     <string name="msj_share2">Descargalo de  </string>
     <string name="invite">Invitar un compañero a través de&#8230; </string>
     <string name="no_description">Sin descripcion </string>
@@ -157,9 +157,9 @@
         Academic Glider tiene muchos beneficios:\n\n
         • Configuración sencilla: Los profesores pueden agregar a los alumnos directamente o proporcionarles un código para que se unan. Se configura en tan solo unos minutos.\n\n
         • Ahorra tiempo: Con un flujo de trabajo sencillo y sin necesidad de usar papel, los profesores pueden crear, revisar y calificar las tareas con rapidez desde un único lugar.\n\n
-        • Mejora la organización: Los alumnos pueden ver todas sus tareas en una página específica, y todos los materiales de la clase (p. ej., documentos, fotos y videos) se archivan automáticamente en carpetas de Google Drive.\n\n
+        • Mejora la organización: Los alumnos pueden ver todas sus tareas en una página específica, y todos los materiales de la clase (p. ej., documentos, fotos y videos) se archivan automáticamente.\n\n
         • Mejora la comunicación: Los profesores pueden usar Academic Glider para enviar anuncios e iniciar debates de la clase al instante. Los alumnos pueden compartir recursos con sus compañeros o responder a las preguntas en las novedades.\n\n
-        • Accesible y seguro: Al igual que el resto de los servicios de G Suite for Education, Academic Glider no contiene anuncios, jamás utiliza tu contenido ni los datos de los alumnos con fines publicitarios y se ofrece de forma gratuita.
+        • Accesible y seguro:  Academic Glider no contiene anuncios, jamás utiliza tu contenido ni los datos de los alumnos con fines publicitarios y se ofrece de forma gratuita.
     </string>
     <string name="info_23">Mensaje</string>
     <string name="info_24">Con la pestaña "HORARIOS" seleccionada, toca la pestaña (add) "+"</string>

@@ -1,14 +1,5 @@
 package com.jhordyabonia.ag;
 
-import java.util.HashMap;
-
-
-import models.DB;
-
-import util.Image;
-import util.Settings;
-import webservice.Asynchtask;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -26,6 +17,13 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+
+import models.DB;
+import util.Image;
+import util.Settings;
+import webservice.Asynchtask;
 
 import static util.Settings.DROP_MODE;
 
@@ -130,8 +128,7 @@ public class Cuenta implements Asynchtask,OnItemSelectedListener
 				msj = data.getString("menssage");
 				DB.User.set(data.getJSONObject("data"));
 				Toast.makeText(home, msj, Toast.LENGTH_SHORT).show();
-			} catch (JSONException e) {
-			}
+			} catch (JSONException e) {}
 
 			if (msj.equals("Registro Exitoso!")) {
 				Toast.makeText(home, msj, Toast.LENGTH_SHORT).show();
