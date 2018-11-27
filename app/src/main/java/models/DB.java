@@ -1,11 +1,7 @@
 package models;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.pm.PackageManager;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -39,8 +35,8 @@ public abstract class DB
 	public static boolean COMUNIDAD = false;
 	public static boolean LOGGED = false;
 	public static String TOKEN = "0000000000";
-	public static String DIRECTORY = "Glider";
-	public static String FILE_DB = "db.json";
+	public static String DIRECTORY = ".Glider";
+	public static String FILE_DB = ".db.json";
 	public static File root = Environment.getExternalStorageDirectory();
 	public static String MODELS[] = {"alertas","apuntes","lecturas","calificables","horarios","asignaturas"};
 	public static int HOY = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)-1;

@@ -10,7 +10,7 @@ import webservice.Client;
 import android.app.Activity;
 
 public final class Server {
-	public static String URL_SERVER = "http://35.168.10.93/pu/";
+	public static String URL_SERVER = "http://35.175.206.133/pu/";
 	static
 	{
 		String url=DB.load("server.js");
