@@ -101,17 +101,18 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 	{
 	    if(intent==null)
         {
-            Toast.makeText(this,"intent = null",Toast.LENGTH_LONG).show();
+            /*Toast.makeText(this,"intent = null",Toast.LENGTH_LONG).show();
 			Intent mIntent = new Intent(this, HomeActivity.class);
             mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(mIntent);
+            startActivity(mIntent);*/
+            CHAT=0;
             return  super.onStartCommand(intent, flags, startId);
-        }
+        }else
+			CHAT = intent.getIntExtra("CHAT", 0);
 		Bundle extras = intent.getExtras();
 		
 		if(extras !=null) 
 			messenger = (Messenger) extras.get(MESSENGER);
-		CHAT = intent.getIntExtra("CHAT", 0);	
 		STOP = false;		
 		get();
 		return super.onStartCommand(intent, flags, startId);	

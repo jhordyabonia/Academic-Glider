@@ -78,11 +78,13 @@ public class Adapter extends ArrayAdapter{
 				}
 				((TextView)root.findViewById(R.id.textView4))
 				.setText(tmp.nota);
-				if(tmp.image!=null&&!DB.COMUNIDAD) {
+				/*if(tmp.image!=null&&!DB.COMUNIDAD) {
                     root.findViewById(R.id.imageView1).setVisibility(View.VISIBLE);
 					Image.Loader loader = new Image.Loader(tmp.nombre, (ImageView) root.findViewById(R.id.imageView1));
 					loader.execute(tmp.image);
-				}
+				}*/
+				if(!DB.COMUNIDAD)
+					Image.findImg(tmp.nombre, (ImageView) root.findViewById(R.id.imageView1));
 				if(DB.COMUNIDAD)
 					root.findViewById(R.id.textView48).setVisibility(View.GONE);
 

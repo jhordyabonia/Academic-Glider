@@ -1,7 +1,10 @@
 package controllers;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import models.DB;
 import models.DB.User;
@@ -10,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import util.CompartirAsignatura;
+import util.Image;
 import util.Settings;
 import util.Style;
 import webservice.Asynchtask;
@@ -49,8 +53,10 @@ import crud.Base;
 import webservice.LOG;
 
 import static com.jhordyabonia.ag.HomeActivity.ALERTAS;
+import static com.jhordyabonia.ag.HomeActivity.APUNTES;
 import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
 import static com.jhordyabonia.ag.HomeActivity.HORARIOS;
+import static com.jhordyabonia.ag.HomeActivity.LECTURAS;
 import static com.jhordyabonia.ag.HomeActivity.ON_DISPLAY;
 
 public class Asignaturas implements OnItemClickListener 
@@ -186,11 +192,12 @@ public class Asignaturas implements OnItemClickListener
 								));
 					break;
 				}else {
-					String descripcion="",img=v.getString("nombre")+".jpg";
+					String descripcion=getDescripcion(v.getString("id")),img=v.getString("nombre")+".jpg";
 					if(!v.isNull("imagen"))
 						img=v.getString("imagen");
 					if(!v.isNull("descripcion"))
-						descripcion=v.getString("descripcion");
+						if(descripcion.isEmpty())
+							descripcion=v.getString("descripcion");
 
 					base_data.add(
 							new Item(
@@ -204,6 +211,25 @@ public class Asignaturas implements OnItemClickListener
 				}
 			}
 		} catch (JSONException e) {}
+	}
+
+	public static String getDescripcion(String id)
+	{
+		StringBuffer out = new StringBuffer();
+		DB.model(DB.MODELS[ALERTAS]);
+		ArrayList<JSONObject> var =DB.find("asignatura", id);
+		DB.model(DB.MODELS[LECTURAS]);
+		var.addAll(DB.find("asignatura",id));
+		DB.model(DB.MODELS[APUNTES]);
+		var.addAll(DB.find("asignatura",id));
+			for (JSONObject n : var)
+			{
+				try {
+					out.append(n.getString("nombre"));
+				} catch (JSONException e) {}
+
+			}
+		return out.toString();
 	}
 
 	public void showPopup(View v) 
@@ -326,6 +352,7 @@ public class Asignaturas implements OnItemClickListener
 		Base.itemSeleted = index_item;
 		home.abrirAsignatura();
 	}
+
 	public static DialogFragment asignaturas_list(FragmentActivity activity, String titulo, String[] items,
 			final DialogInterface.OnClickListener actions)
 	{return new CompartirAsignatura.List(activity,titulo,items,actions); }

@@ -2,6 +2,7 @@ package models;
 
 import android.app.Activity;
 import android.os.Environment;
+import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -21,6 +22,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -28,7 +31,10 @@ import java.util.HashMap;
 import controllers.Alertas;
 import webservice.Asynchtask;
 
+import static com.jhordyabonia.ag.HomeActivity.ALERTAS;
+import static com.jhordyabonia.ag.HomeActivity.APUNTES;
 import static com.jhordyabonia.ag.HomeActivity.ASIGNATURAS;
+import static com.jhordyabonia.ag.HomeActivity.LECTURAS;
 
 public abstract class DB
 {
@@ -261,7 +267,8 @@ public abstract class DB
 
 			if (tmp == null)
 				db.getJSONArray(name_model).put(data);
-			else db.getJSONArray(name_model).put(tmp.getInt("count"), data);
+			else
+				db.getJSONArray(name_model).put(tmp.getInt("count"), data);
 
 			Asignaturas.set_list();
 			save(null, db.toString(), FILE_DB);
@@ -441,7 +448,7 @@ public abstract class DB
 		public static String LIST_ASIGNATURAS[] = {};
 		public static String LIST_ID_ASIGNATURAS[] = {};
 
-		public static String getName(String id) 
+		public static String getName(String id)
 		{
 			int index = 0;
 			for (String n : LIST_ID_ASIGNATURAS)
@@ -490,9 +497,56 @@ public abstract class DB
 				{
 					LIST_ID_ASIGNATURAS[count] = t.getString("id");
 					LIST_ASIGNATURAS[count++] = t.getString("nombre");
+
+                    Asignaturas.findDescripcion(t.getString("id"),t.getString("nombre"));
 				} catch (JSONException e)
 				{	continue; }
 			}
+		}
+
+		public static void findDescripcion(final String id,String word) {
+			DB.model(DB.MODELS[ASIGNATURAS]);
+			final ArrayList<JSONObject> tmp = DB.find("id", id);
+			if(!tmp.isEmpty())
+				try {
+					if(!tmp.get(0).getString("descripcion").isEmpty())
+						return;
+
+					if(word.isEmpty())
+						word = tmp.get(0).getString("nombre");
+					final String word_=word;
+					final String q = URLEncoder.encode(word_, "UTF-8");
+					String url="https://es.wikipedia.org/w/index.php?search="+q;
+					Asynchtask recep = new Asynchtask()
+					{
+						@Override
+						public void processFinish(String result){
+							String empty="Para más opciones de búsqueda, vea Ayuda:Búsqueda.";
+							String descrip=result,out="";
+							int ipos=descrip.indexOf("<p");
+							int start=descrip.indexOf(">",ipos)+">".length();
+							int end=descrip.indexOf("</p>",start);
+							descrip=descrip.substring(start,end);
+							descrip= Html.fromHtml(descrip.trim()).toString();
+
+							if(descrip.equals(empty)){
+								if(word_.contains(" "))
+									for(String r:word_.split(" ")){
+										if(r.length()>2)
+											findDescripcion(id,r);
+									}
+							}else {
+								try {
+									tmp.get(0).put("descripcion", descrip);
+									DB.insert(MODELS[ASIGNATURAS],tmp.get(0));
+								}catch (JSONException e){}
+							}
+						}
+					};
+					Server.send("",url, null, recep);
+
+				} catch (JSONException e) {}
+				catch (UnsupportedEncodingException e) {}
 		}
 	}
 

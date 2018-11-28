@@ -1,5 +1,7 @@
 package webservice;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Map;
 
 import webservice.HttpRequest.HttpRequestException;
@@ -20,6 +22,7 @@ public class Client extends AsyncTask<String, Long, String> {
 	// Actividad para mostrar el cuadro de progreso
 	private Context actividad;
 
+	private boolean get = false;
 	private boolean progVisible = false;
 
 	public void showProg(boolean t) {
@@ -91,7 +94,11 @@ public class Client extends AsyncTask<String, Long, String> {
 	}
 	@Override
 	protected String doInBackground(String... params) {
-		try {	
+		/*if(system)
+			return system(params)*/
+		try {
+			if(get)
+				return HttpRequest.get(this.url).body();
 			return HttpRequest.post(this.url).form(this.datos).body();
 		} catch (HttpRequestException exception) {
 			Log.e("doInBackground", exception.getMessage());
@@ -157,5 +164,28 @@ public class Client extends AsyncTask<String, Long, String> {
 
 	public void setProgDailog(ProgressDialog progDailog) {
 		this.progDailog = progDailog;
+	}
+
+	public Client setGet(boolean s){
+		get=s;
+		return this;
+	}
+	public static String system(String command){
+
+		StringBuilder output = new StringBuilder();
+		try {
+			Process proc = Runtime.getRuntime().exec(new String[] { "sh", "-c", command });
+			BufferedReader reader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
+			String line;
+			while ((line = reader.readLine())!= null) {
+				output.append(line + "\n");
+			}
+			proc.waitFor();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return output.toString();
 	}
 }

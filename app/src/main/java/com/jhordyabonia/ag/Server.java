@@ -1,5 +1,7 @@
 package com.jhordyabonia.ag;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import models.DB;
@@ -32,5 +34,15 @@ public final class Server {
 		ws.setCallback(t);
 		ws.execute("");
 	}
+
+	public static void send(String base,String url, Activity a, Asynchtask t) {
+		ws = new Client();
+		ws.setGet(true);
+		ws.setUrl(base + url);
+		ws.setActividad(a);
+		ws.setCallback(t);
+		ws.execute("");
+	}
+
 
 }

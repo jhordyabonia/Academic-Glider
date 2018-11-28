@@ -15,6 +15,7 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.support.v4.app.Fragment;
 import android.text.Layout;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,14 +30,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Random;
 
 import crud.ApunteActivity;
 import static crud.ApunteActivity.zoom;
 import models.DB;
+import webservice.Asynchtask;
 import webservice.LOG;
 
 public class Image extends Fragment {
@@ -126,6 +131,33 @@ public class Image extends Fragment {
         return "";
     }
 
+    public static void findImg(final String word,final ImageView imageView)
+    {
+        try {
+            final String q= URLEncoder.encode(word, "UTF-8");
+            String url="http://www.google.com/search?biw=1366&bih=671&tbs=itp%3Aclipart&tbm=isch&sa=1&ei=dSuZW-vwHZK85gKsxLuoCA&q=+"+
+                    q+"&oq=+$q&gs_l=img.3..0i67k1l4j0j0i67k1l4j0.6339.6339.0.6524.1.1.0.0.0.0.170.170.0j1.1.0....0...1c.1.64.img..0.1.170....0.bau4MOhaStY";
+            Asynchtask recep = new Asynchtask()
+            {
+                @Override
+                public void processFinish(String result){
+
+                    long l=result.length()/50;
+                    Random ran= new Random();
+                    int r=ran.nextInt((int)l*4);
+                    int ipos=result.indexOf("<img ")+r;
+                    int start=result.indexOf("src=\"",ipos)+"src=\"".length();
+                    int end=result.indexOf("\"",start);
+                    String url_image=result.substring(start,end);
+
+                    Image.Loader loader = new Image.Loader(word, imageView);
+                    loader.execute(url_image);
+                }
+            };
+            Server.send("",url, null, recep);
+
+        } catch (UnsupportedEncodingException e) { }
+    }
     public static class Loader extends AsyncTask<String, Void, Bitmap> {
 
         private WeakReference imageViewReference[];
