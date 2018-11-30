@@ -180,6 +180,7 @@
     <string name="haveError">Hubu un error…</string>
     <string name="noPermission">No tienes permiso para esto</string>
     <string name="session_tmp">No tienes permiso para leer la memoria, es posible que alguna funciones no vallan bien</string>
+    <string name="loading">Cargando&#8230;</string>
 
 
 

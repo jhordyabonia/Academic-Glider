@@ -5,30 +5,40 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.crash.FirebaseCrash;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONObject;
 
 import chat.ChatService;
 import chat.DBChat;
 import chat.ListChat;
+import chat.Push;
 import controllers.Asignaturas;
 import controllers.AsignaturasView;
 import controllers.Horarios;
@@ -122,9 +132,13 @@ public class HomeActivity extends FragmentActivity
 			DB.COMUNIDAD=community;
 
 		FragmentManager fragmentManager = getFragmentManager();
-		fragmentManager.beginTransaction()
-				.replace(R.id.container, newInstance(position))
-				.commit();
+		try {
+			fragmentManager.beginTransaction()
+					.replace(R.id.container, newInstance(position))
+					.commit();
+		}catch (java.lang.IllegalStateException e){
+			Toast.makeText(this,R.string.haveError,Toast.LENGTH_SHORT).show();
+		}
 	}
 	/*/new navegation
 	private void setDropMode() {
@@ -218,13 +232,53 @@ public class HomeActivity extends FragmentActivity
 		horario = new Horarios(this);
 		asignaturas = new Asignaturas(this);
 
-		FirebaseCrash.log("HomeActivity created");
 		mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 		Bundle bundle = new Bundle();
 		bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "0.1");
 		bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "HomeActivity");
 		bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
 		mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        //subscribe();
+		//this.startForegroundService(intent);
+	}
+	private void subscribe(){
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			// Create channel to show notifications.
+			NotificationManager notificationManager =
+					getSystemService(NotificationManager.class);
+			notificationManager.createNotificationChannel(new NotificationChannel("fcm_default_channel",
+					"ag_service_push", NotificationManager.IMPORTANCE_LOW));
+		}
+
+		FirebaseMessaging.getInstance().subscribeToTopic("Samira")
+				.addOnCompleteListener(new OnCompleteListener<Void>() {
+					@Override
+					public void onComplete(@NonNull Task<Void> task) {
+						String msg = "subscripted";
+						if (!task.isSuccessful()) {
+							msg = "No subscrited";
+						}
+						Log.e("subscribe", msg);
+					}
+				});
+	}
+	public void log(){
+		FirebaseInstanceId.getInstance().getInstanceId()
+				.addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+					@Override
+					public void onComplete(@NonNull Task<InstanceIdResult> task) {
+						if (!task.isSuccessful()) {
+							Log.e("log", "getInstanceId failed", task.getException());
+							return;
+						}
+						// Get new Instance ID token
+						String token = task.getResult().getToken();
+						Log.e("log", token);
+
+						Intent intent = new Intent(HomeActivity.this, Push.class);
+						startService(intent);
+					}
+				});
 	}
 	public void show_dias(int which)
 	{
@@ -584,7 +638,7 @@ public class HomeActivity extends FragmentActivity
         		dropMode();
 
         	if(DB.LOGGED) {
-				if (arg1 == KeyEvent.KEYCODE_BACK)
+				if (arg1 == KeyEvent.KEYCODE_BACK){
 					if(mNavigationDrawerFragment.current()==-1) {
 						mNavigationDrawerFragment.previews();
 						return true;
@@ -592,6 +646,9 @@ public class HomeActivity extends FragmentActivity
 						mNavigationDrawerFragment.selectItem(0);
 						return true;
 					}
+					KeyEvent out = new KeyEvent(KeyEvent.ACTION_MULTIPLE,KeyEvent.KEYCODE_HOME);
+					return super.onKeyDown(arg1,out);
+				}
 			}
         }else  if(back(arg1)) return true;
 

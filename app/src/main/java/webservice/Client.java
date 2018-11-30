@@ -10,6 +10,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.jhordyabonia.ag.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -82,13 +84,14 @@ public class Client extends AsyncTask<String, Long, String> {
 	protected void onPreExecute() {
 		super.onPreExecute();
 		if (progVisible) {
-			if (progDailog == null) {
-				progDailog = new ProgressDialog(actividad);
-				progDailog.setMessage("Loading...");
-				progDailog.setIndeterminate(false);
-				progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-				// progDailog.setCancelable(true);
-			}
+			if(actividad!=null)
+				if (progDailog == null) {
+					progDailog = new ProgressDialog(actividad);
+					progDailog.setMessage(actividad.getString(R.string.loading));
+					progDailog.setIndeterminate(false);
+					progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+					progDailog.setCancelable(false);
+				}
 			progDailog.show();
 		}
 	}
@@ -105,6 +108,8 @@ public class Client extends AsyncTask<String, Long, String> {
 			return "Sin conexion a internet";//"Error HttpRequestException";
 		} catch (Exception e) {
 			Log.e("doInBackground", e.getMessage());
+			/*try {Thread.sleep(30000);}
+			catch (InterruptedException e1) {}*/
 			return "Error Exception";
 		}
 	}

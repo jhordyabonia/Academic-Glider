@@ -186,8 +186,16 @@
     <string name="settings">Settings</string>
     <string name="attach">Attach</string>
     <string name="select_image">Selecct Image</string>
-    <string name="haveError">There was error...</string>
+    <string name="haveError">There was error&#8230;</string>
     <string name="noPermission">You do not have permission for this</string>
+    <string name="loading">Loading&#8230;</string>
     <string name="session_tmp">You do not have permission to read the memory, it is possible that some functions do not go well</string>
+
+
+
+
+
+
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
 
 </resources>

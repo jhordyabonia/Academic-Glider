@@ -28,6 +28,9 @@ import com.jhordyabonia.ag.R;
 import com.jhordyabonia.ag.Server;
 import com.jhordyabonia.ag.SettingsActivity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Notification;
@@ -37,16 +40,21 @@ import android.app.Service;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.Vibrator;
+import android.util.Log;
+import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
 
 public class ChatService extends Service implements Asynchtask ,Notificaciones.Notifications
-{	
+{
+	public  static  boolean THERE_ARE_MESSAGE = true;
 	public  static final String MESSENGER = "messenger";
 	private  static final String MENSAJE_NUEVO = "mensaje_nuevo";
 
@@ -140,10 +148,26 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 	private void get()
 	{
 		if(!ACTIVE)return;
-		datos.put("usuario", ID);
-		datos.put("last_msj", ""+DBChat.LAST_MSJ);
-		Server.setDataToSend(datos);
-		Server.send("chat/get", null, this);
+		if(THERE_ARE_MESSAGE) {
+			THERE_ARE_MESSAGE = false;
+			datos.put("usuario", ID);
+			datos.put("last_msj", "" + DBChat.LAST_MSJ);
+			Server.setDataToSend(datos);
+			Server.send("chat/get", null, this);
+		}else{
+			ObjectAnimator in0 = ObjectAnimator
+					.ofFloat(null,"scaleX",1,0);
+
+			in0.setDuration(1000);
+			in0.setInterpolator(new LinearInterpolator());
+			in0.addListener( new AnimatorListenerAdapter()
+								{
+									@Override
+									public void onAnimationEnd(Animator anim)
+									{  get();}
+								} );
+			in0.start();
+		}
 	}
 	private void nuevos(JSONArray db)
 	{
@@ -200,11 +224,15 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 		Vibrator v= (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		if(Settings.VIBRATE)
 			v.vibrate(250);
+
+		Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 		Notification.Builder mBuilder =
 		        new Notification.Builder(this)
-	     .setSmallIcon(R.drawable.twotone_speaker_notes_white_18)
+	     .setSmallIcon(R.drawable.twotone_speaker_notes_white_48)
 	     .setContentTitle(usuario)
 	     .setContentText(dato);
+		if(Settings.SOUND)
+			mBuilder.setSound(defaultSoundUri);
 		// Creates an explicit intent for an Activity in your app
 		Intent resultIntent = new Intent(this, ChatActivity.class);
 		resultIntent.putExtra("CHAT", ""+id);
@@ -235,6 +263,10 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 						.setSmallIcon(R.drawable.twotone_home_white_48)
 						.setContentTitle(title)
 						.setContentText(dato);
+
+		Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+		if(Settings.SOUND)
+			mBuilder.setSound(defaultSoundUri);
 		// Creates an explicit intent for an Activity in your app
 
 		Intent intent=null;

@@ -522,7 +522,7 @@ public abstract class DB
 						@Override
 						public void processFinish(String result){
 							String empty="Para más opciones de búsqueda, vea Ayuda:Búsqueda.";
-							String descrip=result,out="";
+							String descrip=result;
 							int ipos=descrip.indexOf("<p");
 							int start=descrip.indexOf(">",ipos)+">".length();
 							int end=descrip.indexOf("</p>",start);
@@ -532,8 +532,16 @@ public abstract class DB
 							if(descrip.equals(empty)){
 								if(word_.contains(" "))
 									for(String r:word_.split(" ")){
-										if(r.length()>2)
-											findDescripcion(id,r);
+										if(r.length()>2) {
+											findDescripcion(id, r);
+											try {
+												Thread.sleep(500);
+												if(!tmp.get(0).getString("descripcion").isEmpty())
+													return;
+											}
+											catch (InterruptedException e) {}
+											catch (JSONException e) {}
+										}
 									}
 							}else {
 								try {

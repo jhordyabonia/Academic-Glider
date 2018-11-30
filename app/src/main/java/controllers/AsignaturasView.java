@@ -126,7 +126,8 @@ public class AsignaturasView extends FragmentActivity {
             case R.id.share:
                 items_a_compartir.clear();
                 Base.itemSeleted=selected;
-                Asignaturas.compartir(this,compartir_com,asignatura).show(getSupportFragmentManager(), "missiles");break;
+                Asignaturas.compartir(this,compartir_com,asignatura).show(getSupportFragmentManager(), "missiles");
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -148,6 +148,12 @@ public class Image extends Fragment {
                     int ipos=result.indexOf("<img ")+r;
                     int start=result.indexOf("src=\"",ipos)+"src=\"".length();
                     int end=result.indexOf("\"",start);
+                    start=start>0?start:0;
+                    start=start<result.length()?start:0;
+
+                    end=end>0?end:0;
+                    end=end<result.length()?end:0;
+
                     String url_image=result.substring(start,end);
 
                     Image.Loader loader = new Image.Loader(word, imageView);
