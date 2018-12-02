@@ -5,15 +5,12 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -26,12 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONObject;
 
@@ -90,6 +82,7 @@ public class HomeActivity extends FragmentActivity
 	public/*private*/ ActionBar actionBar;
 	public/*private*/ DialogFragment list_dias;
 	public/*private*/ DialogFragment list_comunidad;
+	public static HomeActivity HOME=null;
 	
 	public static final String idAsignaturaActual()
 	{
@@ -138,6 +131,10 @@ public class HomeActivity extends FragmentActivity
 					.commit();
 		}catch (java.lang.IllegalStateException e){
 			Toast.makeText(this,R.string.haveError,Toast.LENGTH_SHORT).show();
+			if(position==4){
+
+			}
+			Log.e("ESTATE ERROR",""+position);
 		}
 	}
 	/*/new navegation
@@ -165,7 +162,7 @@ public class HomeActivity extends FragmentActivity
 					(DrawerLayout) findViewById(R.id.drawer_layout));
 			mNavigationDrawerFragment.selectItem(2);
 
-			DBChat.init(this);
+			DBChat.init();
 		}else actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 	}
@@ -238,48 +235,9 @@ public class HomeActivity extends FragmentActivity
 		bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "HomeActivity");
 		bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "image");
 		mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
-        //subscribe();
-		//this.startForegroundService(intent);
+        Push.subscribe(this);
 	}
-	private void subscribe(){
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			// Create channel to show notifications.
-			NotificationManager notificationManager =
-					getSystemService(NotificationManager.class);
-			notificationManager.createNotificationChannel(new NotificationChannel("fcm_default_channel",
-					"ag_service_push", NotificationManager.IMPORTANCE_LOW));
-		}
 
-		FirebaseMessaging.getInstance().subscribeToTopic("Samira")
-				.addOnCompleteListener(new OnCompleteListener<Void>() {
-					@Override
-					public void onComplete(@NonNull Task<Void> task) {
-						String msg = "subscripted";
-						if (!task.isSuccessful()) {
-							msg = "No subscrited";
-						}
-						Log.e("subscribe", msg);
-					}
-				});
-	}
-	public void log(){
-		FirebaseInstanceId.getInstance().getInstanceId()
-				.addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-					@Override
-					public void onComplete(@NonNull Task<InstanceIdResult> task) {
-						if (!task.isSuccessful()) {
-							Log.e("log", "getInstanceId failed", task.getException());
-							return;
-						}
-						// Get new Instance ID token
-						String token = task.getResult().getToken();
-						Log.e("log", token);
-
-						Intent intent = new Intent(HomeActivity.this, Push.class);
-						startService(intent);
-					}
-				});
-	}
 	public void show_dias(int which)
 	{
 		Horarios.setDia(which);
@@ -334,17 +292,12 @@ public class HomeActivity extends FragmentActivity
 				ChatService.updater(this,0);
 			}
 		}
-	}
-	@Override
-	protected void onPause()
-	{
-		if(DROP_MODE)
-			ChatService.updater(this,0);
-		super.onPause();
+		HOME=this;
 	}
 
 	@Override
 	protected void onDestroy(){
+		HOME=null;
 		super.onDestroy();
 	}
 	@Override
@@ -458,6 +411,7 @@ public class HomeActivity extends FragmentActivity
     }
 	@Override
 	public void add_msj(JSONObject msj, boolean move) {
+		if(HOME!=null)
 		switch(ON_DISPLAY) {
 			case GRUPOS:
 				mNavigationDrawerFragment.selectItem(5);
@@ -646,8 +600,8 @@ public class HomeActivity extends FragmentActivity
 						mNavigationDrawerFragment.selectItem(0);
 						return true;
 					}
-					KeyEvent out = new KeyEvent(KeyEvent.ACTION_MULTIPLE,KeyEvent.KEYCODE_HOME);
-					return super.onKeyDown(arg1,out);
+
+					return super.onKeyDown(arg1,arg2);
 				}
 			}
         }else  if(back(arg1)) return true;

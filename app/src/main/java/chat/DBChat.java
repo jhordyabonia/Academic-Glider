@@ -22,6 +22,7 @@ import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.jhordyabonia.ag.R;
@@ -73,6 +74,8 @@ public class DBChat
 		int id= chat.getInt("id");
 		JSONObject tmp = get(count);
 		JSONArray msjs=chat.getJSONArray("mensajes");
+
+		Log.e("INSERT",chat.toString());
 		 while (tmp != null)
 		{
 			if(tmp.getInt("id")==(id))

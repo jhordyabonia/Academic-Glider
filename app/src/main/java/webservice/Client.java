@@ -90,7 +90,7 @@ public class Client extends AsyncTask<String, Long, String> {
 					progDailog.setMessage(actividad.getString(R.string.loading));
 					progDailog.setIndeterminate(false);
 					progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-					progDailog.setCancelable(false);
+					progDailog.setCancelable(true);
 				}
 			progDailog.show();
 		}

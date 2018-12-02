@@ -58,18 +58,18 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 	public  static final String MESSENGER = "messenger";
 	private  static final String MENSAJE_NUEVO = "mensaje_nuevo";
 
-	public  static void updater(Activity launch, int CHAT)
+	public  static void updater(Activity launch, int chat)
     {
-		if(!LOGGED) return;
-
         launch.stopService(new Intent(launch,ChatService.class));
     	if(!(launch instanceof Inbox))
     		return;
 
+		if(!LOGGED) return;
+
     	Messenger messenger= new Messenger(new MHandler((Inbox)launch));
     	Intent intent = new Intent(launch,ChatService.class);
     	intent.putExtra(MESSENGER, messenger);
-    	intent.putExtra("CHAT", CHAT);
+    	intent.putExtra("CHAT", chat);
         launch.startService(intent);
     }
 
@@ -109,10 +109,6 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 	{
 	    if(intent==null)
         {
-            /*Toast.makeText(this,"intent = null",Toast.LENGTH_LONG).show();
-			Intent mIntent = new Intent(this, HomeActivity.class);
-            mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(mIntent);*/
             CHAT=0;
             return  super.onStartCommand(intent, flags, startId);
         }else
@@ -123,6 +119,7 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 			messenger = (Messenger) extras.get(MESSENGER);
 		STOP = false;		
 		get();
+		Log.d("START",""+CHAT);
 		return super.onStartCommand(intent, flags, startId);	
 	}	
 	@Override
@@ -144,6 +141,7 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 		
 		if(!STOP)
 			get();
+		Log.e("RESULT",result);
 	}
 	private void get()
 	{
@@ -158,7 +156,7 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 			ObjectAnimator in0 = ObjectAnimator
 					.ofFloat(null,"scaleX",1,0);
 
-			in0.setDuration(1000);
+			/*in0.setDuration(1000);
 			in0.setInterpolator(new LinearInterpolator());
 			in0.addListener( new AnimatorListenerAdapter()
 								{
@@ -166,7 +164,14 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 									public void onAnimationEnd(Animator anim)
 									{  get();}
 								} );
-			in0.start();
+			in0.start();*/
+
+			Handler handler = new Handler();
+			handler.postDelayed(new Runnable() {
+				public void run() {
+					get();
+				}
+			}, 1000);
 		}
 	}
 	private void nuevos(JSONArray db)
@@ -184,6 +189,7 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 					DB.update(this, chat);
 				} else {
 					DBChat.insert(chat);
+					Log.e("NUEVOS",chat.toString());
 					String nombre;
 					String id = chat.getString("nombre")
 							.replace("_" + User.get("celular") + "_", "")
@@ -193,7 +199,6 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
 						nombre = id;
 					int chat_id = chat.getInt("id");
 					boolean buffered = CHAT == chat_id;
-
 					JSONArray msjs = chat.getJSONArray("mensajes");
 					JSONObject msj_t;
 					for (int i = 0; i < msjs.length(); i++) {
@@ -327,7 +332,10 @@ public class ChatService extends Service implements Asynchtask ,Notificaciones.N
     	try{messenger.send(msg);}
     	catch(android.os.RemoteException e1) {}	
 	}
-	private int CHAT=-1;
+	public static void setChat(int c){
+		CHAT=c;
+	}
+	private static int CHAT=-1;
 	private boolean STOP;
 	public static boolean ACTIVE=true;
 	private Messenger messenger; 

@@ -138,8 +138,16 @@ public class ChatActivity  extends FragmentActivity implements Inbox,OnItemClick
 					}
 				);
 		load();
-		ChatService.updater(ChatActivity.this,CHAT);
 		}
+
+	@Override
+	public void onResume(){
+		super.onResume();
+		Intent mIntent=getIntent();
+		CHAT=Integer.valueOf(mIntent.getStringExtra("CHAT"));
+Log.d("CHAT",""+CHAT);
+		ChatService.updater(ChatActivity.this,CHAT);
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) 
 	{		

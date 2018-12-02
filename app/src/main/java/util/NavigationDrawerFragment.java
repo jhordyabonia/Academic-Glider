@@ -222,7 +222,7 @@ public class NavigationDrawerFragment extends Fragment {
     public void selectItem(int position){selectItem(position,null);}
     private void selectItem(int position, View view) {
 
-        getActionBar().show();
+        //getActionBar().show();
         previews=mCurrentSelectedPosition;
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {

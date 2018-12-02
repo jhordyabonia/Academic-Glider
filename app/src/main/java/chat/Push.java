@@ -8,21 +8,46 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.jhordyabonia.ag.HomeActivity;
 import com.jhordyabonia.ag.R;
+import com.jhordyabonia.ag.Server;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
+import models.DB;
+import webservice.Asynchtask;
 
 public class Push extends FirebaseMessagingService {
 
-        private static final String TAG = "PUSH";
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.e("Push","started");
+    private static final String TAG = "PUSH";
+    public static void subscribe(final Context context){
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e("log", "getInstanceId failed", task.getException());
+                            return;
+                        }
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+                        sendRegistrationToServer(context,token);
+                    }
+                });
     }
 
     @Override
@@ -30,22 +55,47 @@ public class Push extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             ChatService.THERE_ARE_MESSAGE = true;
+            if(!DB.LOGGED){
+
+                if(remoteMessage.getData().containsKey("chat")) {
+                    int chat=0;
+                    Integer.parseInt(remoteMessage.getData().get("chat"));
+                    ChatService.setChat(chat);
+                }
+                if(HomeActivity.HOME==null) {
+                    Intent mIntent = new Intent(this, HomeActivity.class);
+                    mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(mIntent);
+                }
+            }
         }
     }
     @Override
     public void onNewToken(String token) {
         Log.e(TAG, "Refreshed token: " + token);
-        sendRegistrationToServer(token);
+        sendRegistrationToServer(Push.this,token);
     }
 
-    /**
-     * Handle time allotted to BroadcastReceivers.
-     */
-    private void handleNow() {
-        Log.e(TAG, "Short lived task is done.");
-    }
-    private void sendRegistrationToServer(String token) {
-        // TODO: Implement this method to send token to your app server.
+    public static void sendRegistrationToServer(final Context context, String token) {
+
+        HashMap<String, String> datos=new HashMap<>();
+        datos.put("token",token);
+        datos.put("id", DB.User.get("id"));
+        Server.setDataToSend(datos);
+        Asynchtask r=new Asynchtask() {
+            @Override
+            public void processFinish(String result) {
+                try {
+                    JSONObject tmp = new JSONObject(result);
+
+                    Toast.makeText(context, tmp.getString("menssage"), Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                }
+            }
+        };
+
+        if(DB.LOGGED)
+            Server.send("setToken/",null,r);
     }
     private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, Push.class);

@@ -262,8 +262,8 @@ public abstract class DB
 			model(model);
 			tmp = getBy("id", data.get("id"));
 			if(tmp!=null)
-				Log.i("insert: tmp=",tmp.toString());
-			else Log.i("inser: tmp=","null");
+				Log.e("insert: tmp=",tmp.toString());
+			else Log.e("inser: tmp=","null");
 
 			if (tmp == null)
 				db.getJSONArray(name_model).put(data);
@@ -292,8 +292,7 @@ public abstract class DB
 
 				if(tipo.contains("permissions")) {
 					User.set("permisos",data_);
-				}else
-				if(tipo.contains("command")) {
+				}else if(tipo.contains("command")) {
 					util.Settings.commands(data_.toString());
 				}else if(tipo.contains("file")) {
 					save(null,
@@ -303,11 +302,14 @@ public abstract class DB
 					Notificaciones.add(data_);
 					notifications.update(data_.getString("asignatura"),data_.getString("data"),data_.getString("type"));
 				}else {
+
+					Log.e("UPDATE",tipo.toString());
+					insert(tipo, data_);
+
 					if(!data_.isNull("nombre"))
-						notifications.update(data_.getString("nombre"),data_.getString("type"),data_.getString("data"));
+						notifications.update(data_.getString("nombre"),tipo,tipo);
 					else
 						notifications.update(tipo,"Horarios",tipo);
-					insert(tipo, data_);
 				}
 			}catch (JSONException e)
 			{save(null,e.getMessage()+"\n>>>\n"+msj_t,tipo+"-"+i+"-error.json");}
@@ -497,7 +499,6 @@ public abstract class DB
 				{
 					LIST_ID_ASIGNATURAS[count] = t.getString("id");
 					LIST_ASIGNATURAS[count++] = t.getString("nombre");
-
                     Asignaturas.findDescripcion(t.getString("id"),t.getString("nombre"));
 				} catch (JSONException e)
 				{	continue; }
